@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
+  <title>initio</title>
+  <script src="shared.js"></script>
+  <style>
+    body{
+      margin: 0; 
+    } 
+    #protein, #ctrls{
+      float: left;
+      margin: 10px; 
+    }
+    #protein{
+      position: relative; 
+      overflow: scroll; 
+      background: #aaa;
+    }
+    #energy_cont{
+      border: 1px solid darkgrey;
+      border-radius: 6px;
+      width: 230px;
+      background-image: -webkit-linear-gradient(top, white, lightgrey);
+    }
+    #energy_bar{
+      height: 16px;
+      width: 16px;
+      border: 1px solid grey;
+      background-image: -webkit-linear-gradient(top, gray, darkgrey);
+      border-radius: 4px;
+    }
+    .amino{
+      -webkit-transition: -webkit-transform 0.5s;
+    }
+    .amino, .con{
+      position: absolute;
+    }
+    #ang_div{
+      overflow-y: scroll;
+    }
+    input{
+      border-radius: 8px;
+      text-align: center;
+      display: block;
+    }
+  </style>
+</head>
+<body id="doc">
+  <div id="protein"></div> 
+    <div id="ctrls">Energy: <span id="energy">0</span>
+    <div id="energy_cont"><div id="energy_bar"></div></div>
+    <div>Rotation speed (r): <input id="r" value="1"></input>
+    <button id="sim">Optimize</button><br>
+      Start: <input id="solve_start" value="Math.cos(x*0.001)+0.99"></input>
+      <button id="solve">Solve</button>
+    </div>
+    A angle: <input id="f_a" type="number" value="1"></input>
+    B angle: <input id="f_b" type="number" value="-1.45"></input>
+    <div>Angles (in radians): 
+      <div id="ang_div"></div>
+      <button id="set">Set</button>
+      <button id="best">Load Best (S13 only)</button>
+    </div>
+      <div>Sequencia: <select id="seq">
+          <option value="ABBABBABABBAB" selected>S13</option>
+          <option value="BABABBABABBABBABABBAB">S21</option>
+          <option value="ABBABBABABBABBABABBABABBABBABABBAB">S34</option>
+          <option value="BABABBABABBABBABABBABABBABBABABBABBABABBABABBABBABABBAB">S55</option>
+      </select></div>
+    <button id="restart">Restart</button>    
+  </div>
+</body>
+<script type="text/javascript">
+var game = function(){
+
+  /////////////////shortcuts/////////////////
+
+  var create = function(t, props){
+    var el = document.createElement(t);
+    el.on=function(e,f,u){el.addEventListener(e,f,u)};
+    el.off=function(e,f){el.removeEventListener(e,f)};
+    el.css=function(p,v){if(v) el.style[p]=v; else return el.style[p];};
+    if(props){for(i in props){el[i] = props[i];}}
+    return el;
+  };
+  var get = { 
+    id: function(i){var el=document.getElementById(i); if(!el) return false;
+      el.on=function(e,f,u){el.addEventListener(e,f,u)};
+      el.off=function(e,f){el.removeEventListener(e,f)};
+      el.css=function(p,v){if(v) el.style[p]=v; else return el.style[p];};
+      return el;},
+    cl: function(c){var els=document.getElementsByClassName(c); if(!els) return false;
+      els.each=function(f){for(var i=0;i<els.length;i++){f(els[i],i)}}; 
+      els.on=function(e,f,u){for(var i=0;i<els.length;i++){els[i].addEventListener(e,f,u)}}
+      els.off=function(e,f){for(var i=0;i<els.length;i++){els[i].removeEventListener(e,f)}}
+      els.css=function(p,v){for(var i=0;i<els.length;i++){
+        if(v) els[i].style[p]=v; else return els[i].style[p];
+      }}
+      return els;}
+  };
+  var noselect = function(el){
+    el.onselectstart = function(){return false;};  
+  };
+  var runAgain = function(f,t){
+    clearTimeout(f.timeout);  
+    f.timeout = setTimeout(f, t);
+  };
+  var clear = function(el){
+    if (el.hasChildNodes()){
+      while (el.childNodes.length > 0 ){
+        el.removeChild( el.firstChild );       
+      } 
+    }
+  };
+
+  /////////////////workers/////////////////
+
+  var update_energy = function(en){
+    protein.energy = en;
+    var bar = get.id('energy_bar');
+    bar.css('width', 160 / (en + 3 + (protein.total/4))+'px');
+    get.id('energy').textContent = en;    
+  };
+
+  var game_worker;
+  var game_work = function(){
+    if(game_worker) game_worker.terminate();
+    game_worker = new Worker('energy_worker.js');
+    game_worker.receive = Worker_receive;
+    game_worker.send = function(p){
+      var m = {arr: p.arr, seq: p.seq};
+      Worker_send.call(this, m);
+    };
+    game_worker.send(protein);
+
+    game_worker.addEventListener('message', function(event){
+      update_energy(this.receive(event));
+    }, false);
+  };
+  
+  var r = parseFloat(get.id('r').value);
+  var sim_worker, sim_working;
+  var sim_start = function(){
+    var boo = sim_animate();
+    if(boo){
+      if(sim_worker) sim_worker.terminate();
+      sim_worker = new Worker('sim_worker.js');
+      sim_worker.receive = Worker_receive;
+      sim_worker.send = function(p){ 
+        var y = parseFloat(get.id('r').value);
+        var m = {
+          arr: p.arr, 
+          seq: p.seq, 
+          energy: p.energy, 
+          r: y,
+          n: p.n
+        }
+        Worker_send.call(this, m);
+      };
+      
+      sim_worker.addEventListener('message', function(event){
+        var m = this.receive(event); console.log(m);
+        protein.arr = m.arr;
+        print_ang();
+        update_energy(m.energy);
+        var i = --m.n;
+        if(i <= 0) i = protein.arr.length-2;
+        protein.n = i; 
+        this.send(protein);
+      }, false);
+
+      sim_worker.send(protein);
+    }
+  };
+
+  var sim_animate = function(){
+    var amino = get.cl('amino');
+    if(!sim_working) {
+      get.id('solve').textContent = 'Stop';
+      get.id('sim').css('display', 'none');
+      amino.css('box-shadow', '0 0 ' + protein.half + 'px white');
+      amino.off('click', clickamino);
+      amino.off('dblclick', dblclickamino);
+      amino.off('mouseover', mouseoveramino);
+      amino.off('mouseout', mouseoutamino);  
+      sim_working = true;
+      return true;
+    } else {
+      get.id('solve').textContent = 'Solve';
+      get.id('sim').css('display', 'inline-block');
+      amino.css('box-shadow', '0 0 ' + protein.half + 'px black');
+      amino.on('click', clickamino);
+      amino.on('dblclick', dblclickamino);
+      amino.on('mouseover', mouseoveramino);
+      amino.on('mouseout', mouseoutamino);  
+      if(sim_worker) sim_worker.terminate();
+      if(solve_worker) solve_worker.terminate();
+      sim_working = false;
+      return false;
+    }
+  }
+  var solve_worker;
+  
+  var solve = function(){ 
+    var x = 0;
+    var boo = sim_animate();
+    if(boo){
+      if(solve_worker) solve_worker.terminate();
+      solve_worker = new Worker('sim_worker.js');
+      solve_worker.receive = Worker_receive; 
+      solve_worker.send = function(p){ 
+        r = parseFloat(get.id('r').value);
+        var y = eval(get.id('solve_start').value);
+
+        if(y > 0){
+          var m = {
+            arr: p.arr, 
+            seq: p.seq, 
+            energy: p.energy,
+            n: p.n, 
+            //r: r / (180/Math.PI)
+            r: y
+          }
+          Worker_send.call(this, m);
+          
+          x++;
+
+        }else{
+          sim_animate();
+        }
+        get.id('r').value = Math.round(y*100)/100;
+      };
+      
+      solve_worker.addEventListener('message', function(event){
+        var m = this.receive(event); 
+        protein.arr = m.arr;
+        print_ang();
+        update_energy(m.energy);
+        var i = --m.n;
+        if(i <= 0) i = protein.arr.length-2;
+        protein.n = i; 
+        
+        this.send(protein);
+      }, false);
+      protein.n = protein.arr.length;
+      solve_worker.send(protein);
+    } 
+  };
+
+  /////////////////draw protein/////////////////
+
+  var scroll = 16; //scroll offset in px
+  var height = Math.round(document.height - 2 * scroll);
+  var width = Math.round(2 * height / 2.2);  
+  var draw = function(protein){
+    protein.size = height/(protein.total * 1.6);
+    protein.half = protein.size/2;
+    var hmid = ((width - scroll)/2) - (protein.size/2);
+    var inter = (height - scroll) / (protein.total + 1); 
+    var firstinter = inter/2; //first interval
+    var conwidth = protein.half/2;
+    var conheight = inter/2;
+    var conx = protein.half - (conwidth /2);
+    var cony = protein.size/1.2;
+    var conbor = conwidth/2;
+    var append = protein.el;
+    for (var i = 0; i < protein.total; i++) {
+      var amino = create('div', {className: 'amino', id: 'amino'+i});
+      
+      if(protein.seq[i] == 'A') 
+        amino.css('background-image', 
+          '-webkit-radial-gradient(40% 40%, circle, grey, black)');
+      else amino.css('background-image', 
+        '-webkit-radial-gradient(40% 40%, circle, white, grey)');
+      
+      if(i == 0){
+        amino.css('left', hmid + 'px');
+        amino.css('bottom', firstinter +'px');
+      }else{
+        amino.css('bottom', inter +'px');
+
+        var con = create('div', {className: 'con', id: 'con'+i});
+        con.css('background-image', '-webkit-linear-gradient(left, gray, black)');
+        con.css('width', conwidth + 'px');
+        con.css('height', conheight +'px');
+        con.css('left', conx + 'px');
+        con.css('bottom', cony + 'px');
+        con.css('border-radius', conbor + 'px');
+        append.appendChild(con);       
+      }
+      amino.addEventListener('click', clickamino);
+      amino.addEventListener('dblclick', dblclickamino);
+      amino.addEventListener('mouseover', mouseoveramino);
+      amino.addEventListener('mouseout', mouseoutamino);      
+      amino.css('width', protein.size + 'px');
+      amino.css('height', protein.size +'px');
+      amino.css('border-radius', protein.half +'px');
+      amino.css('box-shadow', '0 0 ' + protein.half + 'px black');
+      amino.angle = 0;
+      protein.arr.push(0);
+      append.appendChild(amino);
+      append = amino;
+    }; 
+    print_ang();
+  };
+
+  /////////////////mouse events/////////////////
+
+  var checkamino = function(id){
+    if(id.slice(0, 5) == 'amino' 
+    && id != 'amino0'
+    && id != 'amino' + (protein.total-1)) return true;
+    return false; 
+  };
+
+  var selected;
+  var clickamino = function(e){
+    //console.log(e); 
+    e.stopPropagation();
+    e.preventDefault();    
+    if(sim_working) return false;
+    if(checkamino(e.target.id) && !selected){ //select
+      selected = e.target;
+      selected.css('box-shadow', '0 0 ' + protein.half + 'px gold');
+    }else if(selected){ //unselect
+      selected.css('box-shadow', '0 0 ' + protein.half + 'px black');
+      selected = 0;
+    }
+  };
+  var dblclickamino = function(e){ 
+    //console.log(e);
+    e.stopPropagation();
+    e.preventDefault();
+    if(checkamino(e.target.id)){
+      e.target.angle = 0;
+      var i = e.target.id.slice(5, e.target.id.length);
+      protein.arr[i] = 0;
+      e.target.css('-webkit-transform', 'rotate(0deg)');
+      print_ang();
+    }
+  };
+  var mouseoveramino = function(e){ 
+    //console.log(e);
+    if(!selected) {
+      if(checkamino(e.target.id)) 
+        e.target.css('box-shadow', '0 0 ' + protein.half + 'px white');
+    }
+  };  
+  var mouseoutamino = function(e){ 
+    //console.log(e);
+    if(!selected) {
+      if(checkamino(e.target.id)) 
+        e.target.css('box-shadow', '0 0 ' + protein.half + 'px black');
+    }
+  };
+  
+  var mousemove = function(e){
+    //console.log(e);
+    if(selected){ 
+      selected.angle += e.webkitMovementX; 
+      selected.css('-webkit-transform', 'rotate('+ selected.angle +'deg)');
+      var i = selected.id.slice(5, selected.id.length);
+      protein.arr[i] = selected.angle * (Math.PI/180);
+      game_worker.send(protein);
+      print_ang();
+    }
+  };
+
+  ////////////////button events/////////////////
+
+  var load_best13 = function(){
+    protein.arr = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0];
+    print_ang();
+    update_energy(protein.energy)
+    game_worker.send(protein);
+  }
+
+  var print_ang = function(){
+    var angle, amino; 
+    //var div = get.id('ang_div');
+    for(var i = protein.total - 2; i > 0; i--){
+      angle = get.id('angle'+i);
+      angle.value = protein.arr[i];
+      amino = get.id('amino'+i);
+      amino.angle = protein.arr[i] * (180/Math.PI);
+      amino.css('-webkit-transform', 'rotate('+ amino.angle +'deg)');
+    }
+  };
+
+  var set_ang = function(){
+    var angle;
+    for(var i = protein.total - 2; i > 0; i--){
+      angle = get.id('angle'+i).value;
+      protein.arr[i] = parseFloat(angle);
+    } 
+    print_ang(); 
+    game_worker.send(protein);  
+  };
+
+  /////////////////init/////////////////
+
+  var create_ang = function(){
+    var angle; 
+    var ang_div = get.id('ang_div');
+    clear(ang_div);
+    var f_a = parseFloat(get.id('f_a').value);
+    var f_b = parseFloat(get.id('f_b').value);
+    for(var i = protein.total - 2; i > 0; i--){
+      angle = create('input', {className: 'angle', id: 'angle'+i});
+      if(protein.seq[i]=='A') {
+        angle.value = f_a;
+        angle.css('border', '1px solid black');
+      }else{
+        angle.value = f_b;
+        angle.css('border', '1px solid lightgrey');
+      }
+     
+      ang_div.appendChild(angle);
+    }
+  };
+
+  var add_events = function (){
+    get.id('doc').on('click', clickamino);
+    get.id('doc').on('mousemove', mousemove);
+    get.id('restart').on('click', init);
+    get.id('set').on('click', set_ang);
+    get.id('sim').on('click', sim_start);
+    get.id('solve').on('click', solve);
+    var best = get.id('best');
+    if(protein.total == 13) {
+      best.disabled = false;
+      best.on('click', load_best13); 
+    }else {
+      best.disabled = true;
+      best.off('click', load_best13);
+    }
+  } 
+
+  var protein = {};
+  var init = function(){
+    protein = {};
+    protein.energy = 0;
+    protein.n = 0;
+    protein.arr = [];
+    protein.seq = get.id('seq').value;
+    protein.total = get.id('seq').value.length;
+
+    protein.el = get.id('protein');
+    clear(protein.el);
+    noselect(protein.el);
+    protein.el.css('width', width+'px');
+    protein.el.css('height', height+'px');
+    get.id('ang_div').css('height', (height * 0.4)+'px')
+
+    add_events();
+    
+    draw(protein); 
+    game_work(); 
+
+    create_ang();
+
+    sim_working = 1;
+    sim_animate();
+  };
+
+  init();
+};
+window.addEventListener('load', game);
+</script>
