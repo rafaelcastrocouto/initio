@@ -4,6 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
   <title>initio</title>
+  <script src="energy.js"></script>
   <script src="shared.js"></script>
   <style>
     body{
@@ -14,6 +15,7 @@
       margin: 10px; 
     }
     #protein{
+      border-radius: 1em;
       position: relative; 
       overflow: scroll; 
       background: #aaa;
@@ -39,6 +41,8 @@
     }
     #ang_div{
       overflow-y: scroll;
+      padding: 1em;
+      margin: 1em;
     }
     input{
       border-radius: 8px;
@@ -51,13 +55,6 @@
   <div id="protein"></div> 
     <div id="ctrls">Energy: <span id="energy">0</span>
     <div id="energy_cont"><div id="energy_bar"></div></div>
-    <div>Rotation speed (r): <input id="r" value="1"></input>
-    <button id="sim">Optimize</button><br>
-      Start: <input id="solve_start" value="Math.cos(x*0.001)+0.99"></input>
-      <button id="solve">Solve</button>
-    </div>
-    A angle: <input id="f_a" type="number" value="1"></input>
-    B angle: <input id="f_b" type="number" value="-1.45"></input>
     <div>Angles (in radians): 
       <div id="ang_div"></div>
       <button id="set">Set</button>
@@ -128,125 +125,20 @@ var game = function(){
   var game_work = function(){
     if(game_worker) game_worker.terminate();
     game_worker = new Worker('energy_worker.js');
-    game_worker.receive = Worker_receive;
-    game_worker.send = function(p){
-      var m = {arr: p.arr, seq: p.seq};
-      Worker_send.call(this, m);
-    };
-    game_worker.send(protein);
-
+    console.log('p: ', protein);
+    game_worker.send = function(){
+      game_worker.postMessage(JSON.stringify({
+        protein: {
+          ang: protein.ang,
+          energy: protein.energy,
+          seq: protein.seq
+        }
+      }));
+    }
+    game_worker.send();
     game_worker.addEventListener('message', function(event){
-      update_energy(this.receive(event));
+      update_energy(JSON.parse(event.data).energy);
     }, false);
-  };
-  
-  var r = parseFloat(get.id('r').value);
-  var sim_worker, sim_working;
-  var sim_start = function(){
-    var boo = sim_animate();
-    if(boo){
-      if(sim_worker) sim_worker.terminate();
-      sim_worker = new Worker('sim_worker.js');
-      sim_worker.receive = Worker_receive;
-      sim_worker.send = function(p){ 
-        var y = parseFloat(get.id('r').value);
-        var m = {
-          arr: p.arr, 
-          seq: p.seq, 
-          energy: p.energy, 
-          r: y,
-          n: p.n
-        }
-        Worker_send.call(this, m);
-      };
-      
-      sim_worker.addEventListener('message', function(event){
-        var m = this.receive(event); console.log(m);
-        protein.arr = m.arr;
-        print_ang();
-        update_energy(m.energy);
-        var i = --m.n;
-        if(i <= 0) i = protein.arr.length-2;
-        protein.n = i; 
-        this.send(protein);
-      }, false);
-
-      sim_worker.send(protein);
-    }
-  };
-
-  var sim_animate = function(){
-    var amino = get.cl('amino');
-    if(!sim_working) {
-      get.id('solve').textContent = 'Stop';
-      get.id('sim').css('display', 'none');
-      amino.css('box-shadow', '0 0 ' + protein.half + 'px white');
-      amino.off('click', clickamino);
-      amino.off('dblclick', dblclickamino);
-      amino.off('mouseover', mouseoveramino);
-      amino.off('mouseout', mouseoutamino);  
-      sim_working = true;
-      return true;
-    } else {
-      get.id('solve').textContent = 'Solve';
-      get.id('sim').css('display', 'inline-block');
-      amino.css('box-shadow', '0 0 ' + protein.half + 'px black');
-      amino.on('click', clickamino);
-      amino.on('dblclick', dblclickamino);
-      amino.on('mouseover', mouseoveramino);
-      amino.on('mouseout', mouseoutamino);  
-      if(sim_worker) sim_worker.terminate();
-      if(solve_worker) solve_worker.terminate();
-      sim_working = false;
-      return false;
-    }
-  }
-  var solve_worker;
-  
-  var solve = function(){ 
-    var x = 0;
-    var boo = sim_animate();
-    if(boo){
-      if(solve_worker) solve_worker.terminate();
-      solve_worker = new Worker('sim_worker.js');
-      solve_worker.receive = Worker_receive; 
-      solve_worker.send = function(p){ 
-        r = parseFloat(get.id('r').value);
-        var y = eval(get.id('solve_start').value);
-
-        if(y > 0){
-          var m = {
-            arr: p.arr, 
-            seq: p.seq, 
-            energy: p.energy,
-            n: p.n, 
-            //r: r / (180/Math.PI)
-            r: y
-          }
-          Worker_send.call(this, m);
-          
-          x++;
-
-        }else{
-          sim_animate();
-        }
-        get.id('r').value = Math.round(y*100)/100;
-      };
-      
-      solve_worker.addEventListener('message', function(event){
-        var m = this.receive(event); 
-        protein.arr = m.arr;
-        print_ang();
-        update_energy(m.energy);
-        var i = --m.n;
-        if(i <= 0) i = protein.arr.length-2;
-        protein.n = i; 
-        
-        this.send(protein);
-      }, false);
-      protein.n = protein.arr.length;
-      solve_worker.send(protein);
-    } 
   };
 
   /////////////////draw protein/////////////////
@@ -299,7 +191,7 @@ var game = function(){
       amino.css('border-radius', protein.half +'px');
       amino.css('box-shadow', '0 0 ' + protein.half + 'px black');
       amino.angle = 0;
-      protein.arr.push(0);
+      protein.ang.push(0);
       append.appendChild(amino);
       append = amino;
     }; 
@@ -320,7 +212,7 @@ var game = function(){
     //console.log(e); 
     e.stopPropagation();
     e.preventDefault();    
-    if(sim_working) return false;
+
     if(checkamino(e.target.id) && !selected){ //select
       selected = e.target;
       selected.css('box-shadow', '0 0 ' + protein.half + 'px gold');
@@ -362,7 +254,7 @@ var game = function(){
       selected.angle += e.webkitMovementX; 
       selected.css('-webkit-transform', 'rotate('+ selected.angle +'deg)');
       var i = selected.id.slice(5, selected.id.length);
-      protein.arr[i] = selected.angle * (Math.PI/180);
+      protein.ang[i] = selected.angle * (Math.PI/180);
       game_worker.send(protein);
       print_ang();
     }
@@ -371,7 +263,7 @@ var game = function(){
   ////////////////button events/////////////////
 
   var load_best13 = function(){
-    protein.arr = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0];
+    protein.ang = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0];
     print_ang();
     update_energy(protein.energy)
     game_worker.send(protein);
@@ -382,9 +274,9 @@ var game = function(){
     //var div = get.id('ang_div');
     for(var i = protein.total - 2; i > 0; i--){
       angle = get.id('angle'+i);
-      angle.value = protein.arr[i];
+      angle.value = protein.ang[i];
       amino = get.id('amino'+i);
-      amino.angle = protein.arr[i] * (180/Math.PI);
+      amino.angle = protein.ang[i] * (180/Math.PI);
       amino.css('-webkit-transform', 'rotate('+ amino.angle +'deg)');
     }
   };
@@ -393,7 +285,7 @@ var game = function(){
     var angle;
     for(var i = protein.total - 2; i > 0; i--){
       angle = get.id('angle'+i).value;
-      protein.arr[i] = parseFloat(angle);
+      protein.ang[i] = parseFloat(angle);
     } 
     print_ang(); 
     game_worker.send(protein);  
@@ -405,15 +297,14 @@ var game = function(){
     var angle; 
     var ang_div = get.id('ang_div');
     clear(ang_div);
-    var f_a = parseFloat(get.id('f_a').value);
-    var f_b = parseFloat(get.id('f_b').value);
+
     for(var i = protein.total - 2; i > 0; i--){
       angle = create('input', {className: 'angle', id: 'angle'+i});
       if(protein.seq[i]=='A') {
-        angle.value = f_a;
+        angle.value = 0;
         angle.css('border', '1px solid black');
       }else{
-        angle.value = f_b;
+        angle.value = 0;
         angle.css('border', '1px solid lightgrey');
       }
      
@@ -426,8 +317,8 @@ var game = function(){
     get.id('doc').on('mousemove', mousemove);
     get.id('restart').on('click', init);
     get.id('set').on('click', set_ang);
-    get.id('sim').on('click', sim_start);
-    get.id('solve').on('click', solve);
+    //get.id('sim').on('click', sim_start);
+    //get.id('solve').on('click', solve);
     var best = get.id('best');
     if(protein.total == 13) {
       best.disabled = false;
@@ -443,9 +334,9 @@ var game = function(){
     protein = {};
     protein.energy = 0;
     protein.n = 0;
-    protein.arr = [];
+    protein.ang = [];
     protein.seq = get.id('seq').value;
-    protein.total = get.id('seq').value.length;
+    protein.total = protein.seq.length;
 
     protein.el = get.id('protein');
     clear(protein.el);
@@ -461,8 +352,6 @@ var game = function(){
 
     create_ang();
 
-    sim_working = 1;
-    sim_animate();
   };
 
   init();
