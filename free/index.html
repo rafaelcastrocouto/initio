@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
+</head>
+<body>
+  <script type="text/javascript" src="utils.js"></script>
+  <script type="text/javascript" src="protein.js"></script>
+  <script type="text/javascript" src="energy.js"></script>
+<script type="text/javascript">
+
+var css = new Css()
+css.addRule('body', {margin: '0'})
+
+//var seq = "AB"
+//var ang = [0, 0]
+
+//var seq = "BBAA"
+//var ang = [0, 0, 0, 0]
+
+var seq = "ABBABBABABBAB"
+var ang = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0]
+//var ang = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+//console.log(ang);
+//console.log(coordToAng(angToCoord(ang)));
+
+var protein = new Protein(seq, {'angle': ang})
+//var protein = new Protein(seq, {'angle': coordToAng(angToCoord(ang))})
+
+canvas.elements = []
+for(var i = 0; i < protein.length; ++i){
+  var amino = protein.aminos[i]
+  canvas.elements.push(amino)
+  amino.addEventListener('mousedown', function(e){
+    this.movable = 1
+  })
+  amino.addEventListener('mouseup', function(e){
+    this.movable = 0
+  })
+
+  amino.addEventListener('mousemove', function(e){
+    if(this.movable){
+      this.setCoord({
+        x: (e.x - canvas.offset) / canvas.scale,
+        y: (e.y - canvas.offset) / canvas.scale
+      })
+      protein.render()
+    }
+  })
+}
+
+protein.render()
+setInterval(protein.cool, 50)
+
+
+
+</script>
+</body>
+</html>
