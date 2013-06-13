@@ -34,7 +34,7 @@ this.Ela = function(protein){
       var pro1 = new Protein({'seq': seq, 'ang': randomAng(min.ang, i)});
       pro1.render();
       if(pro1.energy > min.energy) { //console.log('amino fail');
-        //soft[i] = 1;
+        (soft[i] >= 1) ? soft[i] = 1 : soft[i] += 0.05;
       } else { console.log('amino step');
         soft[i] *= 0.2;     
         min = pro1; 
