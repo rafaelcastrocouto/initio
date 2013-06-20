@@ -1,61 +1,80 @@
 //estimated learning algorithm
 
-this.Ela = function(protein){
-
-  var n = Math.pow(protein.length, 2);
-  var seq = protein.seq;
-  var ang = protein.ang;
-  var energy1 = protein.energy;
+var Ela = function(protein){
   
-  var soft = [];
-  for(var i = 1; i < protein.length - 1; ++i){
-    soft[i] = 1;
-  }
-
-  console.log('n: ', n);
-  console.log('enery1: ', energy1);
+  var parameter = [];
+  var initParameters = function(){
+    for(var i = 1; i < protein.length - 1; ++i){
+      parameter[i] = {
+        softness: 1,
+        efficiency: 0.5
+      };
+    } 
+  };
   
-  var angle = 3;
-
-  var randomAng = function(a, i){  
-    var angDelta = Math.PI / angle;
-    var clock = (Math.random() > 0.5 ? 1 : -1);
-    var na = (a[i] + angDelta) * Math.random() * clock * (soft[i]);
-      //console.log('na: ', na);
-      a[i] = na;
+  var adjustParameters = function(e0, e1, a){
+    //TODO use e0 and e1 to adjust parameters
+    if(e1 < e0){ //success
+      parameter[a].softness *= 0.9;
+      if(parameter[a].softness <= 0.01) parameter[a].softness = 0.01;
       
-    return a;
+      parameter[a].efficiency += 0.01;
+      if(parameter[a].efficiency >= 1) parameter[a].efficiency = 1;
+      
+    } else { //fail
+      //parameter[a].efficiency *= 0.6;
+    }
   }
 
+  var randomAngle = function(p, a){ 
+    var na = p.getAngle();
+    //console.log(a, parameter)
+    na[a] += 2 * Math.PI * gaussRandom(parameter[a].softness + 1E-10);
+    //console.log('na: ', na);
+    return na;
+  };
 
   var bend = function(p){ 
-    var min = p;
-    for(var i = 1; i < p.length - 1; ++i){
-      var pro1 = new Protein({'seq': seq, 'ang': randomAng(min.ang, i)});
-      pro1.render();
-      if(pro1.energy > min.energy) { //console.log('amino fail');
-        (soft[i] >= 1) ? soft[i] = 1 : soft[i] += 0.05;
-      } else { console.log('amino step');
-        soft[i] *= 0.2;     
-        min = pro1; 
-      }
+    var a = chooseAngle();
+    var npro = new Protein({ang: randomAngle(p, a), seq: p.getSeq()});
+    npro.render();
+    adjustParameters(p.energy, npro.energy, a);
+    
+    if(npro.energy < p.energy * 0.9) { 
+       if(npro.energy < min) {
+         min = npro.energy;
+         console.log('success', min.toFixed(2), a);
+       }
+      return npro; 
     }
-    return min;
+    //console.log('fail');
+    return p;
   };
 
-  var newp;
-  var p = new Protein({'seq': p, 'ang': ang});
-  
-  var optimize = function(){ 
-    newp = bend(p);
-    newp.render();
-    if(newp.energy >= p.energy) { console.log('p fail');
-      setTimeout(optimize, 0)
-    } else { console.log('p step', newp.energy);
-      p = newp;
-      setTimeout(optimize, 0)
-    }  
+  var sum;
+  var chooseAngle = function(){
+    sum = 0;
+    for(var i = 1; i < protein.length - 1; ++i){
+      parameter[i].low = sum;
+      sum += parameter[i].efficiency;
+      parameter[i].up = sum;
+    }
+    var r = Math.random() * sum;
+    for(var i = 1; i < protein.length - 1; ++i){
+      if(parameter[i].low <= r && r < parameter[i].up) return i;
+    }
+    
   };
-  optimize();
+  var min = protein.energy;
+  var minp = protein;
+  var loop = function(){ 
+    minp = bend(minp);
+    minp.render();
+    // stop sum > 1E-10
+    if(true) setTimeout(loop, 0)
+  };
+  
+  initParameters();
+  loop();
 
 }

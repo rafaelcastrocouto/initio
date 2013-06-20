@@ -6,14 +6,21 @@ var protein = new protein({
 console.log('energy: ', energy(protein)); //-3,29...;
 */
 
-this.C = function(i, j){ 
+var C = function(i, j){ 
   if(i.seq == 'A' && j.seq == 'A') return 1;
   if(i.seq == 'A' && j.seq == 'B'
   || i.seq == 'B' && j.seq == 'A') return -0.5;
   if(i.seq == 'B' && j.seq == 'B') return 0.5;
 }
 
-this.energy = function(protein){
+var distance = function(i, j){
+  return Math.pow( 
+          Math.pow((i.x - j.x), 2) + 
+          Math.pow((i.y - j.y), 2), 
+        0.5 );
+}
+
+var energy = function(protein){
   var aminos = protein.aminos;
   var n = aminos.length;
 

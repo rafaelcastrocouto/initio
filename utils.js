@@ -20,19 +20,6 @@ var angToCoord = function(ang){
   return coord;
 }
 
-var checkCoord = function(coord){
-  var x = coord.x * canvas.scale + canvas.offset,
-      y = coord.y * canvas.scale + canvas.offset;
-  return (x > 0 && x < document.width && y > 0 && y < document.height);
-}
-
-var distance = function(i, j){
-  return Math.pow( 
-          Math.pow((i.x - j.x), 2) + 
-          Math.pow((i.y - j.y), 2), 
-        0.5 );
-}
-
 var coordToAng = function(coord){
   var ang = [], x, y, g, a = 0;
   for(var i = 0; i < coord.length - 1; ++i){
@@ -50,17 +37,9 @@ var coordToAng = function(coord){
   return ang;
 }
 
-var checkAng = function(A){
-  var c = 1;
-  for(var a = 0; a < A.length; ++a){;
-    if(A[a] < -Math.PI/2 || A[a]  > Math.PI/2) c = 0 ;
-  };
-  return c;
-}
-
-var fibonacci = ['A', 'B'];
-var getFibonacci = function(l){
-  var f = fibonacci, i = 0;
+var fibonacciCache = ['A', 'B'];
+var fibonacci = function(l){
+  var f = fibonacciCache, i = 0;
   var fib = function(i){
     f[i] = f[i-2] + f[i-1];
     return f[i];
@@ -72,4 +51,8 @@ var getFibonacci = function(l){
     ++i;
   };
   return f[l];
+}
+
+var gaussRandom = function(w){
+  return Math.cos(2 * Math.PI * Math.random()) * Math.sqrt(-2 * Math.log(Math.random()))/(5/w);
 }

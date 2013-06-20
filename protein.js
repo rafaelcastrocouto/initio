@@ -1,41 +1,51 @@
-this.Amino = function Amino(x, y, p, i){;
+var Amino = function Amino(x, y, p, i){;
   this.x = x;
   this.y = y;
-  this.i = i;
-  this.ang = 0;
-  this.seq = p.seq[i];
-  this.radius = 5; //pixels
   this.protein = p;
+  this.i = i;
+  this.radius = 5; //pixels
 }
 
-this.Protein = function(obj){
+var Protein = function(obj){
   this.aminos = [];
-
-  if(obj['ang']) {
-    this.ang = obj['ang'];
-    this.coord = angToCoord(this.ang);
-    this.length = obj['ang'].length;
-  } else if(obj['coord']) {
-    this.coord = obj['coord'];
-    this.ang = coordToAng(this.coord);
-    this.length = obj['coord'].length;
+  
+  if(!obj.seq) obj.seq = fibonacci(this.length);  
+  
+  if(obj.ang) {
+    obj.coord = angToCoord(obj.ang);
+    this.length = obj.ang.length;
+    
+  } else if(obj.coord) {
+    obj.ang = coordToAng(obj.coord);
+    this.length = obj.coord.length;
   }
 
-  if(obj.seq) this.seq = obj.seq;
-  else  this.seq = getFibonacci(this.length);
-
   for(var i = 0; i < this.length; ++i){
-    this.aminos[i] = new Amino(this.coord[i].x, this.coord[i].y, this, i);
-    this.aminos[i].seq = this.seq[i];
-    this.aminos[i].ang = this.ang[i];
-    this.aminos[i].protein = this;
-    if(seq[i] == 'A') this.aminos[i].fill = '#ddd';
+    this.aminos[i] = new Amino(obj.coord[i].x, obj.coord[i].y, this, i);
+    this.aminos[i].ang = obj.ang[i];
+    this.aminos[i].seq = obj.seq[i];
+    if(obj.seq[i] == 'A') this.aminos[i].fill = '#ddd';
     else this.aminos[i].fill = '#444';
   }
   this.energy = energy(this);
 }
 
-this.Protein.prototype.render = function(){
+Protein.prototype.getAngle = function(){
+  var a = [];
+  for(var i = 0; i < this.length; ++i){
+    a[i] = this.aminos[i].ang;
+  }
+  return a;
+}
+Protein.prototype.getSeq = function(){
+  var a = [];
+  for(var i = 0; i < this.length; ++i){
+    a[i] = this.aminos[i].seq;
+  }
+  return a;
+}
+
+Protein.prototype.render = function(){
   if(!context) {
     canvas = createCanvas(800, 600);
     canvas.scale = 20;
@@ -78,18 +88,4 @@ this.Protein.prototype.render = function(){
   }
   context.fillStyle = 'black';
   context.fillText(this.energy, 10, 20);
-}
-
-this.Protein.prototype.copy = function(){
-  var seq = '';
-  var coord = [];
-  for(var i = 0; i < this.aminos.length; ++i){ 
-    seq += this.aminos[i].seq;
-    coord[i] = {
-      x: this.aminos[i].x,
-      y: this.aminos[i].y
-    }
-  }
-  var newProtein = new Protein({'seq': seq, 'coord': coord});
-  return newProtein;
 }

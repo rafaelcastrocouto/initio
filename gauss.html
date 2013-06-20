@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+#container0 {
+   position: relative;
+   left: 100px;
+   top: 100px;
+   width: 200px;
+   height: 200px;
+   border: 2px solid red;
+}
+#container {
+   position: relative;
+   left: 100px;
+   top: 200px;
+   width: 200px;
+   height: 200px;
+   border: 2px solid red;
+}
+.dot {
+    opacity: 0.25;
+	position: absolute;
+	width: 4px;
+	height: 4px;
+    border-radius: 50%;
+	background: #000;
+}
+  
+</style>
+  <script src="jquery-2.0.2.min.js"></script>
+</head>
+<body>
+  
+<div id="container"></div>
+
+<script>
+  
+$(document).ready(function(){
+
+	print();
+  
+});
+
+var gaussRandom = function(w){
+  return Math.cos(2 * Math.PI * Math.random()) * Math.sqrt(-2 * Math.log(Math.random()))/(5/w);
+}
+
+var print = function(){
+    
+	var x = gaussRandom(1) * 100 + 100;
+	var y = gaussRandom(1) * 100 + 100;
+
+	var outer = $("<span>")
+                .attr({class: "dot"})
+                .css({
+                    top: y,
+                    left: x
+                });
+
+	$('#container').append(outer);
+	
+    window.setTimeout(print);
+}
+</script>
+
+</body>
+</html>
