@@ -8,30 +8,33 @@
   <style>canvas{float: left;}</style>
 </head>
 <body>
+<div id="chart"></div>
   <script type="text/javascript" src="utils.js"></script>
   <script type="text/javascript" src="protein.js"></script>
   <script type="text/javascript" src="energy.js"></script>
   <script type="text/javascript" src="ela.js"></script>
-<script type="text/javascript">
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="highcharts.js"></script>
+  <script type="text/javascript" src="exporting.js"></script>
+  <script type="text/javascript" src="print.js"></script>
+  <script type="text/javascript">
 
-//var seq = "AB"
-//var ang = [0, 0]
+//var seq = "AB";
+//var ang = [0, 0];
 
 //var seq = "ABAB";
 //var ang = [0, 0, 0, 0];
 
-
-var seq = "ABBABBABABBAB"
-//var ang = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0]
-var ang = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+var seq = "ABBABBABABBAB";
+//var ang = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0];
+var ang = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 var protein = new Protein({'seq': seq, 'ang': ang});
-
+    
+protein.render();
+    
 Ela(protein);
 
-
-
-
-</script>
+  </script>
 </body>
 </html>

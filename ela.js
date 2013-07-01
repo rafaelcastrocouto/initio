@@ -1,7 +1,7 @@
 //estimated learning algorithm
-
 var Ela = function(protein){
-  
+  var f_data = [0];
+  var s_data = [protein.energy];
   var parameter = [];
   var initParameters = function(){
     for(var i = 1; i < protein.length - 1; ++i){
@@ -14,64 +14,74 @@ var Ela = function(protein){
   
   var adjustParameters = function(e0, e1, a){
     //TODO use e0 and e1 to adjust parameters
-    if(e1 < e0){ //success
-      parameter[a].softness *= 0.9;
-      if(parameter[a].softness <= 0.01) parameter[a].softness = 0.01;
-      
-      parameter[a].efficiency += 0.01;
-      if(parameter[a].efficiency >= 1) parameter[a].efficiency = 1;
-      
-    } else { //fail
-      //parameter[a].efficiency *= 0.6;
+    for(var i = 0; i < a.length; ++i){
+      // - softness
+      parameter[a[i]].softness *= 0.9;
+      if(parameter[a[i]].softness <= 0.01) parameter[a[i]].softness = 0.01;
+      // + efficiency
+      parameter[a[i]].efficiency += 0.1;
+      if(parameter[a[i]].efficiency >= 1) parameter[a[i]].efficiency = 1;
     }
   }
 
-  var randomAngle = function(p, a){ 
-    var na = p.getAngle();
-    //console.log(a, parameter)
-    na[a] += 2 * Math.PI * gaussRandom(parameter[a].softness + 1E-10);
-    //console.log('na: ', na);
-    return na;
-  };
-
-  var bend = function(p){ 
-    var a = chooseAngle();
-    var npro = new Protein({ang: randomAngle(p, a), seq: p.getSeq()});
-    npro.render();
-    adjustParameters(p.energy, npro.energy, a);
-    
-    if(npro.energy < p.energy * 0.9) { 
-       if(npro.energy < min) {
-         min = npro.energy;
-         console.log('success', min.toFixed(2), a);
-       }
-      return npro; 
+  var delta = 2 * Math.PI;
+  var randomAngles = function(p, a){ 
+    var array = p.getAngle();
+    for(var i = 0; i < a.length; ++i){
+      var angle = a[i];
+      array[angle] += delta * gaussRandom(parameter[angle].softness);
     }
-    //console.log('fail');
-    return p;
+    return array;
   };
 
-  var sum;
-  var chooseAngle = function(){
-    sum = 0;
+  var chooseAngles = function(n){
+    var array = [], sum = 0;
     for(var i = 1; i < protein.length - 1; ++i){
       parameter[i].low = sum;
       sum += parameter[i].efficiency;
       parameter[i].up = sum;
     }
-    var r = Math.random() * sum;
-    for(var i = 1; i < protein.length - 1; ++i){
-      if(parameter[i].low <= r && r < parameter[i].up) return i;
+    for(var j = 0; j < n; ++j){
+      var r = Math.random() * sum;
+      for(var i = 1; i < protein.length - 1; ++i){
+        if(parameter[i].low <= r && r < parameter[i].up) array.push(i);
+      }
     }
+    return array;
+  };  
+  var fc = 0;
+  var bend = function(p){ 
+    var a = chooseAngles(4);
+    var new_p = new Protein({ang: randomAngles(p, a), seq: p.getSeq()});
+    new_p.render(protein.context);
     
+    if(new_p.energy < p.energy * 0.95) { //"success"
+      adjustParameters(p.energy, new_p.energy, a);
+      console.log('success', new_p.energy.toFixed(2), a);
+      fc = 0;
+      return new_p; 
+      
+    } else { //fail
+      fc++;
+      return p;
+    }
   };
-  var min = protein.energy;
-  var minp = protein;
+
+  var min_p = protein;
+  var t = 0;
   var loop = function(){ 
-    minp = bend(minp);
-    minp.render();
-    // stop sum > 1E-10
-    if(true) setTimeout(loop, 0)
+    min_p = bend(min_p);
+    min_p.render(protein.context);
+    
+    //TODO stop criteria
+    ++t;
+    
+    if(t%10 == 0){
+       f_data.push(fc);
+       s_data.push(min_p.energy);
+    }
+    if(t < 1000) setTimeout(loop, 0);
+    else chart(s_data, f_data)
   };
   
   initParameters();

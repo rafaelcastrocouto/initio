@@ -45,14 +45,16 @@ Protein.prototype.getSeq = function(){
   return a;
 }
 
-Protein.prototype.render = function(){
+Protein.prototype.render = function(ctx){
+  var context = ctx || this.context;
   if(!context) {
-    canvas = createCanvas(800, 600);
-    canvas.scale = 20;
-    canvas.offset = 200;
-    context = canvas.getContext('2d');                         
+    var canvas = createCanvas(800, 600);
+        canvas.scale = 20;
+        canvas.offset = 200;
+    context = canvas.getContext('2d');    
+    this.context = context;
   }
-  var ox, oy;
+  var ox, oy, canvas = context.canvas;
   context.fillStyle = 'rgba(255,255,255,0.5)';
   context.fillRect(0,0,canvas.width, canvas.height);
   
