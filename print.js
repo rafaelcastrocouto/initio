@@ -1,46 +1,49 @@
-var chart = function(s_array, f_array){
+var chart = function (f_array, e_array, ne_array) {
   $('#chart').highcharts({
+    title: { text: 'AB Model Protein Folding'  },
+    subtitle: { text: 'Estimated Learning Algorithm' },
     chart: {
         type: 'line',
         zoomType: 'xy',
         marginRight: 50,
-        marginBottom: 50
-    },
-    title: {
-        text: 'Protein Energy'
-    },
-    subtitle: {
-        text: 'Estimated Learning Algorithm'
+        marginBottom: 100       
     },
     xAxis: {
-        title: {
-            text: 'Steps'
-        },       
-        tickInterval: 10
+        title: { text: 'Steps' }
     },
     yAxis: [{
-        title: {
-            text: 'Energy'
-        }      
+        title: { text: 'Energy' }  // 0     
     },      {
-        title: {
-            text: 'Fails'
-        },
-        plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-        }]
+        title: { text: 'Fails' } // 1
     }],
-    series: [{
+    series: [
+      {
         yAxis: 0,
-        name: 'Success',
-        data: s_array
-    },
-             {
+        name: 'Energy',
+        data: e_array
+      },{
+        yAxis: 0,       
+        name: 'Energy',
+        data: ne_array
+      },{
         yAxis: 1,       
-        name: 'Fail',
+        name: 'Fails',
         data: f_array
-    }]
-  });
+      }
+    ],
+    plotOptions: {
+      series: {
+        cursor: 'pointer',
+        point: {
+          events: {
+            click: function(e) {
+              if(this.marker && this.marker.p) 
+                this.marker.p.render(protein.context)
+            }
+          }
+        }
+      }
+    }
+  })
 };
+
