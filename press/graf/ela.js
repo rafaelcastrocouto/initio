@@ -110,11 +110,11 @@ var Ela = function(protein, prec){
 };
 
 var print = function(array, lim, size, pro){
-  var canvas = createCanvas(550, 500);
+  var canvas = createCanvas(200, 175);
   var ctx = canvas.getContext('2d');
   var grad = generateGradient();
   
-  drawBar(501, 0, 50, 500, ctx, grad);
+  drawBar( 176, 0, 25, 175, ctx, grad);
   
   //console.log('n: ', array.length);
   //console.log('max: ', max);
@@ -156,9 +156,9 @@ for(var s = 0; s < seqs.length; ++s){
     
   var data = Ela(protein, 20);
   data.min.render();
-  print(data.results, 1, 4, data.min);
+  print(data.results, 1, 1.4, data.min);
   
-  document.body.appendChild(container);
+  document.getElementById('graf').appendChild(container);
   
   var t = (new Date).getTime() - startDate.getTime();
   medTime += t;

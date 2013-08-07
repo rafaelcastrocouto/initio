@@ -6,7 +6,8 @@ var Amino = function Amino(x, y, p, i){;
   this.radius = 5; //pixels
 }
 
-var Protein = function(obj){
+var Protein = function(obj, id){
+  this.cid = id;
   this.aminos = [];
   
   if(!obj.seq) obj.seq = fibonacci(this.length);  
@@ -55,9 +56,9 @@ Protein.prototype.getCoord = function(){
 Protein.prototype.render = function(ctx){
   var context = ctx || this.context;
   if(!context) {
-    var canvas = createCanvas(800, 400);
+    var canvas = createCanvas(500, 250, this.cid);
         canvas.scale = 20;
-        canvas.offset = 200;
+        canvas.offset = 120;
     context = canvas.getContext('2d');    
     this.context = context;
   }

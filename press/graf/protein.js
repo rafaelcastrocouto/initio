@@ -4,7 +4,7 @@ var Amino = function Amino(x, y, p, i){;
   this.i = i;
   this.ang = 0;
   this.seq = p.seq[i];
-  this.radius = 10; //pixels
+  this.radius = 0.25; 
   this.protein = p;
 }
 
@@ -37,13 +37,13 @@ var Protein = function(obj){
 }
 
 Protein.prototype.render = function(){
-  var canvas, w = 550, h = 190;
+  var canvas, w = 275, h = 100;
   if(!this.ctx) {
     canvas = createCanvas(w, h);
-    canvas.scale = 50;
+    canvas.scale = 25;
     canvas.offset = {
-      x: 200,
-      y: 50
+      x: 20,
+      y: 20
     };
     this.canvas = canvas;                         
   };
@@ -74,7 +74,7 @@ Protein.prototype.render = function(){
     context.arc(
       this.aminos[i].x * canvas.scale + canvas.offset.x, 
       this.aminos[i].y * canvas.scale + canvas.offset.y, 
-      this.aminos[i].radius,
+      this.aminos[i].radius * canvas.scale,
       0, Math.PI*2, 0); //start angle, end angle, cc
     context.closePath();
     context.strokeStyle = this.aminos[i].stroke || 'black';
@@ -84,7 +84,7 @@ Protein.prototype.render = function(){
   }
 
   context.fillStyle = 'black';
-  context.font = '20px arial';
+  context.font = '12px arial';
   context.fillText('1', 535, 165);
-  context.fillText(protein.energy.toFixed(10), 415, 185);
+  context.fillText(protein.energy.toFixed(10), 112, 96);
 }

@@ -1,5 +1,5 @@
 //estimated learning algorithm
-var Ela = function(protein){
+var Ela = function(protein, id){
   
   //PARAMETERS  
   var parameter = [];
@@ -8,7 +8,7 @@ var Ela = function(protein){
     for(var i = 1; i < protein.length - 1; ++i){
       parameter[i] = {
         rigidity: 0,
-        efficiency: (i / (protein.length - 1))
+        efficiency: 10 + (i / (protein.length - 1))
       };
     }
   };
@@ -17,11 +17,27 @@ var Ela = function(protein){
     //TODO use e0 and e1 to adjust parameters
     for(var i = 0; i < a.length; ++i){
       // + rigidity
-      parameter[a[i]].rigidity *= 1.1;
-      if(parameter[a[i]].rigidity > 10) parameter[a[i]].rigidity = 10;
+      parameter[a[i]].rigidity += 0.1;
+      //if(parameter[a[i]].rigidity > 10) parameter[a[i]].rigidity = 10;
        
       // + efficiency
-      parameter[a[i]].efficiency += 0.01;  
+      parameter[a[i]].efficiency += 0.1;  
+      /*
+      // - efficiency
+      parameter[a[i]].efficiency *= 0.5;
+      if(parameter[a[i]].efficiency < 0.001) parameter[a[i]].efficiency = 0.001;
+      */
+    }
+  };  
+  var adjustParametersFail = function(e0, e1, a){
+    //TODO use e0 and e1 to adjust parameters
+    for(var i = 1; i < parameter.length - 1; ++i){
+      // + rigidity
+      parameter[i].rigidity *= 0.9;
+      //if(parameter[a[i]].rigidity > 10) parameter[a[i]].rigidity = 10;
+       
+      // + efficiency
+      parameter[i].efficiency -= 0.01;  
       /*
       // - efficiency
       parameter[a[i]].efficiency *= 0.5;
@@ -83,6 +99,7 @@ var Ela = function(protein){
       console.log('success', min_p.energy.toFixed(2), a);
       fail_count = 0; 
     } else { //fail
+      adjustParametersFail(min_p.energy, p.energy, a);
       fail_count++;
     }
     
@@ -116,11 +133,11 @@ var Ela = function(protein){
     
     if(t%20 == 0) pushToData();
 
-    //if(t < 1000) setTimeout(loop); 
+    if(t < 500) setTimeout(loop); 
     else {  //TODO stop criteria
       // PRINT
       min_p.render(protein.context);
-      chart(f_data, e_data, ne_data);
+      chart(protein, id, f_data, e_data, ne_data, 'Estimated Learning Algorithm');
     }
   };
   
@@ -128,3 +145,17 @@ var Ela = function(protein){
   loop();
 
 }
+
+var seq = "BABABBAB";
+//var seq = "ABBABBABABBAB";
+var ang = [0,0,0,0,0,0,0,0]
+//var ang = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0];    
+
+var protein = new Protein({'seq': seq, 'ang': ang}, '#sim3');
+    
+protein.render();
+
+$('#elaBt').on('click',function(){
+  Ela(protein, '#chart3');
+});
+

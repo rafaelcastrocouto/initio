@@ -1,0 +1,44 @@
+* {font-family: "Lucida Sans", sans-serif; text-align:justify}
+
+#LIST h2 {text-align: center}
+
+#LIST a {margin-left: 25%; display: block}
+
+#CAPA h1 {
+  position: relative; 
+  width: 17em; 
+  margin: 0 auto; 
+  text-align: center; 
+  font-size: 1.8em;   
+  color: white; 
+  text-shadow: -1px 0 black, 
+                0 1px black, 
+                1px 0 black, 
+                0 -1px black, 
+                0 0 0.5em black, 
+                0 0 2em black;
+}
+
+#CAPA article {
+  background: white url("../img/protein.png") no-repeat 50% 50%; 
+  background-size: 150% auto; 
+}
+
+#CITAÇÃO pre {text-align: right}
+
+h2 {padding-bottom:1em}
+
+#MODELO p {clear: both;}
+#MODELO .img1 {float: left; width: 35%;}
+#MODELO .img2 {float: left; width: 65%;}
+
+#GRÁFICOS #graf div { float: left; width: 25%; min-width: 200px }
+#GRÁFICOS p {  display: inline-block;  }
+
+#MATERIAIS img {width: 50%; min-width: 400px }
+#MATERIAIS p {clear: both;}
+
+#CODIGO pre { font-family: monospace; font-size: 1.5em; line-height: 1.3em; }
+
+#CRONOGRAMA table {margin: 0 auto; border: 1px solid #aaa}
+#CRONOGRAMA table td {padding: 0.4em; border: 1px solid #aaa}

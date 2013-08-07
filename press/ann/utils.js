@@ -1,11 +1,11 @@
 var canvas, context;
 
-var createCanvas = function(w, h){
+var createCanvas = function(w, h, id){
   if(!h) h = w;
   var canvas = document.createElement('canvas');
       canvas.width = w;
       canvas.height = h;
-  document.body.appendChild(canvas);
+  $(id).append(canvas);
   return canvas;
 };
 
