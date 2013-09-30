@@ -1,4 +1,3 @@
-//estimated learning algorithm
 
 var generateGradient = function(){
   var grad = [], r = 1, g = 1, b = 1, p = 10000;
@@ -138,31 +137,36 @@ var print = function(array, lim, size, pro){
 
 //var seq = "AB"
 //var ang = [0, 0]
-
-var medTime = 0;
-  
-var seqs = ["AABB", "ABBB", "BAAB", "BABB", "ABBA", "AAAA", "ABAA", "BBBB", "AAAB", "ABAB"];
-var ang = [0, 0, 0, 0];
 var container;
-
-for(var s = 0; s < seqs.length; ++s){
-  var startDate = new Date();  
-  container = document.createElement('div');
-  
-  var protein = new Protein({'seq': seqs[s], 'ang': ang});
-  //var seq = "ABBABBABABBAB"
-  //var ang = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0]
-  //var ang = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+var protein;
+var st = function(){
+  var medTime = 0;
     
-  var data = Ela(protein, 20);
-  data.min.render();
-  print(data.results, 1, 1.4, data.min);
+  var seqs = ["AABB", "ABBB", "BAAB", "BABB", "ABBA", "AAAA", "ABAA", "BBBB", "AAAB", "ABAB"];
+  var ang = [0, 0, 0, 0];
   
-  document.getElementById('graf').appendChild(container);
   
-  var t = (new Date).getTime() - startDate.getTime();
-  medTime += t;
-}
+  for(var s = 0; s < seqs.length; ++s){
+    var startDate = new Date();  
+    container = document.createElement('div');
+    
+    protein = new Protein({'seq': seqs[s], 'ang': ang});
+    //var seq = "ABBABBABABBAB"
+    //var ang = [0, -1.49083, -1.50080, 0.87041, -1.48069, -1.51801, 1.46453, -1.95310, 1.44914, -1.51696, -1.48240, 1.04103, 0]
+    //var ang = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      
+    var data = Ela(protein, 20);
+    data.min.render();
+    print(data.results, 1, 1.4, data.min);
+    
+    document.getElementById('graf').appendChild(container);
+    
+    var t = (new Date).getTime() - startDate.getTime();
+    medTime += t;
+  }
+    
   
-
-console.log(medTime/seqs.length + 'milisecs');
+  $('#graftimer').html(medTime/seqs.length + ' milisegundos em média');
+};
+st();
+//$('#grafBt').on('click', st);

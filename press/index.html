@@ -108,6 +108,7 @@ objetivo é evitar padrões repetitivos e simétricos, tornando o modelo mais pr
 proteína real.</p>
         <p><b>Sequência de Fibonacci aplicada ao modelo AB:</b></p>
         <p>f(0) = A; f(1) = B; f(n) = f(n-2) + f(n-1); Ex: A, B, AB, B AB, AB BAB, BAB ABBAB, …</p>
+        <p><a href="http://localhost/initio/initio/" target="_blank">Aplicação interativa do Modelo AB.</a></p>
       </article>
     </section>
     <section id="CLASSES">
@@ -136,20 +137,21 @@ valores menores que um são graduados linearmente de acordo com a barra de cores
       <article>
         <h2>GRÁFICOS DE TETRÂMEROS</h2>
         <div id="graf"></div>
-        <script type="text/javascript" src="graf/utils.js"></script>
-        <script type="text/javascript" src="graf/protein.js"></script>
-        <script type="text/javascript" src="graf/energy.js"></script>
-        <script type="text/javascript" src="graf/ela.js"></script>
+        <!--button id="grafBt">Renderizar</button-->
         <p>A geração de um único gráfico com uma resolução acima, de vinte ângulos, ou seja, de
 π / 10 radianos, para uma proteína de quatro aminoácidos, resulta na computação de
 quatrocentos (20<sup>2</sup>
-) modelos de proteínas. É possível encontrar este valor através da seguinte
+) modelos de proteínas [<span id="graftimer"></span>]. É possível encontrar este valor através da seguinte
 fórmula: P = R<sup>(N – 2)</sup>, onde P é o número de modelos de proteínas possíveis, R é a quantidade
 de ângulos para cada aminoácido e N é o comprimento da cadeia primária. 
 Supondo a geração de um gráfico multidimensional com a mesma resolução para uma
 proteína de somente doze aminoácidos, seriam calculadas mais de 4 x 10<sup>15</sup> modelos de
 proteínas. Se o cálculo de um único modelo demorar um milésimo de segundo, a suposta
 geração do gráfico demoraria mais de cento e vinte mil anos.</p>
+        <script type="text/javascript" src="graf/utils.js"></script>
+        <script type="text/javascript" src="graf/protein.js"></script>
+        <script type="text/javascript" src="graf/energy.js"></script>
+        <script type="text/javascript" src="graf/ela.js"></script>
       </article>
     </section>        
     <section id="TRABALHOS">
@@ -211,7 +213,6 @@ resultados no início da busca, se demostrou excelente em refinar as soluções.
         <script type="text/javascript" src="ann/utils.js"></script>
         <script type="text/javascript" src="ann/protein.js"></script>
         <script type="text/javascript" src="ann/energy.js"></script>
-        <script type="text/javascript" src="ann/jquery.js"></script>
         <script type="text/javascript" src="ann/highcharts.js"></script>
         <script type="text/javascript" src="ann/exporting.js"></script>
         <script type="text/javascript" src="ann/print.js"></script>

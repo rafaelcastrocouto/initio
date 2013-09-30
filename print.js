@@ -6,7 +6,12 @@ var chart = function (f_array, e_array, ne_array) {
         type: 'line',
         zoomType: 'xy',
         marginRight: 50,
-        marginBottom: 100       
+        marginBottom: 100,
+        events: {
+            load: function(event) {
+              this.series.forEach(function(d,i){if(i==1)d.hide()})
+            }
+          }       
     },
     xAxis: {
         title: { text: 'Steps' }

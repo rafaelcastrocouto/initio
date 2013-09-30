@@ -5,7 +5,7 @@
   <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
   <title>initio</title>
   <script src="energy.js"></script>
-  <script src="shared.js"></script>
+  <!--script src="shared.js"></script-->
   <style>
     body{
       margin: 0; 
@@ -55,11 +55,11 @@
   <div id="protein"></div> 
     <div id="ctrls">Energy: <span id="energy">0</span>
     <div id="energy_cont"><div id="energy_bar"></div></div>
-    <div>Angles (in radians): 
+    <!--div>Angles (in radians): 
       <div id="ang_div"></div>
       <button id="set">Set</button>
       <button id="best">Load Best (S13 only)</button>
-    </div>
+    </div-->
       <div>Sequencia: <select id="seq">
           <option value="ABBABBABABBAB" selected>S13</option>
           <option value="BABABBABABBABBABABBAB">S21</option>
@@ -67,6 +67,7 @@
           <option value="BABABBABABBABBABABBABABBABBABABBABBABABBABABBABBABABBAB">S55</option>
       </select></div>
     <button id="restart">Restart</button>    
+    <button id="close">Close</button>    
   </div>
 </body>
 <script type="text/javascript">
@@ -311,22 +312,26 @@ var game = function(){
       ang_div.appendChild(angle);
     }
   };
+var  close = function(){
+  window.close();
+};  
 
   var add_events = function (){
     get.id('doc').on('click', clickamino);
     get.id('doc').on('mousemove', mousemove);
     get.id('restart').on('click', init);
-    get.id('set').on('click', set_ang);
+    get.id('close').on('click', close);
+    //get.id('set').on('click', set_ang);
     //get.id('sim').on('click', sim_start);
     //get.id('solve').on('click', solve);
-    var best = get.id('best');
+    /*var best = get.id('best');
     if(protein.total == 13) {
       best.disabled = false;
       best.on('click', load_best13); 
     }else {
       best.disabled = true;
       best.off('click', load_best13);
-    }
+    }*/
   } 
 
   var protein = {};
@@ -343,7 +348,7 @@ var game = function(){
     noselect(protein.el);
     protein.el.css('width', width+'px');
     protein.el.css('height', height+'px');
-    get.id('ang_div').css('height', (height * 0.4)+'px')
+    //get.id('ang_div').css('height', (height * 0.4)+'px')
 
     add_events();
     
