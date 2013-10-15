@@ -53,6 +53,7 @@ Protein.prototype.getCoord = function(){
 }
 
 Protein.prototype.render = function(ctx){
+  if(!render) return;
   var context = ctx || this.context;
   if(!context) {
     var canvas = createCanvas(800, 400);
