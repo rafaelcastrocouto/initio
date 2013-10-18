@@ -17,7 +17,7 @@ var chart = function (ctx, f_array, e_array, ne_array) {
           }       
     },
     xAxis: {
-        title: { text: 'Steps' }
+        title: { text: 'Steps/100' }
     },
     yAxis: [{
         title: { text: 'Energy' }  // 0     

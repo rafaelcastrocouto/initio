@@ -24,24 +24,47 @@ var Ela = function(protein, ctx){
     for(var i = 1; i < protein.length - 1; ++i){
       parameter[i] = {};
       parameter[i].rigidity = 1;
-      parameter[i].efficiency = 1;
+      parameter[i].efficiency = 100;      
     }
+  };
+  var $eff = $('#Eff'), $rig =  $('#Rig');
+  
+  var printParameters = function(){
+    var eff = '', rig = '';
+    for(var i = 1; i < protein.length - 1; ++i){
+      rig += parseInt(parameter[i].rigidity) + ',';
+      eff += parseInt(parameter[i].efficiency) + ',';
+    }
+    $eff.val(eff); 
+    $rig.val(rig);
   };
   
   var adjustParametersSuccess = function(p, e0, e1, a){
     //TODO use e0 and e1 to adjust parameters
     for(var i = 0; i < a.length; ++i){
       // + rigidity
-      parameter[a[i]].rigidity += 0.1;
+      parameter[a[i]].rigidity += 10;
       if(parameter[a[i]].rigidity > 100) parameter[a[i]].rigidity = 1;
-       
-      // + efficiency
-      parameter[a[i]].efficiency += 1;  
-      if (parameter[a[i]].efficiency > 10) parameter[a[i]].efficiency = 1;  
 
+      // - efficiency
+      parameter[a[i]].efficiency *= 0.5;  
+      if (parameter[a[i]].efficienacy < 1) parameter[a[i]].efficiency = 1;  
     }
   };
   
+  var adjustParametersFail = function(p, e0, e1, a){
+    //TODO use e0 and e1 to adjust parameters
+    for(var i = 1; i < protein.length - 1; ++i){
+      // - rigidity
+      parameter[i].rigidity -= 0.0001;
+      if(parameter[i].rigidity < 1) parameter[i].rigidity = 1;
+      
+      // + efficiency
+      parameter[i].efficiency += 0.001;  
+      if (parameter[i].efficiency > 100) parameter[i].efficiency = 100;         
+
+    }
+  };  
   //ANGLES
   var delta = 2 * Math.PI;
   var randomGauss = function(p, a){ 
@@ -92,6 +115,7 @@ var Ela = function(protein, ctx){
       min_p = p;
       fail_count = 0; 
     } else { //fail
+      adjustParametersFail(p, min_p.energy, p.energy, a);
       fail_count++;
     }
 
@@ -127,6 +151,8 @@ var Ela = function(protein, ctx){
       adjustParameters(p, a);
       newpop[i] = p;
     }
+    printParameters();
+    
     population = newpop;
     
     population.sort(function(a,b){
@@ -135,7 +161,7 @@ var Ela = function(protein, ctx){
     
     min_p.render(ctx);
     
-    if(t%10 == 0 && print_chart) pushToData(fail_count, min_p);
+    if(t%100 == 0 && print_chart) pushToData(fail_count, min_p);
     
     if(t < _l) setTimeout(loop); 
     else {  //TODO stop criteria

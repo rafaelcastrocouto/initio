@@ -10,13 +10,16 @@
 <body>
   
 <div id="controls">
-  <span>Seq:</span><input type="text" id="seq" value="ABBABBABABBAB"/>
+  <span>Fibo:</span><input type="text" id="F" value="5" size="3"/>
+  <span>Seq:</span><input type="text" id="seq" value="BABABBAB"/>
   <span>ELA:</span><input type="text" id="E" value="1000" size="3"/>
-  <span>Annealing:</span><input type="text" id="A" value="100" size="3"/>
-  <span>Repeat:</span><input type="text" id="N" value="30" size="3"/>
+  <span>Annealing:</span><input type="text" id="A" value="1000" size="3"/>
+  <span>Repeat:</span><input type="text" id="N" value="3" size="3"/>
   <span>Render:</span><input type="checkbox" id="R" checked/>
   <span>Chart:</span><input type="checkbox" id="C" checked/>
-  <button id="start">Start</button>
+  <button id="start">Start</button><br>
+  <span>Eff:</span><input type="text" id="Eff" disabled size="30"/>
+  <span>Rig:</span><input type="text" id="Rig" disabled size="30"/>
 </div>  
   
 <div id="results"></div>  
@@ -78,6 +81,11 @@ var pushToData = function(fail_count, min_p){
   e_data.push({y: min_p.energy, marker: { p: min_p }});
 };
   
+var gen_fibo_seq = function(){
+  var n = parseInt($(this).val());  
+  $('#seq').val(fibonacci(n));
+};  
+  
 var load = function(){
   
   $('#start').on('click', function(){
@@ -87,13 +95,13 @@ var load = function(){
     while(i) ang[--i] = 0;    
     $('#results').html('');
     $('#canvas').html('');
-    sum_test = 0;
+    sum_tests = 0;
     test_count = 0;
     test_av();
   });
   $('#R').on('click', toggle_render);
   $('#C').on('click', toggle_chart);
-  
+  $('#F').on('change', gen_fibo_seq);
 }; $(load);    
     
 </script>

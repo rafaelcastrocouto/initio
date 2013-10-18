@@ -4,7 +4,7 @@ var Ann = function(protein, ctx){
   var _l = parseInt($('#A').val());
   
   //ANGLES
-  var delta = Math.PI / 3;
+  var delta = Math.PI / 2;
   var newAngles = function(a){ 
     var array = [];
     array[0] = a + delta;
@@ -53,7 +53,7 @@ var Ann = function(protein, ctx){
     }
     delta *= 0.9;
 
-    if(t%10 == 0 && print_chart) pushToData(fail_count, min_p);
+    if(t%100 == 0 && print_chart) pushToData(fail_count, min_p);
     
     if(t < _l) setTimeout(loop); 
     else {  //TODO stop criteria
