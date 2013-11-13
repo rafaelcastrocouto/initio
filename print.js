@@ -1,7 +1,7 @@
 var chart = function (ctx, f_array, e_array, ne_array) {
-  var canvas = $(ctx.canvas);
   var el = $('<div class="chart">');
-  el.insertAfter(canvas);
+  if(ctx) el.insertAfter(ctx.canvas);
+  else $('#canvas').prepend(el);
   el.highcharts({
     title: { text: 'AB Model Protein Folding'  },
     subtitle: { text: 'Estimated Learning Algorithm' },
@@ -38,7 +38,7 @@ var chart = function (ctx, f_array, e_array, ne_array) {
         name: 'Fails',
         data: f_array
       }
-    ],
+    ]/*,
     plotOptions: {
       series: {
         cursor: 'pointer',
@@ -51,6 +51,32 @@ var chart = function (ctx, f_array, e_array, ne_array) {
           }
         }
       }
-    }
+    }*/
+  })
+};
+var final_chart = function (fe_array) {
+  var el = $('<div class="chart">');
+  $('#canvas').prepend(el);
+  el.highcharts({
+    title: { text: 'AB Model Protein Folding'  },
+    subtitle: { text: 'Estimated Learning Algorithm' },
+    chart: {
+        type: 'line',
+        zoomType: 'xy',
+        marginRight: 50,
+        marginBottom: 100
+    },
+    xAxis: {
+        title: { text: 'Protein' }
+    },
+    yAxis: {
+        title: { text: 'Energy' }  // 0     
+    },
+    series: [
+      {
+        name: 'Energy',
+        data: fe_array
+      }
+    ]
   })
 };

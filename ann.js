@@ -33,7 +33,7 @@ var Ann = function(protein, ctx){
   var t = 0;
   var seq = protein.getSeq();
   var loop = function(){ 
-    ++t;    
+    ++t;  st_in.val(--steps); pr_in.val( (++Prog /Tprog).toFixed(2)+'%');
     for(var i = 1; i < protein.length - 1; ++i){
       var a = new_p.getAngle();
       var na = newAngles(a[i]); //console.log(na)
@@ -53,7 +53,7 @@ var Ann = function(protein, ctx){
     }
     delta *= 0.9;
 
-    if(t%100 == 0 && print_chart) pushToData(fail_count, min_p);
+    if(t%100 == 0) pushToData(fail_count, min_p);
     
     if(t < _l) setTimeout(loop); 
     else {  //TODO stop criteria
@@ -62,11 +62,11 @@ var Ann = function(protein, ctx){
       console.log('success', min_p.energy.toFixed(2));
       if(print_chart) chart(ctx, f_data, e_data);
       $('#results').append($('<p>'+test_count+' Protein energy: '+min_p.energy+'</p>'));
+      fe_array.push(min_p.energy);
       //repeat
       test_av(min_p);
     }
   };
-  
   loop();
 
 }

@@ -13,12 +13,18 @@ var to_cache = function(p){
   var id = get_id(p.getAngle());
   if(!cache[id]) cache[id] = p;
 };
-
+var global_parameter = [];
+var gpi = false; //global_parameter initialized
 var Ela = function(protein, ctx){
-  //limit
+    //limit
   var _l = parseInt($('#E').val());
   //PARAMETERS  
-  var parameter = [];
+  var $gp = !$('#GP').val();
+  var parameter;
+  if( $gp ) parameter = global_parameter;
+  else parameter = [];
+  
+
   
   var initParameters = function(){
     for(var i = 1; i < protein.length - 1; ++i){
@@ -103,8 +109,7 @@ var Ela = function(protein, ctx){
     }
     return array;
   };  
-  
-  //GLOBALS
+
   var min_p = protein,
       fail_count = 0;
   
@@ -124,6 +129,11 @@ var Ela = function(protein, ctx){
   
   //LOOP
   var t = 0;
+  if(!$gp) initParameters();
+  else if(!gpi) {
+    initParameters();
+    gpi = true;
+  }
   var max_population = 100;
   var population = [];
   var bestpop = 0.1;
@@ -132,7 +142,7 @@ var Ela = function(protein, ctx){
   }
   var seq = seq = $('#seq').val();
   var loop = function(){ 
-    ++t;
+    ++t; st_in.val(--steps); pr_in.val( (++Prog /Tprog).toFixed(2)+'%');
     var newpop = [];
     for(var i = 0; i < max_population; ++i){
       var refp = population[parseInt(i * bestpop)];
@@ -161,17 +171,17 @@ var Ela = function(protein, ctx){
     
     min_p.render(ctx);
     
-    if(t%100 == 0 && print_chart) pushToData(fail_count, min_p);
+    if(t%100 == 0) pushToData(fail_count, min_p);
     
     if(t < _l) setTimeout(loop); 
     else {  //TODO stop criteria
-      // PRINT
+      // PRINT      
       min_p.render(ctx);      
       Ann(min_p, ctx);
     }
   };
   
-  initParameters();
+  
   loop();
 
 }
