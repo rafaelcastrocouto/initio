@@ -1,49 +1,14 @@
-//estimated learning algorithm
-var cache = {};
+importScripts('protein.js', 'utils.js', 'energy.js');
 
-var get_id = function(a){ 
-  var id = '';
-  for(var i = 0; i < a.length; ++i){
-    id += a[i].toFixed(1)+',';
-  }
-  return id;  
-};
+self.addEventListener('message', function(e) {
+  var msg = JSON.parse(e.data);    
+  Ela(msg.seq, msg.ang, msg.l, msg.parameter);  
+}, false);
 
-var to_cache = function(p){
-  var id = get_id(p.getAngle());
-  if(!cache[id]) cache[id] = p;
-};
-var global_parameter = [];
-var gpi = false; //global_parameter initialized
-var Ela = function(protein, ctx){
-    //limit
-  var _l = parseInt($('#E').val());
-  //PARAMETERS  
-  var $gp = !$('#GP').val();
-  var parameter;
-  if( $gp ) parameter = global_parameter;
-  else parameter = [];
-  
-
-  
-  var initParameters = function(){
-    for(var i = 1; i < protein.length - 1; ++i){
-      parameter[i] = {};
-      parameter[i].rigidity = 1;
-      parameter[i].efficiency = 100;      
-    }
-  };
-  var $eff = $('#Eff'), $rig =  $('#Rig');
-  
-  var printParameters = function(){
-    var eff = '', rig = '';
-    for(var i = 1; i < protein.length - 1; ++i){
-      rig += parseInt(parameter[i].rigidity) + ',';
-      eff += parseInt(parameter[i].efficiency) + ',';
-    }
-    $eff.val(eff); 
-    $rig.val(rig);
-  };
+var Ela = function(seq, ang, l, parameter){  
+  //almost GLOBALS
+ var min_p = new Protein({'seq': seq, 'ang': ang}); 
+     fail_count = 0;
   
   var adjustParametersSuccess = function(p, e0, e1, a){
     //TODO use e0 and e1 to adjust parameters
@@ -58,9 +23,9 @@ var Ela = function(protein, ctx){
     }
   };
   
-  var adjustParametersFail = function(p, e0, e1, a){
+  var adjustParametersFail = function(p, e0, e1, a){ 
     //TODO use e0 and e1 to adjust parameters
-    for(var i = 1; i < protein.length - 1; ++i){
+    for(var i = 1; i < p.length - 1; ++i){
       // - rigidity
       parameter[i].rigidity -= 0.0001;
       if(parameter[i].rigidity < 1) parameter[i].rigidity = 1;
@@ -71,16 +36,17 @@ var Ela = function(protein, ctx){
 
     }
   };  
+  
   //ANGLES
   var delta = 2 * Math.PI;
   var randomGauss = function(p, a){ 
-    var array = p.getAngle();
+    var array = p.getAngle(); 
     for(var i = 0; i < a.length; ++i){
       array[a[i]] += delta * gaussRandom(0, 1/parameter[a[i]].rigidity);
-    }
-    return array;
+    } 
+    return array; 
   };
-
+  
   var chooseAngles = function(p, n){
     var array = [], pa = parameter.slice();
     for(var i = 1; i < pa.length; ++i){
@@ -109,9 +75,6 @@ var Ela = function(protein, ctx){
     }
     return array;
   };  
-
-  var min_p = protein,
-      fail_count = 0;
   
   //TESTS
   var adjustParameters = function(p, a){ 
@@ -123,65 +86,82 @@ var Ela = function(protein, ctx){
       adjustParametersFail(p, min_p.energy, p.energy, a);
       fail_count++;
     }
-
   };
-
   
-  //LOOP
   var t = 0;
-  if(!$gp) initParameters();
-  else if(!gpi) {
-    initParameters();
-    gpi = true;
-  }
   var max_population = 100;
   var population = [];
   var bestpop = 0.1;
+  
+  //init popupation
   for(var i = 0; i < max_population * bestpop; ++i){
-    population[i] = protein;
+    population[i] = new Protein({'seq': seq, 'ang': ang});
   }
-  var seq = seq = $('#seq').val();
+  
   var loop = function(){ 
-    ++t; st_in.val(--steps); pr_in.val( (++Prog /Tprog).toFixed(2)+'%');
+    ++t; //pr_in.val( (++Prog /Tprog).toFixed(2)+'%');
     var newpop = [];
+    
     for(var i = 0; i < max_population; ++i){
       var refp = population[parseInt(i * bestpop)];
       var a = chooseAngles(refp, 4);  
-      var id = get_id(a);
-      if(cache[id]) {
-        setTimeout(loop); 
-        return false;
-      } else {
+      //var id = get_id(a);
+      //if(cache[id]) {
+      //  setTimeout(loop); 
+      //  return false;
+      //} else {
+      
         var p = new Protein({
           ang: randomGauss(refp, a), 
           seq: seq
         });
-        to_cache(p);
-      }
+      
+        //to_cache(p);
+      //}
       adjustParameters(p, a);
       newpop[i] = p;
-    }
-    printParameters();
+    }   
     
     population = newpop;
     
-    population.sort(function(a,b){
+    population.sort(function(a, b){
       return a.energy - b.energy;
     });
+    //if(t%100 == 0) pushToData(min_p, fail_count);
     
-    min_p.render(ctx);
-    
-    if(t%100 == 0) pushToData(fail_count, min_p);
-    
-    if(t < _l) setTimeout(loop); 
-    else {  //TODO stop criteria
-      // PRINT      
-      min_p.render(ctx);      
-      Ann(min_p, ctx);
+    if(t < l) loop(); 
+    else {
+      //printParameters();
+      //var Al = parseInt($('#A').val());
+      //Ann(min_p, Al); 
+      var msg = JSON.stringify({
+        energy: min_p.energy, 
+        ang: min_p.getAngle(), 
+        parameter: parameter
+      });
+      self.postMessage(msg);
     }
   };
-  
-  
+  //start looping
   loop();
 
 }
+
+/*var cache = {};
+
+var get_id = function(a){ 
+  var id = '';
+  for(var i = 0; i < a.length; ++i){
+    id += a[i].toFixed(1)+',';
+  }
+  return id;  
+};
+
+var to_cache = function(p){
+  var id = get_id(p.getAngle());
+  if(!cache[id]) cache[id] = p;
+};
+
+var global_parameter = [];
+var gpi = false; //global_parameter initialized
+*/

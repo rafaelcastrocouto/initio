@@ -1,14 +1,3 @@
-var canvas, context;
-
-var createCanvas = function(w, h){
-  if(!h) h = w;
-  var canvas = document.createElement('canvas');
-      canvas.width = w;
-      canvas.height = h;
-  $('#canvas').prepend(canvas);
-  return canvas;
-};
-
 var angToCoord = function(ang){
   var coord = [], x = 0, y = 0, g = 0, r = 1;
   for(var i = 0; i < ang.length; ++i){
@@ -18,7 +7,7 @@ var angToCoord = function(ang){
     g -= ang[i];
   };
   return coord;
-}
+};
 
 var coordToAng = function(coord){
   var ang = [], x, y, g, a = 0;
@@ -35,7 +24,7 @@ var coordToAng = function(coord){
   }
   ang[coord.length - 1] = 0;
   return ang;
-}
+};
 
 var fibonacciCache = ['A', 'B'];
 var fibonacci = function(l){
@@ -51,7 +40,7 @@ var fibonacci = function(l){
     ++i;
   };
   return f[l];
-}
+};
 
 var gaussRandom = function(mean, variance) {
   if (mean == undefined)
@@ -72,4 +61,15 @@ var gaussRandom = function(mean, variance) {
   X = mean + Math.sqrt(variance) * X;
 //Y = mean + Math.sqrt(variance) * Y ;
   return X;
-}
+};
+
+if(!console) var console = {
+  log: function(data){ 
+    var msg = JSON.stringify({log: data});
+    self.postMessage(msg); 
+  }
+};
+
+var onError = function(e) {
+  console.error(['Worker error: Line ', e.lineno, ' in ', e.filename, ': ', e.message].join(''));
+};

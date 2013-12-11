@@ -1,133 +1,198 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Language" content="en-US" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-  <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
-  <style>canvas{float: left;}</style>
-</head>
-<body>
-  
-<div id="controls">
-  <span>Fibo:</span><input type="text" id="F" value="6" size="3" class="e"/>
-  <span>Seq:</span><input type="text" id="seq" class="e"/>
-  <span>ELA:</span><input type="text" id="E" value="500" size="3" class="e"/>
-  <span>Annealing:</span><input type="text" id="A" value="200" size="3" class="e"/>
-  <span>Repeat:</span><input type="text" id="N" value="30" size="3" class="e"/>
-  <span>Render All:</span><input type="checkbox" id="R" class="e"/>
-  <span>Chart All:</span><input type="checkbox" id="C" class="e"/>
-  <span>Global Parameters:</span><input type="checkbox" id="GP" checked class="e"/>
-  <input id="start" type="button" value="Start" class="e"/><br>
-  <span>Eff:</span><input type="text" id="Eff" disabled size="30"/>
-  <span>Rig:</span><input type="text" id="Rig" disabled size="30"/>
-  <span>Steps:</span><input type="text" id="St" disabled size="3"/>
-  <span>Progress:</span><input type="text" id="Prog" value="0%" disabled size="3"/>
-</div>  
-  
-<div id="results"></div>  
-
-<div id="canvas"></div> 
-  
-<script type="text/javascript" src="utils.js"></script>
-<script type="text/javascript" src="protein.js"></script>
-<script type="text/javascript" src="energy.js"></script>
-<script type="text/javascript" src="ela.js"></script>
-<script type="text/javascript" src="ann.js"></script>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="highcharts.js"></script>
-<script type="text/javascript" src="exporting.js"></script>
-<script type="text/javascript" src="print.js"></script>
-
-<script type="text/javascript">
-  
-var seq = 'AB';
-var ang = [];  
-var N;
-var sum_tests = 0;
-var test_count = 0;
-var the_min = {energy: Infinity};
-var steps = 0;
-var St, Prog, Tprog;
-  
-var test_av = function(P){
-  if(P) {
-    sum_tests += P.energy;
-    if(P.energy < the_min.energy) the_min = P;    
-  }
-  //limit
-  steps = St;
-  if(test_count < N) {
-    var p = new Protein({'seq': seq, 'ang': ang});
-    p.render();
-    f_data = [0]; 
-    e_data = [p.energy];
-    Ela(p, p.context);
-  } else {
-    $('#results').append($('<p>Avarage(Sum/'+test_count+'): '+(sum_tests/test_count)+'</p>'));
-    $('#results').append($('<p>Min: '+the_min.energy+'</p>'));
-    render = true;
-    final_chart(fe_array);
-    the_min.render();
-    console.log(the_min);
-    $('#controls > input.e').attr('disabled', false);
-  }
-  ++test_count;
-};
-  
-var render = !$('#R').val();  
-var toggle_render = function(){
-  render = !render;
-};
-
-var print_chart = !$('#C').val();  
-var toggle_chart = function(){
-  print_chart = !print_chart;
-};  
-
-var st_in = $('#St'); 
-var pr_in = $('#Prog');  
-  
-//DATA
-var f_data, e_data;
-var fe_array = [];
-var pushToData = function(fail_count, min_p){
-  f_data.push(fail_count);
-  e_data.push({y: min_p.energy/*, marker: { p: min_p }*/});
-};
-  
-var gen_fibo_seq = function(){
-  var n = parseInt($('#F').val());  
-  $('#seq').val(fibonacci(n));
-};  
-  
-var load = function(){
-  gen_fibo_seq();
-  $('#start').on('click', function(){
-    seq = $('#seq').val();  
-    ang = [];
-    var i = seq.length;  
-    while(i) ang[--i] = 0;     
-    St = parseInt($('#E').val()) + parseInt($('#A').val());
-    st_in.val(St);
-    Prog = 0;
-    N = parseInt($('#N').val());
-    Tprog = St * N /100;
-    pr_in.val('0%')
-    $('#results').html('');
-    $('#canvas').html('');
-    sum_tests = 0;
-    test_count = 0;
-    the_min = {energy: Infinity};
-    $('#controls > input.e').attr('disabled', true);
-    test_av();
-  });
-  $('#R').on('click', toggle_render);
-  $('#C').on('click', toggle_chart);
-  $('#F').on('change', gen_fibo_seq);
-}; $(load);    
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language" content="en-US" />
+    <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
+    <style>canvas{float: left;}</style>
+  </head>
+  <body>
     
-</script>
-  
-</body>
+    <div id="controls">
+      <span>Fibo:</span><input type="text" id="FiboLength" value="4" size="3" class="editable"/>
+      <span>Seq:</span><input type="text" id="seq" class="editable"/>
+      <span>ELA:</span><input type="text" id="E" value="100" size="3" class="editable"/>
+      <span>Annealing:</span><input type="text" id="A" value="50" size="3" class="editable"/>
+      <span>Repeat(N):</span><input type="text" id="N_tests" value="5" size="3" class="editable"/>
+      <span>Global Parameters:</span><input type="checkbox" id="GP" checked class="editable"/>
+      <input id="start" type="button" value="Start" class="editable"/><br>
+      <span>Eff:</span><input type="text" id="Eff" disabled size="30"/>
+      <span>Rig:</span><input type="text" id="Rig" disabled size="30"/>
+      <span>Progress:</span><input type="text" id="Prog" value="0%" disabled size="3"/>
+    </div>  
+    
+    <div id="results"></div>  
+    
+    <div id="canvas"></div> 
+    
+    <script type="text/javascript" src="utils.js"></script>
+    <script type="text/javascript" src="protein.js"></script>
+    <script type="text/javascript" src="energy.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="highcharts.js"></script>
+    <script type="text/javascript" src="exporting.js"></script>
+    <script type="text/javascript" src="print.js"></script>
+    
+    <script type="text/javascript">
+      
+      var seq;//'AB...';
+      var Linearang;  //[0,0,...]
+      var N, An, En; //global limits
+      var sum_tests = 0; //avarage
+      var test_count = 0;
+      var the_min; //{energy: Infinity};
+      var Prog, Tprog, pr_in = $('#Prog');//progess
+      var Gpi, global_parameter = [];
+      var FiboLength = $('#FiboLength');
+      var controls = $('#controls > input.editable');
+      
+      var createCanvas = function(w, h){
+        if(!h) h = w;
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        $('#canvas').prepend(canvas);
+        return canvas;
+      };
+      
+      //DATA
+      
+      var f_data, e_data;
+      var fe_array = [];
+      var pushToData = function(min_p, fail_count){
+        f_data.push(fail_count);
+        e_data.push({y: min_p.energy});
+        return {f_data: f_data, e_data: e_data};
+      };
+      
+      var gen_fibo_seq = function(){
+        var n = parseInt(FiboLength.val());  
+        if(n < 20) {
+          seq = fibonacci(n);
+          $('#seq').val(seq);  
+        } else alert('Error: Sequence is too long.');
+      };  
+      
+      var gen_parameter = function(){
+        var parameter = [];        
+        for(var i = 1; i < seq.length; ++i){
+          parameter[i] = {};
+          parameter[i].rigidity = 1;
+          parameter[i].efficiency = 100;
+        }
+        return parameter;
+      };
+      
+      var gen_linear_ang = function(){
+        var a = [];
+        var i = seq.length;  
+        while(i) a[--i] = 0;  
+        return a;
+      };
+      
+      //PRINT PARAM
+      var $eff = $('#Eff'), $rig =  $('#Rig');
+      
+      var printParameters = function(parameter){
+        var eff = '', rig = '';
+        for(var i = 1; i < parameter.length - 1; ++i){
+          rig += parseInt(parameter[i].rigidity) + ',';
+          eff += parseInt(parameter[i].efficiency) + ',';
+        }
+        $eff.val(eff); 
+        $rig.val(rig);
+      };
+      
+      var load = function(){
+        
+        gen_fibo_seq();        
+        FiboLength.on('keyup change', gen_fibo_seq);
+        
+        $('#start').on('click', function(){
+          
+          Linearang = gen_linear_ang();    
+          N = parseInt($('#N_tests').val());
+          Prog = 0;
+          An = parseInt($('#A').val());
+          En = parseInt($('#E').val());
+          Tprog = (An + En) * N / 100;
+          pr_in.val('0%');
+          $('#results').html('');
+          $('#canvas').html('');
+          sum_tests = 0;
+          test_count = 0;
+          the_min = {energy: Infinity};
+          controls.attr('disabled', true);
+          Gpi = $('#GP').val(); 
+          if(Gpi) global_parameter = gen_parameter();
+          test_av();
+        });  
+        
+        //tests loop
+        var test_av = function(P){
+          if(P) { // won't happen on 1st call
+            sum_tests += P.energy;
+            if(P.energy < the_min.energy) the_min = P;    
+          }
+          if(test_count < N) {
+            
+            var obj = {
+              seq: seq,
+              ang: Linearang              
+            };
+            
+            var p = new Protein(obj);
+            f_data = [0]; e_data = [p.energy];
+
+            obj.l = En;
+            
+            if(Gpi) obj.parameter = global_parameter;
+            else    obj.parameter = gen_parameter();
+
+            ela_worker.postMessage(JSON.stringify(obj));
+            
+          } else {
+            var avrg = '<p>Avarage(Sum/'+N+'): '+(sum_tests/N)+'</p>';
+            $('#results').append($(avrg)).append($('<p>Min: '+the_min.energy+'</p>'));
+            //chart(ctx, f_data, e_data);
+            //final_chart(fe_array);    
+            the_min.render();
+            console.log(the_min);
+            controls.attr('disabled', false);
+          }
+          ++test_count;
+        };   
+        
+        //workers
+        var ela_worker = new Worker('ela.js');
+        ela_worker.addEventListener('error', onError, false);
+        ela_worker.addEventListener('message', function(e) {
+          var data = JSON.parse(e.data); 
+          if(data.log) console.log(data.log);
+          printParameters(data.parameter); 
+          console.log('Ela: ', data.energy);
+          var msg = JSON.stringify({seq: seq, ang: data.ang, l: An});
+          ann_worker.postMessage(msg);  
+        }, false);
+        
+        var ann_worker = new Worker('ann.js');
+        ann_worker.addEventListener('error', onError, false);
+        ann_worker.addEventListener('message', function(e) { 
+          var data = JSON.parse(e.data);
+          if(data.log) console.log(data.log);
+          console.log('Ann: ', data.energy);
+          $('#results').append($('<p>'+test_count+' Protein energy: '+data.energy+'</p>'));
+          var the_min = new Protein({'seq': seq, 'ang': data.ang});
+          test_av(the_min);
+        }, false); 
+        
+        $('#start').click();
+        
+      }; $(load);    
+      
+      
+      
+    </script>
+    
+  </body>
 </html>
