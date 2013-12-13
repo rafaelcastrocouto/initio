@@ -7,8 +7,8 @@ self.addEventListener('message', function(e) {
 
 var Ela = function(seq, ang, l, parameter){  
   //almost GLOBALS
- var min_p = new Protein({'seq': seq, 'ang': ang}); 
-     fail_count = 0;
+  var min_p = new Protein({'seq': seq, 'ang': ang}); 
+  fail_count = 0;
   
   var adjustParametersSuccess = function(p, e0, e1, a){
     //TODO use e0 and e1 to adjust parameters
@@ -16,7 +16,7 @@ var Ela = function(seq, ang, l, parameter){
       // + rigidity
       parameter[a[i]].rigidity += 10;
       if(parameter[a[i]].rigidity > 100) parameter[a[i]].rigidity = 1;
-
+      
       // - efficiency
       parameter[a[i]].efficiency *= 0.5;  
       if (parameter[a[i]].efficienacy < 1) parameter[a[i]].efficiency = 1;  
@@ -27,13 +27,13 @@ var Ela = function(seq, ang, l, parameter){
     //TODO use e0 and e1 to adjust parameters
     for(var i = 1; i < p.length - 1; ++i){
       // - rigidity
-      parameter[i].rigidity -= 0.0001;
+      parameter[i].rigidity -= 0.00001;
       if(parameter[i].rigidity < 1) parameter[i].rigidity = 1;
       
       // + efficiency
-      parameter[i].efficiency += 0.001;  
+      parameter[i].efficiency += 0.00001;  
       if (parameter[i].efficiency > 100) parameter[i].efficiency = 100;         
-
+      
     }
   };  
   
@@ -98,28 +98,22 @@ var Ela = function(seq, ang, l, parameter){
     population[i] = new Protein({'seq': seq, 'ang': ang});
   }
   
-  var loop = function(){ 
-    ++t; //pr_in.val( (++Prog /Tprog).toFixed(2)+'%');
+  //loop
+  for(var t = 0; t < l; ++t){
+
     var newpop = [];
     
     for(var i = 0; i < max_population; ++i){
       var refp = population[parseInt(i * bestpop)];
       var a = chooseAngles(refp, 4);  
-      //var id = get_id(a);
-      //if(cache[id]) {
-      //  setTimeout(loop); 
-      //  return false;
-      //} else {
       
-        var p = new Protein({
-          ang: randomGauss(refp, a), 
-          seq: seq
-        });
-      
-        //to_cache(p);
-      //}
+      var p = new Protein({
+        ang: randomGauss(refp, a), 
+        seq: seq
+      });
+
       adjustParameters(p, a);
-      newpop[i] = p;
+      newpop.push(p);
     }   
     
     population = newpop;
@@ -127,41 +121,21 @@ var Ela = function(seq, ang, l, parameter){
     population.sort(function(a, b){
       return a.energy - b.energy;
     });
-    //if(t%100 == 0) pushToData(min_p, fail_count);
     
-    if(t < l) loop(); 
-    else {
-      //printParameters();
-      //var Al = parseInt($('#A').val());
-      //Ann(min_p, Al); 
+    if(t%100 == 0) {
       var msg = JSON.stringify({
-        energy: min_p.energy, 
-        ang: min_p.getAngle(), 
+        data: min_p.energy, 
         parameter: parameter
       });
-      self.postMessage(msg);
+      self.postMessage(msg);      
     }
-  };
-  //start looping
-  loop();
-
-}
-
-/*var cache = {};
-
-var get_id = function(a){ 
-  var id = '';
-  for(var i = 0; i < a.length; ++i){
-    id += a[i].toFixed(1)+',';
   }
-  return id;  
+  
+  var msg = JSON.stringify({
+    energy: min_p.energy, 
+    ang: min_p.getAngle(), 
+    parameter: parameter
+  });
+  self.postMessage(msg);
+  
 };
-
-var to_cache = function(p){
-  var id = get_id(p.getAngle());
-  if(!cache[id]) cache[id] = p;
-};
-
-var global_parameter = [];
-var gpi = false; //global_parameter initialized
-*/

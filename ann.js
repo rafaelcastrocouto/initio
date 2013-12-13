@@ -7,7 +7,7 @@ self.addEventListener('message', function(e) {
 
 var Ann = function(seq, ang, l){
   
-  var protein = new Protein({'seq': seq, 'ang': ang});
+  var min_p = new Protein({'seq': seq, 'ang': ang});
   
   //ANGLES
   var delta = Math.PI / 2;
@@ -19,8 +19,7 @@ var Ann = function(seq, ang, l){
   }; 
   
   //GLOBALS
-  var min_p = protein, 
-      new_p = protein, 
+  var new_p = min_p, 
       fail_count = 0;
   
   //TESTS
@@ -35,12 +34,12 @@ var Ann = function(seq, ang, l){
     }  
   };
 
-  //LOOP
+  //loop
   var t = 0;
-  var seq = protein.getSeq();
-  var loop = function(){ 
-    ++t;  //pr_in.val( (++Prog / Tprog).toFixed(2)+'%');
-    for(var i = 1; i < protein.length - 1; ++i){
+
+  for(var t = 0; t < l; ++t){
+    
+    for(var i = 1; i < min_p.length - 1; ++i){
       var a = new_p.getAngle();
       var na = newAngles(a[i]); 
       
@@ -53,26 +52,23 @@ var Ann = function(seq, ang, l){
       new_p = test(new_p);    
       
     }
+    
     delta *= 0.9;
 
-    //if(t%100 == 0) min_p.data = pushToData(min_p, fail_count);
-    
-    if(t < l) loop(); 
-    else {  //TODO stop criteria      
-      //console.log('success', min_p.energy.toFixed(2));
-      //$('#results').append($('<p>'+test_count+' Protein energy: '+min_p.energy+'</p>'));
-      //fe_array.push(min_p.energy);   
-      //test_av(min_p);
+    if(t%100 == 0) {
       var msg = JSON.stringify({
-        ang: min_p.getAngle(), 
-        energy: min_p.energy
+        data: min_p.energy, 
       });
-      self.postMessage(msg);
+      self.postMessage(msg);      
     }
-  };
-  //start looping
-  loop();
 
+  };
+  
+  var msg = JSON.stringify({
+    ang: min_p.getAngle(), 
+    energy: min_p.energy
+  });
+  self.postMessage(msg);
 }
 
 
