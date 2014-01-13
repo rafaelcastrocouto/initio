@@ -31,10 +31,11 @@ var Protein = function(obj){
   this.energy = energy(this);
 }
 
-Protein.prototype.getAngle = function(){
+Protein.prototype.getAngle = function(n){
   var a = [];
   for(var i = 0; i < this.length; ++i){
-    a[i] = this.aminos[i].ang;
+    if(!n) a[i] = this.aminos[i].ang;
+    else a[i] = this.aminos[i].ang.toFixed(n);
   }
   return a;
 }
@@ -56,7 +57,7 @@ Protein.prototype.getCoord = function(){
 Protein.prototype.render = function(ctx){
   var context = ctx || this.context;
   if(!context) {
-    var canvas = createCanvas(800, 400);
+    var canvas = createCanvas(600, 400);
         canvas.scale = 20;
         canvas.offset = 200;
     context = canvas.getContext('2d');    

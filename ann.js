@@ -65,7 +65,7 @@ var Ann = function(seq, ang, l){
   };
   
   var msg = JSON.stringify({
-    ang: min_p.getAngle(), 
+    ang: min_p.getAngle(2), 
     energy: min_p.energy
   });
   self.postMessage(msg);

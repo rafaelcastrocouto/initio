@@ -4,27 +4,39 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Language" content="en-US" />
     <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
-    <style>canvas{float: left;}</style>
+    <style>
+      table {border-collapse: collapse; margin: 6px;}
+      table, td, canvas {border: 1px solid black}
+      td {font-family: monospace; padding: 2px}
+    </style>
   </head>
   <body>
     
     <div id="controls">
       <span>Fibo:</span><input type="text" id="fibo" value="6" size="1" class="editable"/>
       <span>Seq:</span><input type="text" id="seq" class="editable"/>
-      <span>ELA(n):</span><input type="text" id="En" value="2000" size="3" class="editable"/>
-      <span>ANN(n):</span><input type="text" id="An" value="500" size="3" class="editable"/>
-      <span>Steps(n):</span><input type="text" id="N" value="30" size="3" class="editable"/>
+      <span>ELA(n):</span><input type="text" id="En" value="1000" size="3" class="editable"/>
+      <span>ANN(n):</span><input type="text" id="An" value="200" size="3" class="editable"/>
+      <span>Steps(n):</span><input type="text" id="N" value="10" size="3" class="editable"/>
       <span>Global Parameters:</span><input type="checkbox" id="gp" checked class="editable"/>      
       <br>
       <span>Eff:</span><input type="text" id="Eff" disabled size="40"/>
       <span>Rig:</span><input type="text" id="Rig" disabled size="30"/>
-      <span>Progress:</span><input type="text" id="prog" value="0%" disabled size="3"/>
-      <input id="start" type="button" value="Start" class="editable"/>
+      <span>Progress:</span><input type="text" id="prog" value="0%" disabled size="3"/>      
     </div>  
     
-    <div id="results"></div>  
+    <table>
+      <tbody id="table">
+        <tr><th>Step</th><th>Angles</th><th>Energy</th></tr>
+      </tbody>
+    </table>
+    
+    <div id="results"></div>
     
     <div id="canvas"></div> 
+    
+    <input id="start" type="button" value="Start" class="editable"/>
+    <input id="print" type="button" value="Print" class="editable"/>
     
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="protein.js"></script>
@@ -41,13 +53,14 @@
       var N, An, En; //global limits
       var sum_tests = 0; //to calculate avarage      
       var the_min; //{energy: Infinity};
-      var prog, tprog, steps, pr_in = $('#prog');//progess
+      var prog, tprog, steps, num_steps, pr_in = $('#prog');
       var gpi, global_parameter = [];
       var fiboLength = $('#fibo');
-      var controls = $('#controls > input.editable');
-      var e_data = [], min_data = [];
-      var results = $('#results');
+      var controls = $('input.editable');
+      var e_data = [], min_data = []; //chart database
+      var results = $('#results'), table = $('#table');
       var canvas = $('#canvas');
+      var start_time, end_time;
       
       var createCanvas = function(w, h){
         if(!h) h = w;
@@ -59,7 +72,7 @@
       
       var gen_fibo_seq = function(){
         var n = parseInt(fiboLength.val());  
-        if(n < 20) {
+        if(n < Infinity) {
           seq = fibonacci(n);
           $('#seq').val(seq);  
         } else alert('Error: Sequence is too long.');
@@ -77,31 +90,39 @@
         gen_fibo_seq();        
         fiboLength.on('keyup change', gen_fibo_seq);
         
+        $('#print').on('click', function(){
+          window.print();
+        });
+        
         $('#start').on('click', function(){
+          start_time = new Date();
           
-          Linearang = gen_linear_ang();    
-          N = parseInt($('#N').val());
-          
+          N = parseInt($('#N').val());          
           An = parseInt($('#An').val());
           En = parseInt($('#En').val());
-          tprog = (An + En) * N / 100;
+          num_steps = ((An + En) / 100);
+          tprog = num_steps * N;
           prog = 0;
           pr_in.val('0%');//prog / tprog
+          
           results.html('');
           canvas.html('');
-          e_data = [];
+          table.html('<tr><th>Step</th><th>Angles</th><th>Energy</th></tr>');
+          controls.attr('disabled', true);
+          
+          e_data = []; min_data = [];
           sum_tests = 0;
           steps = 0;
-          the_min = {energy: Infinity};
-          controls.attr('disabled', true);
+          the_min = {energy: Infinity};          
           
           gpi = $('#gp').prop('checked');
           if(gpi) global_parameter = gen_parameter();
           
+          Linearang = gen_linear_ang();            
           test_protein();
         });  
         
-        $('#start').click();
+        //$('#start').click();
         
       };       
       
@@ -115,12 +136,13 @@
           
           var obj = {
             seq: seq,
-            ang: Linearang              
+            ang: Linearang,
+            l: En
           };
           
           var p = new Protein(obj);
           
-          obj.l = En;
+          e_data.push(p.energy);
           
           if(gpi) obj.parameter = global_parameter;
           else    obj.parameter = gen_parameter();
@@ -171,7 +193,7 @@
         var eff = [], rig = [];
         for(var i = 1; i < parameter.length - 1; ++i){
           rig.push( Number(parameter[i].rigidity).toFixed(1) );
-          eff.push( parseInt(parameter[i].efficiency) );
+          eff.push( Number(parameter[i].efficiency).toFixed(1) );
         }
         $eff.val( eff.join(',') ); 
         $rig.val( rig.join(',') );        
@@ -189,17 +211,27 @@
         }
         if(data.ang) {
           e_data.push(data.energy);
-          min_data.push(data.energy);
-          results.prepend($('<p>Step '+steps+': '+data.energy+'</p>'));
+          min_data.push(data.energy);console.log();
+          table.append(
+            $(['<tr>',
+             '<td>'+steps+'</td>',
+             '<td>'+data.ang.join(', ')+'</td>',
+             '<td>'+data.energy+'</td>',
+            '</tr>'].join(''))
+          );
           var p = new Protein({'seq': seq, 'ang': data.ang});
           test_protein(p);
         }
       }, false); 
       
       var end = function(){
+        end_time = new Date();
+        
         results
-        .append($('<p>Avarage(Sum/'+N+'): '+(sum_tests/N)+'</p>'))
-        .append($('<p>Minimum Energy: '+the_min.energy+'</p>'));
+          .append($('<p>Start: '+start_time+'<br>End: '+end_time+'</p>'))
+          .append($('<p>Duration: '+(end_time - start_time)/1000+' seconds</p>'))
+          .append($('<p>Avarage Energy (Sum/'+N+'): '+(sum_tests/N)+'</p>'))
+          .append($('<p>Minimum Energy: '+the_min.energy+'</p>'));
         
         final_chart(e_data);    
         the_min.render();
