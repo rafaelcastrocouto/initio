@@ -5,38 +5,34 @@
     <meta http-equiv="Content-Language" content="en-US" />
     <meta name="Author" content="Rafael Castro Couto, rafaelcastrocouto@gmail.com">
     <style>
-      table {border-collapse: collapse; margin: 6px;}
-      table, td, canvas {border: 1px solid black}
+      body {min-width: 600px;}
+      table {border-collapse: collapse;}
+      table, td, canvas {border: 1px solid #aaa}
+      .container {border: 1px solid #000; padding: 6px; border-radius: 6px;}
       td {font-family: monospace; padding: 2px}
+      table, canvas, h3, .container, p {margin: 6px}
+      table, canvas {width: calc(100% - 12px)}
+      span {white-space: nowrap}
     </style>
   </head>
   <body>
     
     <div id="controls">
-      <span>Fibo:</span><input type="text" id="fibo" value="6" size="1" class="editable"/>
-      <span>Seq:</span><input type="text" id="seq" class="editable"/>
-      <span>ELA(n):</span><input type="text" id="En" value="1000" size="3" class="editable"/>
-      <span>ANN(n):</span><input type="text" id="An" value="200" size="3" class="editable"/>
-      <span>Steps(n):</span><input type="text" id="N" value="10" size="3" class="editable"/>
-      <span>Global Parameters:</span><input type="checkbox" id="gp" checked class="editable"/>      
+      <span>Total Progress: <progress title="0%" id="total_prog" value="0"></progress></span>
+      <span>Test Progress: <progress title="0%" id="prog" value="0"></progress></span>
       <br>
-      <span>Eff:</span><input type="text" id="Eff" disabled size="40"/>
-      <span>Rig:</span><input type="text" id="Rig" disabled size="30"/>
-      <span>Progress:</span><input type="text" id="prog" value="0%" disabled size="3"/>      
+      <span>Sequences: F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64) <input type="text" id="seqs" value="F6,1AGT" size="10" class="editable"/></span><br>
+      <span>Steps:<input type="text" id="steps" value="4,2" size="5" class="editable"/></span>
+      <span>ELA:<input type="text" id="En" value="1000,500" size="5" class="editable"/></span>
+      <span>Ann:<input type="text" id="An" value="200" size="5" class="editable"/></span>    
+      <span>Global Parameters:<input type="checkbox" id="gp" checked class="editable"/></span><br>
+      <span>Eff:<input type="text" id="Eff" disabled size="40"/></span>
+      <span>Rig:<input type="text" id="Rig" disabled size="30"/></span><br>
+      <input id="start" type="button" value="Start" class="editable"/>
+      <input id="print" type="button" value="Print" class="editable"/>
     </div>  
     
-    <table>
-      <tbody id="table">
-        <tr><th>Step</th><th>Angles</th><th>Energy</th></tr>
-      </tbody>
-    </table>
-    
-    <div id="results"></div>
-    
-    <div id="canvas"></div> 
-    
-    <input id="start" type="button" value="Start" class="editable"/>
-    <input id="print" type="button" value="Print" class="editable"/>
+    <div id="results"></div> 
     
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="protein.js"></script>
@@ -48,110 +44,142 @@
     
     <script type="text/javascript">
       
-      var seq;//'AB...';
+      var pre_seqs = { // F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64)
+        'F6': fibonacci(6), // ABBABBABABBAB
+        'F7': fibonacci(7), // BABABBABABBABBABABBAB
+        'F8': fibonacci(8), // ABBABBABABBABBABABBABABBABBABABBAB
+        'F9': fibonacci(9), // BABABBABABBABBABABBABABBABBABABBABBABABBABABBABBABABBAB           
+        '1AGT': realToAb('GVPINVSCTGSPQCIKPCKDAGMRFGKCMNRKCHCTPK'), 
+        // AAAABABABABABAABAABBAAABBABAABBBABABAB
+        '1AHO': realToAb('VKDGYIVDDVNCTYFCGRNAYCNEECTKLKGESGYCQWASPYGNACYCYKLPDHVRTKGPGRCH') 
+        // ABBABAABBABABBBAABBABABBBABBABABBABABBABABABAABABBAABBABBBAAABAB
+      };
+      
       var Linearang;  //[0,0,...]
-      var N, An, En; //global limits
-      var sum_tests = 0; //to calculate avarage      
-      var the_min; //{energy: Infinity};
-      var prog, tprog, steps, num_steps, pr_in = $('#prog');
-      var gpi, global_parameter = [];
-      var fiboLength = $('#fibo');
-      var controls = $('input.editable');
-      var e_data = [], min_data = []; //chart database
-      var results = $('#results'), table = $('#table');
-      var canvas = $('#canvas');
+      var $seqs = $('#seqs'), current_seq, aseqs, seq_name;
+      var $steps = $('#steps'), current_step, steps, asteps;
+      var test, total_tests, test_counter = 1;
+      var An, $An = $('#An'), aAn;
+      var En, $En = $('#En'), aEn; 
+      var the_min, avg_en;
+      var $total_prog = $('#total_prog'), total_prog;
+      var $prog = $('#prog'), prog;       
+      var gpi, global_parameter = [], $gp = $('#gp');
+      var $controls = $('input.editable');
+      var e_data = [], min_data = []; 
+      var $results = $('#results'), $container, $table, $canvas;
       var start_time, end_time;
       
       var createCanvas = function(w, h){
         if(!h) h = w;
         var c = document.createElement('canvas');
         c.width = w; c.height = h;
-        canvas.prepend(c);
+        $canvas.prepend(c);
         return c;
       };
       
-      var gen_fibo_seq = function(){
-        var n = parseInt(fiboLength.val());  
-        if(n < Infinity) {
-          seq = fibonacci(n);
-          $('#seq').val(seq);  
-        } else alert('Error: Sequence is too long.');
-      };  
-      
       var gen_linear_ang = function(){
         var a = [];
-        var i = seq.length;  
+        var i = current_seq.length;  
         while(i) a[--i] = 0;  
         return a;
       };
       
-      var load = function(){
-        
-        gen_fibo_seq();        
-        fiboLength.on('keyup change', gen_fibo_seq);
-        
-        $('#print').on('click', function(){
-          window.print();
-        });
-        
+      var progress_bar = function(){
+        prog += 100;
+        var p = prog/total_prog;
+        $prog.attr('title', (p*100).toFixed(0) + '%');
+        $prog.val(p);
+      };
+      
+      var total_progress_bar = function(){
+        var p = test/total_tests;
+        $total_prog.attr('title', (p*100).toFixed(0) + '%');
+        $total_prog.val(p);        
+      };
+      
+      var load = function(){       
         $('#start').on('click', function(){
           start_time = new Date();
           
-          N = parseInt($('#N').val());          
-          An = parseInt($('#An').val());
-          En = parseInt($('#En').val());
-          num_steps = ((An + En) / 100);
-          tprog = num_steps * N;
-          prog = 0;
-          pr_in.val('0%');//prog / tprog
+          $controls.attr('disabled', true);
           
-          results.html('');
-          canvas.html('');
-          table.html('<tr><th>Step</th><th>Angles</th><th>Energy</th></tr>');
-          controls.attr('disabled', true);
+          aseqs = $seqs.val().split(',');          
+          asteps = $steps.val().split(',');
+          aAn = $An.val().split(',');
+          aEn = $En.val().split(',');    
           
-          e_data = []; min_data = [];
-          sum_tests = 0;
-          steps = 0;
-          the_min = {energy: Infinity};          
+          total_tests = Math.max(aseqs.length, asteps.length, aAn.length, aEn.length);         
           
-          gpi = $('#gp').prop('checked');
-          if(gpi) global_parameter = gen_parameter();
+          gpi = $gp.prop('checked');
           
-          Linearang = gen_linear_ang();            
+          test = 0;        
           test_protein();
         });  
-        
-        //$('#start').click();
-        
+        $('#print').on('click', function(){
+          window.print();
+        });
       };       
       
-      //tests loop
-      var test_protein = function(P){
+      var test_protein = function(){ console.log(test, total_tests)
+        if(test < total_tests) { 
+          
+          if(aseqs[test]) {
+            seq_name = aseqs[test];
+            current_seq = pre_seqs[seq_name];
+          }
+          if(asteps[test]) steps = parseInt(asteps[test]);          
+          if(aAn[test]) An = parseInt(aAn[test]) ;
+          if(aEn[test]) En = parseInt(aEn[test]);        
+
+          total_prog = (An + En) * steps;            
+
+          Linearang = gen_linear_ang(); 
+          if(gpi) global_parameter = gen_parameter();         
+                  
+          e_data = []; min_data = [];  
+          avg_en = 0;          
+          prog = 0;
+          the_min = {energy: Infinity};   
+       
+          $container = $('<div>').addClass('container');
+          $container.append('<h3>Test '+(test_counter)+'<h3>');
+          $container.append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>');
+          $container.append('<p>ELA: '+En+', Ann: '+An+'<p>');
+          $table = $('<table><tr><th>Step</th><th>Angles</th><th>Energy</th></tr></table>');
+          $canvas = $('<div>');
+          $container.append($table).append($canvas);
+          $results.prepend($container);
+          
+          current_step = 0;
+          step_protein();
+          ++test; ++test_counter;
+        } else  $controls.attr('disabled', false); 
+      }
+      
+      //step loop
+      var step_protein = function(P){ 
         if(P) { // won't happen on 1st call
-          sum_tests += P.energy;
-          if(P.energy < the_min.energy) the_min = P;    
-        }
-        if(steps < N) {
+          avg_en += P.energy;
+          if(P.energy < the_min.energy) the_min = P;  
+        } 
+        if(current_step < steps) {          
+          /*if(the_min.getAngle) //uncomment to keep min
+            var oa = the_min.getAngle(2);
+          else */
+            var oa = Linearang;
           
-          var obj = {
-            seq: seq,
-            ang: Linearang,
-            l: En
-          };
+          var obj = { seq: current_seq, ang: oa, l: En };
           
-          var p = new Protein(obj);
-          
+          var p = new Protein(obj);          
           e_data.push(p.energy);
           
           if(gpi) obj.parameter = global_parameter;
           else    obj.parameter = gen_parameter();
           
-          ela_worker.postMessage(JSON.stringify(obj));
-          
-        } else end(); 
-        
-        ++steps;
+          ela_worker.postMessage(JSON.stringify(obj));          
+          ++current_step;          
+        } else plot();        
       };   
       
       //workers
@@ -165,13 +193,12 @@
           if(gpi) global_parameter = data.parameter;
         }
         if(data.data) {
-          e_data.push(data.data);
-          prog += 100;
-          pr_in.val( (prog / tprog).toFixed(1)+'%');
+          e_data.push(data.data);          
+          progress_bar();
         }
         if(data.ang) {
           e_data.push(data.energy);
-          var msg = JSON.stringify({seq: seq, ang: data.ang, l: An});
+          var msg = JSON.stringify({seq: current_seq, ang: data.ang, l: An});
           ann_worker.postMessage(msg);  
         }
       }, false);
@@ -181,9 +208,9 @@
       
       var gen_parameter = function(){
         var parameter = [];        
-        for(var i = 1; i < seq.length; ++i){
+        for(var i = 1; i < current_seq.length; ++i){
           parameter[i] = {};          
-          parameter[i].efficiency = 100;
+          parameter[i].efficiency = 1;
           parameter[i].rigidity = 1;
         }
         return parameter;
@@ -206,36 +233,37 @@
         if(data.log) console.log(data.log);
         if(data.data) {
           e_data.push(data.data);
-          prog += 100;
-          pr_in.val( (prog / tprog).toFixed(2)+'%');
+          progress_bar();
         }
         if(data.ang) {
+          var angstr = data.ang.slice(1).join(', ');
           e_data.push(data.energy);
-          min_data.push(data.energy);console.log();
-          table.append(
-            $(['<tr>',
-             '<td>'+steps+'</td>',
-             '<td>'+data.ang.join(', ')+'</td>',
+          min_data.push(data.energy);
+          $table.append($(['<tr>',
+             '<td>'+current_step+'</td>',
+             '<td>'+angstr+'</td>',
              '<td>'+data.energy+'</td>',
-            '</tr>'].join(''))
-          );
-          var p = new Protein({'seq': seq, 'ang': data.ang});
-          test_protein(p);
+             '</tr>'].join('')));
+          var p = new Protein({'seq': current_seq, 'ang': data.ang});                 
+          step_protein(p);
         }
       }, false); 
       
-      var end = function(){
-        end_time = new Date();
-        
-        results
+      var plot = function(){
+        end_time = new Date();       
+        var duration = (end_time - start_time)/1000;
+        $container
           .append($('<p>Start: '+start_time+'<br>End: '+end_time+'</p>'))
-          .append($('<p>Duration: '+(end_time - start_time)/1000+' seconds</p>'))
-          .append($('<p>Avarage Energy (Sum/'+N+'): '+(sum_tests/N)+'</p>'))
+          .append($('<p>Time: '+duration+' seconds</p>'))
+          .append($('<p>Avarage Duration (Time/'+steps+'): '+(duration/steps).toFixed(3)+' seconds</p>'))
+          .append($('<p>Avarage Energy (Sum/'+steps+'): '+(avg_en/steps)+'</p>'))
           .append($('<p>Minimum Energy: '+the_min.energy+'</p>'));
         
-        final_chart(e_data);    
+        final_chart(e_data);
+        console.log(the_min) 
         the_min.render();
-        controls.attr('disabled', false);
+        total_progress_bar(); 
+        test_protein();
       };      
       
       $(load);     

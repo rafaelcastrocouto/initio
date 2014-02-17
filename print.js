@@ -1,6 +1,6 @@
 var final_chart = function () {
   var el = $('<div class="chart">');
-  $('#canvas').prepend(el);
+  $canvas.prepend(el);
   el.highcharts({
     title: { text: 'AB Model Protein Folding'  },
     subtitle: { text: 'Estimated Learning Algorithm' },
@@ -26,8 +26,8 @@ var final_chart = function () {
       },{
         name: 'Minimum Energy',
         data: min_data,
-        pointInterval: num_steps + 3,
-        pointStart: num_steps + 2
+        pointInterval: ((An + En)/100) + 3,
+        pointStart: ((An + En)/100) + 2
   
       }
     ]

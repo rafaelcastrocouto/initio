@@ -70,6 +70,20 @@ if(!console) var console = {
   }
 };
 
+var realToAb = function(str){
+  var real = str.split(''), ab = []; 
+  for(var i = 0; i < real.length; ++i){
+    switch(real[i]){ //A:  I, V, L, P, C, M, G        
+      case 'A': case 'I': case 'V': case 'L': case 'P': case 'C': case 'M': case 'G':
+        ab.push('A'); 
+        break;        
+      default: //B: D, E, F, H, K, N, Q, R, S, T, W, Y
+        ab.push('B');       
+    }  
+  }
+  return ab.join('');
+};
+
 var onError = function(e) {
   console.error(['Worker error: Line ', e.lineno, ' in ', e.filename, ': ', e.message].join(''));
 };
