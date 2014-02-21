@@ -13,6 +13,7 @@
       table, canvas, h3, .container, p {margin: 6px}
       table, canvas {width: calc(100% - 12px)}
       span {white-space: nowrap}
+      input[type="text"] {text-align: right}
     </style>
   </head>
   <body>
@@ -21,13 +22,23 @@
       <span>Total Progress: <progress title="0%" id="total_prog" value="0"></progress></span>
       <span>Test Progress: <progress title="0%" id="prog" value="0"></progress></span>
       <br>
-      <span>Sequences: F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64) <input type="text" id="seqs" value="F6,1AGT" size="10" class="editable"/></span><br>
-      <span>Steps:<input type="text" id="steps" value="4,2" size="5" class="editable"/></span>
-      <span>ELA:<input type="text" id="En" value="1000,500" size="5" class="editable"/></span>
-      <span>Ann:<input type="text" id="An" value="200" size="5" class="editable"/></span>    
+      <span>Sequences: F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64) 
+        <input type="text" id="seqs" value="F6,F8,1AGT" size="15" class="editable"/>
+      </span>
+      <span>Steps:<input type="text" id="steps" value="4,2" size="5" class="editable"/></span><br>
+      <span>ELA(N):<input type="text" id="En" value="1000,500" size="10" class="editable"/></span>
+      <span>Pop:<input type="text" id="Pop" value="400,200" size="5" class="editable"/></span>    
+      <span>Parents:<input type="text" id="Parent" value="50,25" size="5" class="editable"/>% </span>    
+      <span>Angles:<input type="text" id="Ang_num" value="2,4" size="5" class="editable"/></span>    
       <span>Global Parameters:<input type="checkbox" id="gp" checked class="editable"/></span><br>
       <span>Eff:<input type="text" id="Eff" disabled size="40"/></span>
-      <span>Rig:<input type="text" id="Rig" disabled size="30"/></span><br>
+      <span>Success:<input type="text" id="Eff_success" value="+2" size="10" class="editable"/></span>    
+      <span>Fail:<input type="text" id="Eff_fail" value="-0.000001" size="10" class="editable"/></span><br>    
+      <span>Rig:<input type="text" id="Rig" disabled size="40"/></span>
+      <span>Success:<input type="text" id="Rig_success" value="+1" size="10" class="editable"/></span>    
+      <span>Fail:<input type="text" id="Rig_fail" value="-0.00001" size="10" class="editable"/></span>
+      <span>Rig Max:<input type="text" id="Rig_max" value="3" size="10" class="editable"/></span><br>
+      <span>Ann(N):<input type="text" id="An" value="200" size="10" class="editable"/></span>
       <input id="start" type="button" value="Start" class="editable"/>
       <input id="print" type="button" value="Print" class="editable"/>
     </div>  
@@ -43,7 +54,7 @@
     <script type="text/javascript" src="print.js"></script>
     
     <script type="text/javascript">
-      
+      //SEQs
       var pre_seqs = { // F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64)
         'F6': fibonacci(6), // ABBABBABABBAB
         'F7': fibonacci(7), // BABABBABABBABBABABBAB
@@ -54,10 +65,13 @@
         '1AHO': realToAb('VKDGYIVDDVNCTYFCGRNAYCNEECTKLKGESGYCQWASPYGNACYCYKLPDHVRTKGPGRCH') 
         // ABBABAABBABABBBAABBABABBBABBABABBABABBABABABAABABBAABBABBBAAABAB
       };
-      
+      //GLOBALS
       var Linearang;  //[0,0,...]
       var $seqs = $('#seqs'), current_seq, aseqs, seq_name;
       var $steps = $('#steps'), current_step, steps, asteps;
+      var $Pop = $('#Pop'), aPop, pop;
+      var $Parent = $('#Parent'), aParent, parent;
+      var $Ang_num = $('#Ang_num'), aAng_num, ang_num;
       var test, total_tests, test_counter = 1;
       var An, $An = $('#An'), aAn;
       var En, $En = $('#En'), aEn; 
@@ -69,6 +83,13 @@
       var e_data = [], min_data = []; 
       var $results = $('#results'), $container, $table, $canvas;
       var start_time, end_time;
+      var $eff = $('#Eff');
+      var $effs = $('#Eff_success'), aeffs, effs; 
+      var $efff = $('#Eff_fail'), aefff, efff;
+      var $rig =  $('#Rig');
+      var $rigs = $('#Rig_success'), arigs, rigs; 
+      var $rigf = $('#Rig_fail'), arigf, rigf;
+      var $rigm = $('#Rig_max'), arigm, rigm;
       
       var createCanvas = function(w, h){
         if(!h) h = w;
@@ -108,8 +129,28 @@
           asteps = $steps.val().split(',');
           aAn = $An.val().split(',');
           aEn = $En.val().split(',');    
+          aPop = $Pop.val().split(',');    
+          aParent = $Parent.val().split(',');    
+          aAng_num = $Ang_num.val().split(',');    
+          arigf = $rigf.val().split(',');    
+          arigs = $rigs.val().split(',');    
+          arigm = $rigm.val().split(',');    
+          aefff = $efff.val().split(',');    
+          aeffs = $effs.val().split(',');    
           
-          total_tests = Math.max(aseqs.length, asteps.length, aAn.length, aEn.length);         
+          total_tests = Math.max(
+            aseqs.length, 
+            asteps.length, 
+            aAn.length, 
+            aEn.length,
+            aPop.length, 
+            aParent.length, 
+            aAng_num.length, 
+            arigf.length, 
+            arigs.length,  
+            aefff.length,     
+            aeffs.length
+          );         
           
           gpi = $gp.prop('checked');
           
@@ -121,9 +162,8 @@
         });
       };       
       
-      var test_protein = function(){ console.log(test, total_tests)
-        if(test < total_tests) { 
-          
+      var test_protein = function(){ 
+        if(test < total_tests) {           
           if(aseqs[test]) {
             seq_name = aseqs[test];
             current_seq = pre_seqs[seq_name];
@@ -131,6 +171,14 @@
           if(asteps[test]) steps = parseInt(asteps[test]);          
           if(aAn[test]) An = parseInt(aAn[test]) ;
           if(aEn[test]) En = parseInt(aEn[test]);        
+          if(aPop[test]) pop = parseInt(aPop[test]);        
+          if(aParent[test]) parent = parseFloat(aParent[test])/100;        
+          if(aAng_num[test]) ang_num = parseInt(aAng_num[test]);        
+          if(aefff[test]) efff = aefff[test];        
+          if(aeffs[test]) effs = aeffs[test];        
+          if(arigs[test]) rigs = arigs[test];        
+          if(arigf[test]) rigf = arigf[test];        
+          if(arigm[test]) rigm = parseInt(arigm[test]);        
 
           total_prog = (An + En) * steps;            
 
@@ -145,7 +193,8 @@
           $container = $('<div>').addClass('container');
           $container.append('<h3>Test '+(test_counter)+'<h3>');
           $container.append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>');
-          $container.append('<p>ELA: '+En+', Ann: '+An+'<p>');
+          $container.append('<p>ELA(N): '+En+', Pop: '+pop+', Parent: '+(parent*100)+'%, Angles: '+ang_num+', Ann(N): '+An+'<p>');
+          $container.append('<p>Parameters Global: '+gpi+', Eff Success: '+effs+', Fail: '+efff+', Rig Success: '+rigs+', Fail: '+rigf+', Max: '+rigm+'<p>');
           $table = $('<table><tr><th>Step</th><th>Angles</th><th>Energy</th></tr></table>');
           $canvas = $('<div>');
           $container.append($table).append($canvas);
@@ -163,20 +212,32 @@
           avg_en += P.energy;
           if(P.energy < the_min.energy) the_min = P;  
         } 
-        if(current_step < steps) {          
+        if(current_step < steps) {
+                    
           /*if(the_min.getAngle) //uncomment to keep min
             var oa = the_min.getAngle(2);
-          else */
-            var oa = Linearang;
+          else */  var oa = Linearang;
           
-          var obj = { seq: current_seq, ang: oa, l: En };
+          var p = new Protein({seq: current_seq, ang: oa});          
+          e_data.push(p.energy);          
           
-          var p = new Protein(obj);          
-          e_data.push(p.energy);
+          var obj = { 
+            seq: current_seq, 
+            ang: oa, 
+            l: En, 
+            pop: pop,
+            parent: parent,
+            ang_num: ang_num,
+            efff: efff,
+            effs: effs,
+            rigf: rigf,
+            rigs: rigs,         
+            rigm: rigm         
+          };
           
           if(gpi) obj.parameter = global_parameter;
           else    obj.parameter = gen_parameter();
-          
+
           ela_worker.postMessage(JSON.stringify(obj));          
           ++current_step;          
         } else plot();        
@@ -203,9 +264,6 @@
         }
       }, false);
       
-      //PARAMETERS
-      var $eff = $('#Eff'), $rig =  $('#Rig');
-      
       var gen_parameter = function(){
         var parameter = [];        
         for(var i = 1; i < current_seq.length; ++i){
@@ -219,8 +277,8 @@
       var printParameters = function(parameter){
         var eff = [], rig = [];
         for(var i = 1; i < parameter.length - 1; ++i){
-          rig.push( Number(parameter[i].rigidity).toFixed(1) );
-          eff.push( Number(parameter[i].efficiency).toFixed(1) );
+          rig.push( Number(parameter[i].rigidity).toFixed(0) );
+          eff.push( Number(parameter[i].efficiency).toFixed(0) );
         }
         $eff.val( eff.join(',') ); 
         $rig.val( rig.join(',') );        

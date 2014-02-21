@@ -10,7 +10,7 @@ var Ann = function(seq, ang, l){
   var min_p = new Protein({'seq': seq, 'ang': ang});
   
   //ANGLES
-  var delta = Math.PI / 2;
+  var delta = Math.PI / 4; // 45 deg
   var newAngles = function(a){ 
     var array = [];
     array[0] = a + delta;
