@@ -8,12 +8,12 @@
       body {min-width: 600px;}
       table {border-collapse: collapse;}
       table, td, canvas {border: 1px solid #aaa}
-      .container {border: 1px solid #000; padding: 6px; border-radius: 6px;}
+      .container {page-break-before: always; border: 1px solid #000; padding: 6px; border-radius: 6px;}
       td {font-family: monospace; padding: 2px}
       table, canvas, h3, .container, p {margin: 6px}
       table, canvas {width: calc(100% - 12px)}
       span {white-space: nowrap}
-      input[type="text"] {text-align: right}
+      input[type="text"] {font-family: monospace; text-align: right}
     </style>
   </head>
   <body>
@@ -23,13 +23,13 @@
       <span>Test Progress: <progress title="0%" id="prog" value="0"></progress></span>
       <br>
       <span>Sequences: F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64) 
-        <input type="text" id="seqs" value="F6,F8,1AGT" size="15" class="editable"/>
+        <input type="text" id="seqs" value="F6" size="15" class="editable"/>
       </span>
-      <span>Steps:<input type="text" id="steps" value="4,2" size="5" class="editable"/></span><br>
-      <span>ELA(N):<input type="text" id="En" value="1000,500" size="10" class="editable"/></span>
-      <span>Pop:<input type="text" id="Pop" value="400,200" size="5" class="editable"/></span>    
-      <span>Parents:<input type="text" id="Parent" value="50,25" size="5" class="editable"/>% </span>    
-      <span>Angles:<input type="text" id="Ang_num" value="2,4" size="5" class="editable"/></span>    
+      <span>Steps:<input type="text" id="steps" value="30" size="5" class="editable"/></span><br>
+      <span>ELA(N):<input type="text" id="En" value="1000" size="10" class="editable"/></span>
+      <span>Pop:<input type="text" id="Pop" value="200" size="5" class="editable"/></span>    
+      <span>Parents:<input type="text" id="Parent" value="1" size="5" class="editable"/>% </span>    
+      <span>Angles:<input type="text" id="Ang_num" value="2" size="5" class="editable"/></span>    
       <span>Global Parameters:<input type="checkbox" id="gp" checked class="editable"/></span><br>
       <span>Eff:<input type="text" id="Eff" disabled size="40"/></span>
       <span>Success:<input type="text" id="Eff_success" value="+2" size="10" class="editable"/></span>    
@@ -37,7 +37,7 @@
       <span>Rig:<input type="text" id="Rig" disabled size="40"/></span>
       <span>Success:<input type="text" id="Rig_success" value="+1" size="10" class="editable"/></span>    
       <span>Fail:<input type="text" id="Rig_fail" value="-0.00001" size="10" class="editable"/></span>
-      <span>Rig Max:<input type="text" id="Rig_max" value="3" size="10" class="editable"/></span><br>
+      <span>Rig Max:<input type="text" id="Rig_max" value="1,3,10,30,100" size="10" class="editable"/></span><br>
       <span>Ann(N):<input type="text" id="An" value="200" size="10" class="editable"/></span>
       <input id="start" type="button" value="Start" class="editable"/>
       <input id="print" type="button" value="Print" class="editable"/>
@@ -119,10 +119,12 @@
         $total_prog.val(p);        
       };
       
-      var load = function(){       
-        $('#start').on('click', function(){
-          start_time = new Date();
-          
+      var load = function(){      
+        $('#print').on('click', function(){
+          window.print();
+        });         
+        $('#start').on('click', function(){     
+          total_prog = 0;   
           $controls.attr('disabled', true);
           
           aseqs = $seqs.val().split(',');          
@@ -147,23 +149,24 @@
             aParent.length, 
             aAng_num.length, 
             arigf.length, 
-            arigs.length,  
+            arigf.length, 
+            arigm.length,  
             aefff.length,     
             aeffs.length
-          );         
+          );                   
           
           gpi = $gp.prop('checked');
           
           test = 0;        
           test_protein();
         });  
-        $('#print').on('click', function(){
-          window.print();
-        });
       };       
       
       var test_protein = function(){ 
-        if(test < total_tests) {           
+        if(test < total_tests) {         
+          start_time = new Date();
+          prog = 0;    
+          
           if(aseqs[test]) {
             seq_name = aseqs[test];
             current_seq = pre_seqs[seq_name];
@@ -187,7 +190,7 @@
                   
           e_data = []; min_data = [];  
           avg_en = 0;          
-          prog = 0;
+          
           the_min = {energy: Infinity};   
        
           $container = $('<div>').addClass('container');
@@ -195,6 +198,7 @@
           $container.append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>');
           $container.append('<p>ELA(N): '+En+', Pop: '+pop+', Parent: '+(parent*100)+'%, Angles: '+ang_num+', Ann(N): '+An+'<p>');
           $container.append('<p>Parameters Global: '+gpi+', Eff Success: '+effs+', Fail: '+efff+', Rig Success: '+rigs+', Fail: '+rigf+', Max: '+rigm+'<p>');
+          $container.append('<p>Start: '+start_time+'</p>');
           $table = $('<table><tr><th>Step</th><th>Angles</th><th>Energy</th></tr></table>');
           $canvas = $('<div>');
           $container.append($table).append($canvas);
@@ -202,6 +206,7 @@
           
           current_step = 0;
           step_protein();
+          
           ++test; ++test_counter;
         } else  $controls.attr('disabled', false); 
       }
@@ -311,7 +316,7 @@
         end_time = new Date();       
         var duration = (end_time - start_time)/1000;
         $container
-          .append($('<p>Start: '+start_time+'<br>End: '+end_time+'</p>'))
+          .append($('<p>End: '+end_time+'</p>'))
           .append($('<p>Time: '+duration+' seconds</p>'))
           .append($('<p>Avarage Duration (Time/'+steps+'): '+(duration/steps).toFixed(3)+' seconds</p>'))
           .append($('<p>Avarage Energy (Sum/'+steps+'): '+(avg_en/steps)+'</p>'))

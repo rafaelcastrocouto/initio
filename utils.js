@@ -11,8 +11,7 @@ var angToCoord = function(ang){
 
 var coordToAng = function(coord){
   var ang = [], x, y, g, a = 0;
-  for(var i = 0; i < coord.length - 1; ++i){
-  
+  for(var i = 0; i < coord.length - 1; ++i){  
     x = (coord[i + 1].x - coord[i].x);
     y = (coord[i + 1].y - coord[i].y);
     
@@ -20,7 +19,6 @@ var coordToAng = function(coord){
 
     ang[i] = a - g;
     a = g;
-
   }
   ang[coord.length - 1] = 0;
   return ang;
@@ -63,13 +61,6 @@ var gaussRandom = function(mean, variance) {
   return X;
 };
 
-if(!console) var console = {
-  log: function(data){ 
-    var msg = JSON.stringify({log: data});
-    self.postMessage(msg); 
-  }
-};
-
 var realToAb = function(str){
   var real = str.split(''), ab = []; 
   for(var i = 0; i < real.length; ++i){
@@ -82,6 +73,13 @@ var realToAb = function(str){
     }  
   }
   return ab.join('');
+};
+
+if(!console) var console = {
+  log: function(data){ 
+    var msg = JSON.stringify({log: data});
+    self.postMessage(msg); 
+  }
 };
 
 var onError = function(e) {

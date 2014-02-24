@@ -6,12 +6,12 @@ var final_chart = function () {
     subtitle: { text: 'Estimated Learning Algorithm' },
     chart: {
       type: 'line',
-      zoomType: 'xy',
+      zoomType: 'xy'/*,
       events: {
         load: function(){
           //callback after chart is loaded
         }
-      }
+      }*/
     },
     xAxis: {
         title: { text: 'Protein' }

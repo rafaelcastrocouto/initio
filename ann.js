@@ -2,7 +2,11 @@ importScripts('protein.js', 'utils.js', 'energy.js');
 
 self.addEventListener('message', function(e) {
   var msg = JSON.parse(e.data);
-  Ann(msg.seq, msg.ang, msg.l);  
+  Ann(
+    msg.seq, 
+    msg.ang, 
+    msg.l
+  );  
 }, false);
 
 var Ann = function(seq, ang, l){
