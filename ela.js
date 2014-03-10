@@ -13,22 +13,36 @@ self.addEventListener('message', function(e) {
     msg.rigs,
     msg.rigf,
     msg.rigm,
+    msg.rign,
     msg.effs,
     msg.efff    
   );  
 }, false);
 
-var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, effs, efff){  
+var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, effs, efff){  
   
   var min_p = new Protein({'seq': seq, 'ang': ang}); 
   var fail_count = 0;
   
   var adjustParametersSuccess = function(p, e0, e1, a){
     //TODO use e0 and e1 to adjust parameters
-    var dif = e1 - e0;
+    //var dif = e1 - e0;
     for(var i = 0; i < a.length; ++i){
       parameter[a[i]].rigidity = eval(parameter[a[i]].rigidity + rigs);
       if(parameter[a[i]].rigidity > rigm) parameter[a[i]].rigidity = 1;
+      
+      for(var n = 1; n <= rign; ++n){
+        if(parameter[a[i] + n]){
+          parameter[a[i] + n].rigidity = eval(parameter[a[i] + n].rigidity + rigs);
+          if(parameter[a[i] + n].rigidity > rigm) parameter[a[i] + n].rigidity = 1;
+        }
+      }
+      for(var n = 1; n <= rign; ++n){
+        if(parameter[a[i] - n]){
+          parameter[a[i] - n].rigidity = eval(parameter[a[i] - n].rigidity + rigs);
+          if(parameter[a[i] - n].rigidity > rigm) parameter[a[i] - n].rigidity = 1;
+        }
+      }      
       
       parameter[a[i]].efficiency = eval(parameter[a[i]].efficiency + effs); 
       if(parameter[a[i]].efficiency > seq.length) parameter[a[i]].efficiency = 1;     

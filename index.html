@@ -14,6 +14,9 @@
       table, canvas {width: calc(100% - 12px)}
       span {white-space: nowrap}
       input[type="text"] {font-family: monospace; text-align: right}
+      .loader {display: block; margin: 0 auto; vertical-align: middle; border: 4px dotted #666;  width: 15px; height: 15px; border-radius: 50%; animation: load 2s infinite linear;} @keyframes load { 0% {transform: rotate(0deg)} 100% {transform: rotate(360deg)} }
+      .expand {cursor: pointer}
+      .hidden {overflow: hidden; height: 0}
     </style>
   </head>
   <body>
@@ -25,19 +28,20 @@
       <span>Sequences: F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64) 
         <input type="text" id="seqs" value="F6" size="15" class="editable"/>
       </span>
-      <span>Steps:<input type="text" id="steps" value="30" size="5" class="editable"/></span><br>
+      <span>Steps:<input type="text" id="steps" value="3" size="5" class="editable"/></span><br>
       <span>ELA(N):<input type="text" id="En" value="1000" size="10" class="editable"/></span>
-      <span>Pop:<input type="text" id="Pop" value="200" size="5" class="editable"/></span>    
-      <span>Parents:<input type="text" id="Parent" value="1" size="5" class="editable"/>% </span>    
-      <span>Angles:<input type="text" id="Ang_num" value="2" size="5" class="editable"/></span>    
+      <span>Pop:<input type="text" id="Pop" value="100,200,300" size="10" class="editable"/></span>    
+      <span>Parents:<input type="text" id="Parent" value="1" size="10" class="editable"/>% </span>    
+      <span>Angles:<input type="text" id="Ang_num" value="2" size="10" class="editable"/></span>    
       <span>Global Parameters:<input type="checkbox" id="gp" checked class="editable"/></span><br>
-      <span>Eff:<input type="text" id="Eff" disabled size="40"/></span>
+      <span>Efficiency:<input type="text" id="Eff" disabled size="40"/></span>
       <span>Success:<input type="text" id="Eff_success" value="+2" size="10" class="editable"/></span>    
       <span>Fail:<input type="text" id="Eff_fail" value="-0.000001" size="10" class="editable"/></span><br>    
-      <span>Rig:<input type="text" id="Rig" disabled size="40"/></span>
+      <span>Rigity:<input type="text" id="Rig" disabled size="40"/></span>
       <span>Success:<input type="text" id="Rig_success" value="+1" size="10" class="editable"/></span>    
       <span>Fail:<input type="text" id="Rig_fail" value="-0.00001" size="10" class="editable"/></span>
-      <span>Rig Max:<input type="text" id="Rig_max" value="1,3,10,30,100" size="10" class="editable"/></span><br>
+      <span>Max:<input type="text" id="Rig_max" value="10" size="10" class="editable"/></span>
+      <span>Neighbors:<input type="text" id="Rig_neigh" value="2" size="10" class="editable"/></span><br>
       <span>Ann(N):<input type="text" id="An" value="200" size="10" class="editable"/></span>
       <input id="start" type="button" value="Start" class="editable"/>
       <input id="print" type="button" value="Print" class="editable"/>
@@ -45,13 +49,14 @@
     
     <div id="results"></div> 
     
+    <script type="text/javascript" src="prefixfree.min.js"></script>
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="protein.js"></script>
     <script type="text/javascript" src="energy.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="highcharts.js"></script>
     <script type="text/javascript" src="exporting.js"></script>
-    <script type="text/javascript" src="print.js"></script>
+    <script type="text/javascript" src="charts.js"></script>
     
     <script type="text/javascript">
       //SEQs
@@ -79,8 +84,8 @@
       var $total_prog = $('#total_prog'), total_prog;
       var $prog = $('#prog'), prog;       
       var gpi, global_parameter = [], $gp = $('#gp');
-      var $controls = $('input.editable');
-      var e_data = [], min_data = []; 
+      var $controls = $('#controls'), $input = $('input.editable');
+      var energy_data = [], min_data = [], final_data = [], avg_data = []; 
       var $results = $('#results'), $container, $table, $canvas;
       var start_time, end_time;
       var $eff = $('#Eff');
@@ -90,6 +95,7 @@
       var $rigs = $('#Rig_success'), arigs, rigs; 
       var $rigf = $('#Rig_fail'), arigf, rigf;
       var $rigm = $('#Rig_max'), arigm, rigm;
+      var $rign = $('#Rig_neigh'), arign, rign;
       
       var createCanvas = function(w, h){
         if(!h) h = w;
@@ -119,13 +125,19 @@
         $total_prog.val(p);        
       };
       
-      var load = function(){      
+      var load = function(){   
+           
         $('#print').on('click', function(){
           window.print();
         });         
+        
+        $('div').on('click', '.expand', function(){ console.log('hey');
+          $(this).next().next().toggleClass('hidden');
+        });         
+        
         $('#start').on('click', function(){     
           total_prog = 0;   
-          $controls.attr('disabled', true);
+          $input.attr('disabled', true);          
           
           aseqs = $seqs.val().split(',');          
           asteps = $steps.val().split(',');
@@ -137,6 +149,7 @@
           arigf = $rigf.val().split(',');    
           arigs = $rigs.val().split(',');    
           arigm = $rigm.val().split(',');    
+          arign = $rign.val().split(',');    
           aefff = $efff.val().split(',');    
           aeffs = $effs.val().split(',');    
           
@@ -151,6 +164,7 @@
             arigf.length, 
             arigf.length, 
             arigm.length,  
+            arign.length,  
             aefff.length,     
             aeffs.length
           );                   
@@ -182,33 +196,42 @@
           if(arigs[test]) rigs = arigs[test];        
           if(arigf[test]) rigf = arigf[test];        
           if(arigm[test]) rigm = parseInt(arigm[test]);        
+          if(arign[test]) rign = parseInt(arign[test]);        
 
           total_prog = (An + En) * steps;            
 
           Linearang = gen_linear_ang(); 
           if(gpi) global_parameter = gen_parameter();         
                   
-          e_data = []; min_data = [];  
+          energy_data = []; min_data = [];  
           avg_en = 0;          
           
-          the_min = {energy: Infinity};   
-       
-          $container = $('<div>').addClass('container');
-          $container.append('<h3>Test '+(test_counter)+'<h3>');
-          $container.append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>');
-          $container.append('<p>ELA(N): '+En+', Pop: '+pop+', Parent: '+(parent*100)+'%, Angles: '+ang_num+', Ann(N): '+An+'<p>');
-          $container.append('<p>Parameters Global: '+gpi+', Eff Success: '+effs+', Fail: '+efff+', Rig Success: '+rigs+', Fail: '+rigf+', Max: '+rigm+'<p>');
-          $container.append('<p>Start: '+start_time+'</p>');
+          the_min = {energy: Infinity};  
+           
           $table = $('<table><tr><th>Step</th><th>Angles</th><th>Energy</th></tr></table>');
-          $canvas = $('<div>');
-          $container.append($table).append($canvas);
-          $results.prepend($container);
+          $canvas = $('<div>').addClass('expandable')            
+            .append($table);                               
+          $container = $('<div>').addClass('container')
+            .append('<h3>Test '+(test_counter)+'<h3>')
+            .append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>')
+            .append('<p>ELA(N): '+En+', Pop: '+pop+', Parent: '+(parent*100)+'%, Angles: '+ang_num+', Ann(N): '+An+'<p>')
+            .append('<p>Parameters Global: '+gpi+', Eff Success: '+effs+', Fail: '+efff+', Rig Success: '+rigs+', Fail: '+rigf+', Max: '+rigm+'<p>')
+            .append('<p>Start: '+start_time+'</p>') 
+            .append($('<input type="checkbox">').addClass('expand')) 
+            .append($('<span>Hide details</span>'))      
+            .append($canvas)
+            .append($('<b></b>').addClass('loader'));
+          $results           
+            .prepend($container);            
           
           current_step = 0;
           step_protein();
           
           ++test; ++test_counter;
-        } else  $controls.attr('disabled', false); 
+        } else {
+          $input.attr('disabled', false);
+          final_chart();
+        }
       }
       
       //step loop
@@ -224,7 +247,7 @@
           else */  var oa = Linearang;
           
           var p = new Protein({seq: current_seq, ang: oa});          
-          e_data.push(p.energy);          
+          energy_data.push(p.energy);          
           
           var obj = { 
             seq: current_seq, 
@@ -237,7 +260,8 @@
             effs: effs,
             rigf: rigf,
             rigs: rigs,         
-            rigm: rigm         
+            rigm: rigm,        
+            rign: rign         
           };
           
           if(gpi) obj.parameter = global_parameter;
@@ -259,11 +283,11 @@
           if(gpi) global_parameter = data.parameter;
         }
         if(data.data) {
-          e_data.push(data.data);          
+          energy_data.push(data.data);          
           progress_bar();
         }
         if(data.ang) {
-          e_data.push(data.energy);
+          energy_data.push(data.energy);
           var msg = JSON.stringify({seq: current_seq, ang: data.ang, l: An});
           ann_worker.postMessage(msg);  
         }
@@ -295,12 +319,12 @@
         var data = JSON.parse(e.data);
         if(data.log) console.log(data.log);
         if(data.data) {
-          e_data.push(data.data);
+          energy_data.push(data.data);
           progress_bar();
         }
         if(data.ang) {
           var angstr = data.ang.slice(1).join(', ');
-          e_data.push(data.energy);
+          energy_data.push(data.energy);
           min_data.push(data.energy);
           $table.append($(['<tr>',
              '<td>'+current_step+'</td>',
@@ -314,18 +338,23 @@
       
       var plot = function(){
         end_time = new Date();       
-        var duration = (end_time - start_time)/1000;
+        var duration = (end_time - start_time)/1000,
+            avarage = avg_en/steps;
+        avg_data.push(avarage);
+        final_data.push(the_min.energy);
         $container
           .append($('<p>End: '+end_time+'</p>'))
           .append($('<p>Time: '+duration+' seconds</p>'))
           .append($('<p>Avarage Duration (Time/'+steps+'): '+(duration/steps).toFixed(3)+' seconds</p>'))
-          .append($('<p>Avarage Energy (Sum/'+steps+'): '+(avg_en/steps)+'</p>'))
+          .append($('<p>Avarage Energy (Sum/'+steps+'): '+avarage+'</p>'))
           .append($('<p>Minimum Energy: '+the_min.energy+'</p>'));
         
-        final_chart(e_data);
-        console.log(the_min) 
+        test_chart(energy_data);
+        console.log(the_min); 
         the_min.render();
         total_progress_bar(); 
+        $('.loader').remove();
+        
         test_protein();
       };      
       
