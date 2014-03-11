@@ -30,7 +30,7 @@
       </span>
       <span>Steps:<input type="text" id="steps" value="3" size="5" class="editable"/></span><br>
       <span>ELA(N):<input type="text" id="En" value="1000" size="10" class="editable"/></span>
-      <span>Pop:<input type="text" id="Pop" value="100,200,300" size="10" class="editable"/></span>    
+      <span>Pop:<input type="text" id="Pop" value="400" size="10" class="editable"/></span>    
       <span>Parents:<input type="text" id="Parent" value="1" size="10" class="editable"/>% </span>    
       <span>Angles:<input type="text" id="Ang_num" value="2" size="10" class="editable"/></span>    
       <span>Global Parameters:<input type="checkbox" id="gp" checked class="editable"/></span><br>
@@ -77,7 +77,7 @@
       var $Pop = $('#Pop'), aPop, pop;
       var $Parent = $('#Parent'), aParent, parent;
       var $Ang_num = $('#Ang_num'), aAng_num, ang_num;
-      var test, total_tests, test_counter = 1;
+      var test = 0, total_tests = 0, test_counter = 1;
       var An, $An = $('#An'), aAn;
       var En, $En = $('#En'), aEn; 
       var the_min, avg_en;
@@ -131,7 +131,7 @@
           window.print();
         });         
         
-        $('div').on('click', '.expand', function(){ console.log('hey');
+        $('div').on('click', '.expand', function(){
           $(this).next().next().toggleClass('hidden');
         });         
         
@@ -152,8 +152,9 @@
           arign = $rign.val().split(',');    
           aefff = $efff.val().split(',');    
           aeffs = $effs.val().split(',');    
+          gpi = $gp.prop('checked');
           
-          total_tests = Math.max(
+          total_tests += Math.max(
             aseqs.length, 
             asteps.length, 
             aAn.length, 
@@ -167,11 +168,9 @@
             arign.length,  
             aefff.length,     
             aeffs.length
-          );                   
-          
-          gpi = $gp.prop('checked');
-          
-          test = 0;        
+          );                    
+          total_progress_bar();  
+              
           test_protein();
         });  
       };       

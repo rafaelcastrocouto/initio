@@ -13,10 +13,15 @@ var test_chart = function () {
       }*/
     },
     xAxis: {
-        title: { text: 'Protein' }
+      title: { text: 'Protein' },
+      labels: {
+        formatter: function() {
+          return 'N '+ (this.value * 100);
+        }
+      }
     },
     yAxis: {
-        title: { text: 'Energy' }     
+      title: { text: 'Energy' }     
     },
     series: [
       {
@@ -27,7 +32,7 @@ var test_chart = function () {
         data: min_data,
         pointInterval: ((An + En)/100) + 3,
         pointStart: ((An + En)/100) + 2
-  
+
       }
     ]
   })
@@ -47,10 +52,16 @@ var final_chart = function () {
       }*/
     },
     xAxis: {
-        title: { text: 'Protein' }
+      title: { text: 'Protein' },
+      allowDecimals: false,
+      labels: {
+        formatter: function() {
+          return 'Test '+ this.value;
+        }
+      }
     },
     yAxis: {
-        title: { text: 'Energy' }     
+      title: { text: 'Energy' }     
     },
     series: [
       {
