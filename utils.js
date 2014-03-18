@@ -76,8 +76,8 @@ var realToAb = function(str){
 };
 
 if(!console) var console = {
-  log: function(data){ 
-    var msg = JSON.stringify({log: data});
+  log: function(){ 
+    var msg = JSON.stringify({log: arguments.join('')});
     self.postMessage(msg); 
   }
 };

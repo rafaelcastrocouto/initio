@@ -26,22 +26,23 @@
       <span>Test Progress: <progress title="0%" id="prog" value="0"></progress></span>
       <br>
       <span>Sequences: F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64) 
-        <input type="text" id="seqs" value="F6" size="15" class="editable"/>
+        <input type="text" id="seqs" value="1AGT" size="15" class="editable"/>
       </span>
-      <span>Steps:<input type="text" id="steps" value="3" size="5" class="editable"/></span><br>
+      <span>Steps:<input type="text" id="steps" value="10" size="5" class="editable"/></span><br>
       <span>ELA(N):<input type="text" id="En" value="1000" size="10" class="editable"/></span>
-      <span>Pop:<input type="text" id="Pop" value="400" size="10" class="editable"/></span>    
+      <span>Pop:<input type="text" id="Pop" value="200" size="10" class="editable"/></span>    
       <span>Parents:<input type="text" id="Parent" value="1" size="10" class="editable"/>% </span>    
       <span>Angles:<input type="text" id="Ang_num" value="2" size="10" class="editable"/></span>    
-      <span>Global Parameters:<input type="checkbox" id="gp" checked class="editable"/></span><br>
+      <span>Global Parameters:<input type="checkbox" checked id="gp" class="editable"/></span><br>
       <span>Efficiency:<input type="text" id="Eff" disabled size="40"/></span>
       <span>Success:<input type="text" id="Eff_success" value="+2" size="10" class="editable"/></span>    
       <span>Fail:<input type="text" id="Eff_fail" value="-0.000001" size="10" class="editable"/></span><br>    
       <span>Rigity:<input type="text" id="Rig" disabled size="40"/></span>
       <span>Success:<input type="text" id="Rig_success" value="+1" size="10" class="editable"/></span>    
       <span>Fail:<input type="text" id="Rig_fail" value="-0.00001" size="10" class="editable"/></span>
-      <span>Max:<input type="text" id="Rig_max" value="10" size="10" class="editable"/></span>
-      <span>Neighbors:<input type="text" id="Rig_neigh" value="2" size="10" class="editable"/></span><br>
+      <span>Max:<input type="text" id="Rig_max" value="10" size="10" class="editable"/></span><br>
+      <span>Rigity Neighbors:<input type="text" id="Rig_neigh" value="2" size="10" class="editable"/></span>
+      <span>Neighbors exp:<input type="text" id="Rig_neighexp" value="(5-n)/4" size="10" class="editable"/></span>where n(int) = neightbor number and x(float) = current rigidity<br>
       <span>Ann(N):<input type="text" id="An" value="200" size="10" class="editable"/></span>
       <input id="start" type="button" value="Start" class="editable"/>
       <input id="print" type="button" value="Print" class="editable"/>
@@ -65,10 +66,10 @@
         'F7': fibonacci(7), // BABABBABABBABBABABBAB
         'F8': fibonacci(8), // ABBABBABABBABBABABBABABBABBABABBAB
         'F9': fibonacci(9), // BABABBABABBABBABABBABABBABBABABBABBABABBABABBABBABABBAB           
-        '1AGT': realToAb('GVPINVSCTGSPQCIKPCKDAGMRFGKCMNRKCHCTPK'), 
-        // AAAABABABABABAABAABBAAABBABAABBBABABAB
-        '1AHO': realToAb('VKDGYIVDDVNCTYFCGRNAYCNEECTKLKGESGYCQWASPYGNACYCYKLPDHVRTKGPGRCH') 
-        // ABBABAABBABABBBAABBABABBBABBABABBABABBABABABAABABBAABBABBBAAABAB
+        '1AGT': realToAb(     'GVPINVSCTGSPQCIKPCKDAGMRFGKCMNRKCHCTPK'), 
+                            // AAAABABABABABAABAABBAAABBABAABBBABABAB
+        '1AHO': realToAb(     'VKDGYIVDDVNCTYFCGRNAYCNEECTKLKGESGYCQWASPYGNACYCYKLPDHVRTKGPGRCH') 
+                            // ABBABAABBABABBBAABBABABBBABBABABBABABBABABABAABABBAABBABBBAAABAB
       };
       //GLOBALS
       var Linearang;  //[0,0,...]
@@ -96,6 +97,7 @@
       var $rigf = $('#Rig_fail'), arigf, rigf;
       var $rigm = $('#Rig_max'), arigm, rigm;
       var $rign = $('#Rig_neigh'), arign, rign;
+      var $rigx = $('#Rig_neighexp'), arigx, rigx;
       
       var createCanvas = function(w, h){
         if(!h) h = w;
@@ -149,7 +151,8 @@
           arigf = $rigf.val().split(',');    
           arigs = $rigs.val().split(',');    
           arigm = $rigm.val().split(',');    
-          arign = $rign.val().split(',');    
+          arign = $rign.val().split(',');
+          arigx = $rigx.val().split(',');
           aefff = $efff.val().split(',');    
           aeffs = $effs.val().split(',');    
           gpi = $gp.prop('checked');
@@ -166,6 +169,7 @@
             arigf.length, 
             arigm.length,  
             arign.length,  
+            arigx.length,  
             aefff.length,     
             aeffs.length
           );                    
@@ -184,18 +188,19 @@
             seq_name = aseqs[test];
             current_seq = pre_seqs[seq_name];
           }
-          if(asteps[test]) steps = parseInt(asteps[test]);          
-          if(aAn[test]) An = parseInt(aAn[test]) ;
-          if(aEn[test]) En = parseInt(aEn[test]);        
-          if(aPop[test]) pop = parseInt(aPop[test]);        
-          if(aParent[test]) parent = parseFloat(aParent[test])/100;        
+          if(asteps[test])   steps = parseInt(asteps[test]);          
+          if(aAn[test])      An = parseInt(aAn[test]) ;
+          if(aEn[test])      En = parseInt(aEn[test]);        
+          if(aPop[test])     pop = parseInt(aPop[test]);        
+          if(aParent[test])  parent = parseFloat(aParent[test])/100;        
           if(aAng_num[test]) ang_num = parseInt(aAng_num[test]);        
           if(aefff[test]) efff = aefff[test];        
           if(aeffs[test]) effs = aeffs[test];        
           if(arigs[test]) rigs = arigs[test];        
-          if(arigf[test]) rigf = arigf[test];        
+          if(arigf[test]) rigf = arigf[test];                
           if(arigm[test]) rigm = parseInt(arigm[test]);        
           if(arign[test]) rign = parseInt(arign[test]);        
+          if(arigx[test]) rigx = arigx[test]; 
 
           total_prog = (An + En) * steps;            
 
@@ -215,6 +220,7 @@
             .append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>')
             .append('<p>ELA(N): '+En+', Pop: '+pop+', Parent: '+(parent*100)+'%, Angles: '+ang_num+', Ann(N): '+An+'<p>')
             .append('<p>Parameters Global: '+gpi+', Eff Success: '+effs+', Fail: '+efff+', Rig Success: '+rigs+', Fail: '+rigf+', Max: '+rigm+'<p>')
+            .append('<p>Rigidity Neightbors: '+rign+', Neightbors Expression: '+rigx+'<p>')
             .append('<p>Start: '+start_time+'</p>') 
             .append($('<input type="checkbox">').addClass('expand')) 
             .append($('<span>Hide details</span>'))      
@@ -260,7 +266,8 @@
             rigf: rigf,
             rigs: rigs,         
             rigm: rigm,        
-            rign: rign         
+            rign: rign,         
+            rigx: rigx         
           };
           
           if(gpi) obj.parameter = global_parameter;
