@@ -24,7 +24,17 @@ self.addEventListener('message', function(e) {
  * @param {String} seq - String with the aminoacid's type sequence.
  * @param {Array} ang - The angle sequence in radians.
  * @param {int} l - The limit of loops (stop criteria).
- * @param {Object} parameter - The parameters ...
+ * @param {Object} parameter - The parameters object {rigidity: Array, efficiency: Array}.
+ * @param {int} pop - The size of the population (number of solutions per loop).
+ * @param {float} parent - The percentage of the population that will be reference to new solutions.
+ * @param {int} ang_num - Number of angles changed per solution.
+ * @param {string} rigs - The expression that changes rigidity on successes.
+ * @param {string} rigf - The expression that changes rigidity on fails.
+ * @param {float} rigm - Maximum value for rigidity.
+ * @param {int} rign - Number of neightbors affected by rigidity.
+ * @param {string} rigx - The expression that changes neightbors rigidity value.
+ * @param {string} effs - The expression that changes efficiency on successes.
+ * @param {string} efff - The expression that changes efficiency on fails.
  */
 var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, rigx, effs, efff){  
   var n = 2;

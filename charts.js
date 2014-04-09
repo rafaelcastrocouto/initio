@@ -17,7 +17,7 @@ var test_chart = function () {
       labels: {
         formatter: function() {
           return 'N '+ (this.value * 100);
-        }
+        } 
       }
     },
     yAxis: {
@@ -56,7 +56,8 @@ var final_chart = function () {
       allowDecimals: false,
       labels: {
         formatter: function() {
-          return 'Test '+ this.value;
+          var testnum = this.value + 1;
+          return '<a href="#Test_'+ testnum +'">Test '+ testnum +'</a>';
         }
       }
     },

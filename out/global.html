@@ -256,7 +256,7 @@
         
             
 <dt>
-    <h4 class="name" id="Ela"><span class="type-signature"></span>Ela<span class="signature">(seq, ang, l, parameter)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Ela"><span class="type-signature"></span>Ela<span class="signature">(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, rigx, effs, efff)</span><span class="type-signature"></span></h4>
 
     
 </dt>
@@ -383,7 +383,237 @@
 
             
 
-            <td class="description last">The parameters ...</td>
+            <td class="description last">The parameters object {rigidity: Array, efficiency: Array}.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pop</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The size of the population (number of solutions per loop).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The percentage of the population that will be reference to new solutions.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ang_num</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of angles changed per solution.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes rigidity on successes.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigf</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes rigidity on fails.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Maximum value for rigidity.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rign</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of neightbors affected by rigidity.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes neightbors rigidity value.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>effs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes efficiency on successes.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>efff</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes efficiency on fails.</td>
         </tr>
 
     
@@ -414,7 +644,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ela.js.html">ela.js</a>, <a href="ela.js.html#line29">line 29</a>
+        <a href="ela.js.html">ela.js</a>, <a href="ela.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -463,7 +693,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Tue Mar 18 2014 17:31:17 GMT-0300 (Hora oficial do Brasil)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed Mar 19 2014 16:22:27 GMT-0300 (Hora oficial do Brasil)
 </footer>
 
 <script> prettyPrint(); </script>

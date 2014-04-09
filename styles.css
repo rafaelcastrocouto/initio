@@ -1,0 +1,79 @@
+body {
+  min-width: 600px;
+  font-family: arial;
+  font-size: small;
+}
+progress {
+  width: 100px;
+}
+table {
+  border-collapse: collapse;
+}
+table, td, canvas {
+  border: 1px solid #aaa;
+}
+td {
+  font-family: monospace; 
+  padding: 2px;
+}
+table, canvas, h3, .container, p {
+  margin: 6px
+}
+table, canvas {
+  width: calc(100% - 12px);
+}
+span {
+  white-space: nowrap;
+}
+input[type="text"] {
+  font-family: monospace; 
+  text-align: right;
+  width: 100px;
+  transition: width 0.6s;
+}
+input[type="text"]:focus {
+  width: 300px;
+}
+input[type="text"][disabled]:hover {
+  width: 300px;
+}
+a, input[type="button"] {
+  outline: 0; 
+  font-family: sans-serif; 
+  font-size: 14px; 
+  padding: .4em .8em; 
+  cursor: pointer; 
+  text-decoration: none; 
+  background-color: lightsteelblue; 
+  border-radius: 4px; 
+  color: white; 
+  text-shadow: 0 1px 0 steelblue;
+  border: 0;
+}
+a:hover, input[type="button"]:hover {
+  background-color: steelblue;
+  text-shadow: 0 -1px 0 darkblue;
+}
+.container {
+  page-break-before: always; 
+  border: 1px solid steelblue; 
+  padding: 6px; 
+  border-radius: 6px;
+}
+.loader {
+  display: block; 
+  margin: 0 auto; 
+  vertical-align: middle; 
+  border: 4px dotted steelblue;
+  width: 15px; height: 15px; 
+  border-radius: 50%; 
+  animation: load 2s infinite linear;
+} @keyframes load { 
+  0% {transform: rotate(0deg)} 
+  100% {transform: rotate(360deg)} 
+}
+.expand {cursor: pointer}
+.hidden {
+  overflow: hidden; 
+  height: 0;
+}
