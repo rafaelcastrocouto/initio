@@ -25,6 +25,7 @@ var $prog = $('#prog'), prog;
 var gpi, global_parameter = [], $gp = $('#gp');
 var $controls = $('#controls'), $input = $('input.editable');
 var energy_data = [], min_data = [], final_data = [], avg_data = []; 
+var save_data = [];
 var $results = $('#results'), $container, $table, $canvas;
 var start_time, end_time;
 var $eff = $('#Eff');
@@ -161,7 +162,7 @@ var test_protein = function(){
 
     $table = $('<table><tr><th>Step</th><th>Angles</th><th>Energy</th></tr></table>');
     $canvas = $('<div>').addClass('expandable')            
-      .append($table);                               
+      .append($table);              
     $container = $('<div>').addClass('container')
       .append('<h3 id="Test_'+test_counter+'">Test '+test_counter+'<h3>')
       .append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>')
@@ -174,8 +175,15 @@ var test_protein = function(){
       .append($canvas)
       .append($('<b></b>').addClass('loader'));
     $results           
-      .prepend($container);            
-
+      .prepend($container); 
+    
+    save_data = [
+      seq_name+'('+current_seq.length+')', 
+      En, pop, parent*100, ang_num, An, gpi,
+      effs, efff, rigs, rigf, rigm, rign, rigx,
+      start_time.valueOf()
+    ];   
+    
     current_step = 0;
     step_protein();
 
@@ -226,7 +234,7 @@ var step_protein = function(P){
 };   
 
 //workers
-var ela_worker = new Worker('ela.js');
+var ela_worker = new Worker('js/ela.js');
 ela_worker.addEventListener('error', onError, false);
 ela_worker.addEventListener('message', function(e) {
   var data = JSON.parse(e.data); 
@@ -266,7 +274,7 @@ var printParameters = function(parameter){
   $rig.val( rig.join(',') );        
 };      
 
-var ann_worker = new Worker('ann.js');
+var ann_worker = new Worker('js/ann.js');
 ann_worker.addEventListener('error', onError, false);
 ann_worker.addEventListener('message', function(e) { 
   var data = JSON.parse(e.data);
@@ -291,17 +299,24 @@ ann_worker.addEventListener('message', function(e) {
 
 var plot = function(){
   end_time = new Date();       
-  var duration = (end_time - start_time)/1000,
+  var duration = (end_time.valueOf() - start_time.valueOf())/1000,
       avarage = avg_en/steps;
   avg_data.push(avarage);
   final_data.push(the_min.energy);
   $container
     .append($('<p>End: '+end_time+'</p>'))
-    .append($('<p>Time: '+duration+' seconds</p>'))
+    .append($('<p>Time: '+duration.toFixed(3)+' seconds</p>'))
     .append($('<p>Avarage Duration (Time/'+steps+'): '+(duration/steps).toFixed(3)+' seconds</p>'))
     .append($('<p>Avarage Energy (Sum/'+steps+'): '+avarage+'</p>'))
     .append($('<p>Minimum Energy: '+the_min.energy+'</p>'));
 
+  save_data = save_data.concat([
+    end_time.valueOf(), duration.toFixed(3), (duration/steps).toFixed(3), avarage, 
+    the_min.energy, the_min.getAngle().slice(1).join(', ')
+  ]);
+
+  $.post('/post', {data: save_data.join(';')});      
+  
   test_chart(energy_data);
   console.log(the_min); 
   the_min.render();

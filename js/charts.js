@@ -13,7 +13,7 @@ var test_chart = function () {
       }*/
     },
     xAxis: {
-      title: { text: 'Protein' },
+      title: { text: 'N Steps' },
       labels: {
         formatter: function() {
           return 'N '+ (this.value * 100);
@@ -62,7 +62,7 @@ var final_chart = function () {
       }
     },
     yAxis: {
-      title: { text: 'Energy' }     
+      title: { text: 'Test' }     
     },
     series: [
       {
