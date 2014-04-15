@@ -3,16 +3,18 @@
 
 Toy model AB protein folding problem in javascript
 
-[Latest Version](http://rafaelcastrocouto.github.com/initio "Current")
+[Latest Version](http://rafaelcastrocouto.github.com/initio)
 
-[Presentation](http://rafaelcastrocouto.github.io/initio/intro%20press/ "Presentation")
+[Presentation](http://rafaelcastrocouto.github.io/initio/intro%20press/)
 
-[Gaussian Test](http://rafaelcastrocouto.github.io/initio/gauss_test/gauss.html "Gaussian Test")
+[Gaussian Test](http://rafaelcastrocouto.github.io/initio/gauss_test/gauss.html)
 
-  - [Read more](http://blog.yjl.im/2010/09/simulating-normal-random-variable-using.html "Read more")
+  - [Read more](http://blog.yjl.im/2010/09/simulating-normal-random-variable-using.html)
 
-[Search Space Graphics](http://rafaelcastrocouto.github.io/initio/2d%20search%20space/ "Search Space Graphics")
+[Search Space Graphics](http://rafaelcastrocouto.github.io/initio/2d%20search%20space/)
 
-[SQL Results](http://codepen.io/rafaelcastrocouto/full/zpwBc "SQL Results")
+[CSV Results](https://docs.google.com/spreadsheet/ccc?key=0AuXoY3hwgxGAdE9HT0cxLTAxMGlkOEMyWFNyUl9RT1E#gid=1)
+
+[SQL Filter Results](http://codepen.io/rafaelcastrocouto/full/zpwBc)
 
 Autor: rafaelcastrocouto
