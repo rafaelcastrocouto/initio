@@ -58,7 +58,7 @@ var progress_bar = function(){
   var p = prog/total_prog;
   var s = p*100;
   $prog.attr('title', s.toFixed(1) + '%');
-  $prog.prev().text(s.toFixed(0) + '%');
+  $prog.prev().text(s.toFixed(1) + '%');
   $prog.val(p);
   
 };
@@ -67,7 +67,7 @@ var total_progress_bar = function(){
   var p = test/total_tests;
   var s = p*100;
   $total_prog.attr('title', s.toFixed(1) + '%');
-  $total_prog.prev().text(s.toFixed(0) + '%');
+  $total_prog.prev().text(s.toFixed(1) + '%');
   $total_prog.val(p);        
 };
 

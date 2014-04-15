@@ -6,20 +6,32 @@ var protein = new protein({
 console.log('energy: ', energy(protein)); //-3,29...;
 */
 
+/**
+ * Calculates the coefficient "C" from a AB model pair (AB model energy calculation)
+ * @param {String} i - Type of the first aminoacid model ("A" or "B").
+ * @param {String} j - Type of the second aminoacid model ("A" or "B").
+ */
 var C = function(i, j){ 
   if(i.seq == 'A' && j.seq == 'A') return 1;
   if(i.seq == 'A' && j.seq == 'B'
   || i.seq == 'B' && j.seq == 'A') return -0.5;
   if(i.seq == 'B' && j.seq == 'B') return 0.5;
 }
-
+/**
+ * Calculates euclidean distance between two points 
+ * @param {i} Point - An object with x and y values ({x: Float, y: Float})
+ * @param {j} Point - Another object with x and y values 
+ */
 var distance = function(i, j){
   return Math.pow( 
           Math.pow((i.x - j.x), 2) + 
           Math.pow((i.y - j.y), 2), 
         0.5 );
 }
-
+/**
+ * Calculates the energy of a AB model protein
+ * @param {protein} Protein - A protein in AB model with a series of aminoacids 
+ */
 var energy = function(protein){
   var aminos = protein.aminos;
   var n = aminos.length;

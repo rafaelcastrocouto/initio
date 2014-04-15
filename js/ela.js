@@ -39,7 +39,6 @@ self.addEventListener('message', function(e) {
 var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, rigx, effs, efff){  
   var n = 2;
   var min_p = new Protein({'seq': seq, 'ang': ang}); 
-  var fail_count = 0;
   
   var adjustParametersSuccess = function(p, e0, e1, a){
     //TODO use e0 and e1 to adjust parameters
@@ -144,13 +143,11 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
   
   //TESTS
   var adjustParameters = function(p, a){ 
-    if(p.energy < min_p.energy) { //real success
+    if(p.energy < min_p.energy) {
       adjustParametersSuccess(p, min_p.energy, p.energy, a);
       min_p = p;
-      fail_count = 0; 
-    } else { //fail
+    } else {
       adjustParametersFail(p, min_p.energy, p.energy, a);
-      fail_count++;
     }
   };  
  

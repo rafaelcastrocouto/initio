@@ -47,7 +47,7 @@ var Protein = function(obj){
 }
 /**
  * Return an array with the angle sequence.
- * @param {int} n - The float precision (Number of digits after the decimal point).
+ * @param {int} n - [Optional] The float precision (Number of digits after the decimal point).
  */
 Protein.prototype.getAngle = function(n){
   var a = [];

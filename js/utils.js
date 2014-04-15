@@ -1,3 +1,7 @@
+/**
+ * Converts AB model Angle sequences to Coordinates sequences
+ * @param {Array} coord - Length of the desired sequence.
+ */
 var angToCoord = function(ang){
   var coord = [], x = 0, y = 0, g = 0, r = 1;
   for(var i = 0; i < ang.length; ++i){
@@ -8,7 +12,10 @@ var angToCoord = function(ang){
   };
   return coord;
 };
-
+/**
+ * Converts AB model Coordinates sequences to Angle sequences
+ * @param {Array} coord - Length of the desired sequence.
+ */
 var coordToAng = function(coord){
   var ang = [], x, y, g, a = 0;
   for(var i = 0; i < coord.length - 1; ++i){  
@@ -25,6 +32,10 @@ var coordToAng = function(coord){
 };
 
 var fibonacciCache = ['A', 'B'];
+/**
+ * Fibonacci sequence with AB Model
+ * @param {Int} l - Length of the desired sequence.
+ */
 var fibonacci = function(l){
   var f = fibonacciCache, i = 0;
   var fib = function(i){
@@ -39,7 +50,10 @@ var fibonacci = function(l){
   };
   return f[l];
 };
-
+/**
+ * Gaussian Random with polar method - Sheldon Ross (pp. 464, 6ed)
+ * @param {String} e - Converts a Real Sequence to AB Model. A: [I, V, L, P, C, M, G] B: [D, E, F, H, K, N, Q, R, S, T, W, Y]
+ */
 var gaussRandom = function(mean, variance) {
   if (mean == undefined)
     mean = 0.0;
@@ -60,7 +74,10 @@ var gaussRandom = function(mean, variance) {
 //Y = mean + Math.sqrt(variance) * Y ;
   return X;
 };
-
+/**
+ * Converts Real protein sequences to AB Model sequences - A: [I, V, L, P, C, M, G] B: [D, E, F, H, K, N, Q, R, S, T, W, Y]
+ * @param {String} e - Converts a Real Sequence to AB Model.
+ */
 var realToAb = function(str){
   var real = str.split(''), ab = []; 
   for(var i = 0; i < real.length; ++i){
@@ -81,7 +98,10 @@ if(!console) var console = {
     self.postMessage(msg); 
   }
 };
-
+/**
+ * Prints Error events to the debug console
+ * @param {Error} e - Object with error degub info.
+ */
 var onError = function(e) {
   console.error(['Worker error: Line ', e.lineno, ' in ', e.filename, ': ', e.message].join(''));
 };
