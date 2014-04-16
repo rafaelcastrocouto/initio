@@ -2,7 +2,7 @@ var test_chart = function () {
   var el = $('<div class="chart">');
   $canvas.prepend(el);
   el.highcharts({
-    title: { text: 'Test'+test_counter+' Chart'  },
+    title: { text: 'Test'+(test_counter-1)+' Chart'  },
     chart: {
       type: 'line',
       zoomType: 'xy'/*,
@@ -38,6 +38,7 @@ var test_chart = function () {
   })
 };
 var final_chart = function () {
+  if(final_data.length == 1) return;
   var el = $('<div class="container">');
   $results.prepend(el);
   el.highcharts({

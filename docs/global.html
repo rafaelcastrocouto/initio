@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Global</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Global</h1>
+
+    
+
+
+
+<section>
+
+<header>
+    <h2>
+    
+    </h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+
+        
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="angToCoord"><span class="type-signature"></span>angToCoord<span class="signature">(coord)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Converts AB model Angle sequences to Coordinates sequences
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coord</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Length of the desired sequence.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="Ann"><span class="type-signature"></span>Ann<span class="signature">(seq, ang, l)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Algorithm inspired in Simulated Annealing
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seq</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">String with the aminoacid's type sequence.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The angle sequence in radians.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>l</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The limit of loops (stop criteria).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ann.js.html">ann.js</a>, <a href="ann.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="C"><span class="type-signature"></span>C<span class="signature">(i, j)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Calculates the coefficient "C" from a AB model pair (AB model energy calculation)
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>i</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Type of the first aminoacid model ("A" or "B").</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>j</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Type of the second aminoacid model ("A" or "B").</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="energy.js.html">energy.js</a>, <a href="energy.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="coordToAng"><span class="type-signature"></span>coordToAng<span class="signature">(coord)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Converts AB model Coordinates sequences to Angle sequences
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coord</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Length of the desired sequence.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="distance"><span class="type-signature"></span>distance<span class="signature">(Point, Point)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Calculates euclidean distance between two points
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>Point</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">i</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An object with x and y values ({x: Float, y: Float})</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Point</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">j</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Another object with x and y values</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="energy.js.html">energy.js</a>, <a href="energy.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="Ela"><span class="type-signature"></span>Ela<span class="signature">(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, rigx, effs, efff)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Estimated Learning Algorithm
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seq</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">String with the aminoacid's type sequence.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The angle sequence in radians.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>l</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The limit of loops (stop criteria).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parameter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The parameters object {rigidity: Array, efficiency: Array}.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pop</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The size of the population (number of solutions per loop).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The percentage of the population that will be reference to new solutions.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ang_num</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of angles changed per solution.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes rigidity on successes.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigf</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes rigidity on fails.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Maximum value for rigidity.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rign</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of neightbors affected by rigidity.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rigx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes neightbors rigidity value.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>effs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes efficiency on successes.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>efff</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The expression that changes efficiency on fails.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ela.js.html">ela.js</a>, <a href="ela.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="energy"><span class="type-signature"></span>energy<span class="signature">(Protein)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Calculates the energy of a AB model protein
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>Protein</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">protein</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A protein in AB model with a series of aminoacids</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="energy.js.html">energy.js</a>, <a href="energy.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="fibonacci"><span class="type-signature"></span>fibonacci<span class="signature">(l)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Fibonacci sequence with AB Model
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>l</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Length of the desired sequence.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="gaussRandom"><span class="type-signature"></span>gaussRandom<span class="signature">(e)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gaussian Random with polar method - Sheldon Ross (pp. 464, 6ed)
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Converts a Real Sequence to AB Model. A: [I, V, L, P, C, M, G] B: [D, E, F, H, K, N, Q, R, S, T, W, Y]</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line57">line 57</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="onError"><span class="type-signature"></span>onError<span class="signature">(e)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Prints Error events to the debug console
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Error</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Object with error degub info.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line105">line 105</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="realToAb"><span class="type-signature"></span>realToAb<span class="signature">(e)</span><span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Converts Real protein sequences to AB Model sequences - A: [I, V, L, P, C, M, G] B: [D, E, F, H, K, N, Q, R, S, T, W, Y]
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Converts a Real Sequence to AB Model.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line81">line 81</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Amino.html">Amino</a></li><li><a href="Protein.html">Protein</a></li></ul><h3>Global</h3><ul><li><a href="global.html#angToCoord">angToCoord</a></li><li><a href="global.html#Ann">Ann</a></li><li><a href="global.html#C">C</a></li><li><a href="global.html#coordToAng">coordToAng</a></li><li><a href="global.html#distance">distance</a></li><li><a href="global.html#Ela">Ela</a></li><li><a href="global.html#energy">energy</a></li><li><a href="global.html#fibonacci">fibonacci</a></li><li><a href="global.html#gaussRandom">gaussRandom</a></li><li><a href="global.html#onError">onError</a></li><li><a href="global.html#realToAb">realToAb</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed Apr 16 2014 11:50:46 GMT-0300 (Hora oficial do Brasil)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

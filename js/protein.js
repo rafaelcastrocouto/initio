@@ -85,23 +85,37 @@ Protein.prototype.render = function(ctx){
   var context = ctx || this.context;
   if(!context) {
     var canvas = createCanvas(1000, 500);
+        canvas.protein = this;
         canvas.scale = 20;
-        canvas.offset = 200;
+        canvas.offset = {x: 200, y: 200};    
     context = canvas.getContext('2d');    
     this.context = context;
+    $(canvas).mousedown(function(e){
+      e.target.dragging = true;
+    }).mouseup(function(e){
+      e.target.dragging = false;      
+    }).mouseout(function(e){
+      e.target.dragging = false;      
+    }).mousemove(function(e){
+      if(e.target.dragging){
+        e.target.offset.x = e.offsetX - 100;
+        e.target.offset.y = e.offsetY;
+        e.target.protein.render();
+      }
+    });
   }
   var ox, oy, canvas = context.canvas;
-  context.fillStyle = 'rgba(255,255,255,0.75)';
+  context.fillStyle = 'rgba(255,255,255,0.6)';
   context.fillRect(0,0,canvas.width, canvas.height);
   
   for(var i = 0; i < this.length; ++i){
     //CONNECTION STROKE
     if(i != 0){
       context.beginPath();
-      context.moveTo(ox * canvas.scale + canvas.offset, 
-                     oy * canvas.scale + canvas.offset)
-      context.lineTo(this.aminos[i].x * canvas.scale + canvas.offset, 
-                     this.aminos[i].y * canvas.scale + canvas.offset);
+      context.moveTo(ox * canvas.scale + canvas.offset.x, 
+                     oy * canvas.scale + canvas.offset.y)
+      context.lineTo(this.aminos[i].x * canvas.scale + canvas.offset.x, 
+                     this.aminos[i].y * canvas.scale + canvas.offset.y);
       context.closePath();
       context.strokeStyle = this.aminos[i].stroke || 'black';
       context.stroke();
@@ -114,8 +128,8 @@ Protein.prototype.render = function(ctx){
     //AMINO CIRCLE
     context.beginPath();
     context.arc(
-      this.aminos[i].x * canvas.scale + canvas.offset, 
-      this.aminos[i].y * canvas.scale + canvas.offset, 
+      this.aminos[i].x * canvas.scale + canvas.offset.x, 
+      this.aminos[i].y * canvas.scale + canvas.offset.y, 
       this.aminos[i].radius,
       0, Math.PI*2, 0); //start angle, end angle, cc
     context.closePath();

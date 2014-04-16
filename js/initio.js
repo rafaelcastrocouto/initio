@@ -105,7 +105,7 @@ var load = function(){
     aeffs = $effs.val().split(',');    
     gpi = $gp.prop('checked');
 
-    total_tests += Math.max(
+    total_tests = Math.max(
       aseqs.length, 
       asteps.length, 
       aAn.length, 
@@ -122,7 +122,7 @@ var load = function(){
       aeffs.length
     );                    
     total_progress_bar();  
-
+    test = 0;
     test_protein();
   });  
 };       

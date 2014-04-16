@@ -1,4 +1,4 @@
-var port = 80,                              // default http port
+var port = 3000,                            // http port
     dir = __dirname,                        // current directory
     fs = require('fs'),                     // file system i/o
     http = require('http'),                 // http server
