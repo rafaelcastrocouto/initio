@@ -107,7 +107,9 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
   var randomGauss = function(p, a){ 
     var array = p.getAngle(); 
     for(var i = 0; i < a.length; ++i){
-      array[a[i]] += delta * gaussRandom(0, 1/parameter[a[i]].rigidity);
+      var ang = array[a[i]], r = parameter[a[i]].rigidity;
+                      //mean, variance
+      array[a[i]] = gaussRandom( ang, 1/r ) % delta;
     } 
     return array; 
   };
@@ -144,8 +146,7 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
   //TESTS
   var adjustParameters = function(p, a){ 
     if(p.energy < min_p.energy) {
-      adjustParametersSuccess(p, min_p.energy, p.energy, a);
-      min_p = p;
+      adjustParametersSuccess(p, min_p.energy, p.energy, a);      
     } else {
       adjustParametersFail(p, min_p.energy, p.energy, a);
     }
@@ -190,8 +191,8 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
   }
   
   var msg = JSON.stringify({
-    energy: min_p.energy, 
-    ang: min_p.getAngle(), 
+    energy: population[0].energy, 
+    ang: population[0].getAngle(), 
     parameter: parameter
   });
   self.postMessage(msg);
