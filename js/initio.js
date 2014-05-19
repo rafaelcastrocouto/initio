@@ -31,12 +31,15 @@ var start_time, end_time;
 var $eff = $('#Eff');
 var $effs = $('#Eff_success'), aeffs, effs; 
 var $efff = $('#Eff_fail'), aefff, efff;
+var $effm = $('#Eff_max'), aeffm, effm;
 var $rig =  $('#Rig');
 var $rigs = $('#Rig_success'), arigs, rigs; 
 var $rigf = $('#Rig_fail'), arigf, rigf;
 var $rigm = $('#Rig_max'), arigm, rigm;
 var $rign = $('#Rig_neigh'), arign, rign;
 var $rigx = $('#Rig_neighexp'), arigx, rigx;
+var $ast = $('#Ann_start'), ast, st;
+var $adel = $('#Ann_delta'), adel, del;
 
 var createCanvas = function(w, h){
   if(!h) h = w;
@@ -103,6 +106,9 @@ var load = function(){
     arigx = $rigx.val().split(',');
     aefff = $efff.val().split(',');    
     aeffs = $effs.val().split(',');    
+    aeffm = $effm.val().split(',');    
+    ast = $ast.val().split(',');    
+    adel = $adel.val().split(',');    
     gpi = $gp.prop('checked');
 
     total_tests = Math.max(
@@ -119,7 +125,8 @@ var load = function(){
       arign.length,  
       arigx.length,  
       aefff.length,     
-      aeffs.length
+      aeffs.length,
+      aeffm.length
     );                    
     total_progress_bar();  
     test = 0;
@@ -143,12 +150,15 @@ var test_protein = function(){
     if(aParent[test])  parent = parseFloat(aParent[test])/100;        
     if(aAng_num[test]) ang_num = parseInt(aAng_num[test]);        
     if(aefff[test]) efff = aefff[test];        
+    if(aeffm[test]) effm = aeffm[test];        
     if(aeffs[test]) effs = aeffs[test];        
     if(arigs[test]) rigs = arigs[test];        
     if(arigf[test]) rigf = arigf[test];                
     if(arigm[test]) rigm = parseInt(arigm[test]);        
     if(arign[test]) rign = parseInt(arign[test]);        
     if(arigx[test]) rigx = arigx[test]; 
+    if(ast[test]) st = ast[test]; 
+    if(adel[test]) del = parseFloat(adel[test]); 
 
     total_prog = (An + En) * steps;            
 
@@ -166,9 +176,10 @@ var test_protein = function(){
     $container = $('<div>').addClass('container')
       .append('<h3 id="Test_'+test_counter+'">Test '+test_counter+'<h3>')
       .append('<p>Sequence: '+seq_name+'('+current_seq.length+') ['+current_seq+']<p>')
-      .append('<p>ELA(N): '+En+', Pop: '+pop+', Parent: '+(parent*100)+'%, Angles: '+ang_num+', Ann(N): '+An+'<p>')
-      .append('<p>Parameters Global: '+gpi+', Eff Success: '+effs+', Fail: '+efff+', Rig Success: '+rigs+', Fail: '+rigf+', Max: '+rigm+'<p>')
-      .append('<p>Rigidity Neightbors: '+rign+', Neightbors Expression: '+rigx+'<p>')
+      .append('<p>ELA(N): '+En+', Pop: '+pop+', Parent: '+(parent*100)+'%, Angles: '+ang_num+', Parameters Global: '+gpi+'<p>')
+      .append('<p>Eff Success: '+effs+', Fail: '+efff+', Max: '+effm+'<p>')
+      .append('<p>Rig Success: '+rigs+', Fail: '+rigf+', Max: '+rigm+ ', Neightbors: '+rign+', Expression: '+rigx+'<p>')
+      .append('<p>Ann(N): '+An+', Start angle: '+st+', Delta: '+del+'<p>')
       .append('<p>Start: '+start_time+'</p>') 
       .append($('<input type="checkbox">').addClass('expand')) 
       .append($('<span>Hide details</span>'))      
@@ -218,6 +229,7 @@ var step_protein = function(P){
       ang_num: ang_num,
       efff: efff,
       effs: effs,
+      effm: effm,
       rigf: rigf,
       rigs: rigs,         
       rigm: rigm,        
@@ -249,7 +261,13 @@ ela_worker.addEventListener('message', function(e) {
   }
   if(data.ang) {
     energy_data.push(data.energy);
-    var msg = JSON.stringify({seq: current_seq, ang: data.ang, l: An});
+    var msg = JSON.stringify({
+      seq: current_seq, 
+      ang: data.ang, 
+      l: An, 
+      start: eval(st),
+      delta: del
+    });
     ann_worker.postMessage(msg);  
   }
 }, false);

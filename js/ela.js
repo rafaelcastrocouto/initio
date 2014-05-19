@@ -16,7 +16,8 @@ self.addEventListener('message', function(e) {
     msg.rign,
     msg.rigx,
     msg.effs,
-    msg.efff    
+    msg.efff,    
+    msg.effm    
   );  
 }, false);
 /**
@@ -35,9 +36,9 @@ self.addEventListener('message', function(e) {
  * @param {string} rigx - The expression that changes neightbors rigidity value.
  * @param {string} effs - The expression that changes efficiency on successes.
  * @param {string} efff - The expression that changes efficiency on fails.
+ * @param {int} effm - Maximum value for efficiency.
  */
-var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, rigx, effs, efff){  
-  var n = 2;
+var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, rigx, effs, efff, effm){
   var min_p = new Protein({'seq': seq, 'ang': ang}); 
   
   var adjustParametersSuccess = function(p, e0, e1, a){
@@ -73,7 +74,6 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
   
   var adjustParametersFail = function(p, e0, e1, a){ 
     //TODO use e0 and e1 to adjust parameters
-    //for(var i = 1; i < p.length - 1; ++i){
     for(var i = 0; i < a.length; ++i){      
       parameter[a[i]].rigidity = parameter[a[i]].rigidity + eval(rigf);
       if(parameter[a[i]].rigidity > rigm || parameter[a[i]].rigidity < 1) 
@@ -97,7 +97,7 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
       } 
       
       parameter[a[i]].efficiency = parameter[a[i]].efficiency + eval(efff);        
-      if (parameter[a[i]].efficiency > seq.length || parameter[a[i]].efficiency < 1) 
+      if (parameter[a[i]].efficiency > eval(effm) || parameter[a[i]].efficiency < 1) 
         parameter[a[i]].efficiency = 1;    
     }
   };  

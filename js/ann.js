@@ -5,7 +5,9 @@ self.addEventListener('message', function(e) {
   Ann(
     msg.seq, 
     msg.ang, 
-    msg.l
+    msg.l,
+    msg.start,
+    msg.delta
   );  
 }, false);
 /**
@@ -13,17 +15,17 @@ self.addEventListener('message', function(e) {
  * @param {String} seq - String with the aminoacid's type sequence.
  * @param {Array} ang - The angle sequence in radians.
  * @param {int} l - The limit of loops (stop criteria).
+ * @param {float} start - The initial angle variation.
+ * @param {float} delta - The angle variation "cool factor".
  */
-var Ann = function(seq, ang, l){
+var Ann = function(seq, ang, l, start, delta){
   
   var min_p = new Protein({'seq': seq, 'ang': ang});
   
-  //ANGLES
-  var delta = Math.PI / 4; // 45 deg
   var newAngles = function(a){ 
     var array = [];
-    array[0] = a + delta;
-    array[1] = a - delta;
+    array[0] = a + start;
+    array[1] = a - start;
     return array;
   }; 
   
@@ -62,7 +64,7 @@ var Ann = function(seq, ang, l){
       
     }
     
-    delta *= 0.9;
+    start *= delta;
 
     if(t%100 == 0) {
       var msg = JSON.stringify({
