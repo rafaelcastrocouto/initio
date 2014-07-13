@@ -39,7 +39,6 @@ self.addEventListener('message', function(e) {
  * @param {int} effm - Maximum value for efficiency.
  */
 var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rigm, rign, rigx, effs, efff, effm){
-  var min_p = new Protein({'seq': seq, 'ang': ang}); 
   
   var adjustParametersSuccess = function(p, e0, e1, a){
     //TODO use e0 and e1 to adjust parameters
@@ -144,11 +143,11 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
   };  
   
   //TESTS
-  var adjustParameters = function(p, a){ 
-    if(p.energy < min_p.energy) {
-      adjustParametersSuccess(p, min_p.energy, p.energy, a);      
+  var adjustParameters = function(p, a, i){ 
+    if(p.energy < population[i].energy) {
+      adjustParametersSuccess(p, population[i].energy, p.energy, a);      
     } else {
-      adjustParametersFail(p, min_p.energy, p.energy, a);
+      adjustParametersFail(p, population[i].energy, p.energy, a);
     }
   };  
  
@@ -171,7 +170,7 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
         seq: seq
       });
 
-      adjustParameters(p, a);
+      adjustParameters(p, a, i);
       newpop.push(p);
     }   
     
@@ -183,7 +182,7 @@ var Ela = function(seq, ang, l, parameter, pop, parent, ang_num, rigs, rigf, rig
     if(t%100 == 0) {
       
       var msg = JSON.stringify({
-        data: min_p.energy, 
+        data: population[0].energy, 
         parameter: parameter
       });
       self.postMessage(msg);      

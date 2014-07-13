@@ -59,18 +59,18 @@ var gen_linear_ang = function(){
 var progress_bar = function(){
   prog += 100;
   var p = prog/total_prog;
-  var s = p*100;
-  $prog.attr('title', s.toFixed(1) + '%');
-  $prog.prev().text(s.toFixed(1) + '%');
+  var s = (Math.floor(p*1000)/10).toFixed(1) + '%';
+  $prog.attr('title', s);
+  $prog.prev().text(s);
   $prog.val(p);
   
 };
 
 var total_progress_bar = function(){
   var p = test/total_tests;
-  var s = p*100;
-  $total_prog.attr('title', s.toFixed(1) + '%');
-  $total_prog.prev().text(s.toFixed(1) + '%');
+  var s = (Math.floor(p*1000)/10).toFixed(1) + '%';
+  $total_prog.attr('title', s);
+  $total_prog.prev().text(s);
   $total_prog.val(p);        
 };
 

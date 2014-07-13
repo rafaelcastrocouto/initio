@@ -81,10 +81,10 @@ Protein.prototype.getCoord = function(){
  * Render the protein in a canvas.
  * @param {Context} ctx - The canvas context in witch the protein will be rendered.
  */
-Protein.prototype.render = function(ctx){
+Protein.prototype.render = function(ctx, w, h){
   var context = ctx || this.context;
   if(!context) {
-    var canvas = createCanvas(1000, 500);
+    var canvas = createCanvas(w||1000, h||500);
         canvas.protein = this;
         canvas.scale = 20;
         canvas.offset = {x: 200, y: 200};    

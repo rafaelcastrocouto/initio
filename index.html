@@ -8,28 +8,28 @@
     <meta http-equiv="Content-Language" content="en-US" />    
     <link href="styles.css" rel="stylesheet" type="text/css" /> 
   </head>
-  <body>    
+  <body>
     <div id="controls">
       <span>Total Progress: <span></span><progress title="0%" id="total_prog" value="0"></progress></span>
       <span>Test Progress: <span></span><progress title="0%" id="prog" value="0"></progress></span>
       <br>
       <span>Sequences: F6(13) F7(21) F8(34) F9(55) 1AGT(38) 1AHO(64) 
-        <input type="text" id="seqs" value="F9" size="15" class="editable"/>
+        <input type="text" id="seqs" value="F7" size="15" class="editable"/>
       </span>
-      <span>Steps:<input type="text" id="steps" value="10" class="editable"/></span><br>
-      <span>ELA(N):<input type="text" id="En" value="10000" class="editable"/></span>
-      <span>Pop:<input type="text" id="Pop" value="1000" class="editable"/></span>    
+      <span>Steps:<input type="text" id="steps" value="30" class="editable"/></span><br>
+      <span>ELA(N):<input type="text" id="En" value="1000" class="editable"/></span>
+      <span>Pop:<input type="text" id="Pop" value="500" class="editable"/></span>    
       <span>Parents:<input type="text" id="Parent" value="1" class="editable"/>% </span>    
-      <span>Angles:<input type="text" id="Ang_num" value="2,3" class="editable"/></span>    
+      <span>Angles:<input type="text" id="Ang_num" value="2" class="editable"/></span>    
       <span>Global Parameters:<input type="checkbox" checked id="gp" class="editable"/></span><br>
       <span>Efficiency:<input type="text" id="Eff" disabled/></span>
-      <span>Success:<input type="text" id="Eff_success" value="+1" class="editable"/></span>    
-      <span>Fail:<input type="text" id="Eff_fail" value="-0.000001" class="editable"/></span>  
-      <span>Max:<input type="text" id="Eff_max" value="seq.length" class="editable"/></span>   
+      <span>Success:<input type="text" id="Eff_success" value="3,2.5,2,1.5,1,0.5,0,-0.5,-1,-1.5,-2,-2.5,3" class="editable"/></span>    
+      <span>Fail:<input type="text" id="Eff_fail" value="0.000003,0.0000025,0.000002,0.0000015,0.000001,0.0000005,0.0000000,-0.0000005,-0.000001,-0.0000015,-0.000002,-0.0000025,-0.000003" class="editable"/></span>  
+      <span>Max:<input type="text" id="Eff_max" value="10" class="editable"/></span>   
       <span>Min:<input type="text" id="Eff_min" value="1" disabled/></span><br>    
       <span>Rigity:<input type="text" id="Rig" disabled size="40"/></span>
-      <span>Success:<input type="text" id="Rig_success" value="+2" class="editable"/></span>    
-      <span>Fail:<input type="text" id="Rig_fail" value="-0.000005" class="editable"/></span>
+      <span>Success:<input type="text" id="Rig_success" value="0" class="editable"/></span>    
+      <span>Fail:<input type="text" id="Rig_fail" value="0" class="editable"/></span>
       <span>Max:<input type="text" id="Rig_max" value="10" class="editable"/></span>
       <span>Min:<input type="text" id="Rig_min" value="1" disabled/></span><br>
       <span>Rigity Neighbors:<input type="text" id="Rig_neigh" value="2" class="editable"/></span>
