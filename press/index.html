@@ -27,7 +27,7 @@
 
     <div id="impress">
       
-      <div title="Capa" class="step" data-y="0" data-z="0">
+      <div title="Capa" class="step" data-y="1000" data-z="0">
         <div class="amino">
           <h1>Uma proposta de algoritmo para o Modelo AB de dobramento de proteínas</h1>
           <span>Autor: Rafael Castro Couto</span>
@@ -37,10 +37,11 @@
         </div>
       </div>
       
-      <div title="Sumário" class="step" data-y="-1000" data-z="-500">
+      <div title="Sumário" class="step" data-y="0" data-z="-500">
         <div class="amino">
           <h2>Sumário</h2>
-          <ul class="sumary">
+          <ul class="sumary">            
+            <li>Objetivo</li>
             <li>Bionformática</li>
             <li>Proteínas</li>
             <li>Modelo AB</li>
@@ -57,11 +58,18 @@
         </div>
       </div>
       
+       <div title="Objetivo" class="step" data-y="-1000" data-z="-1000">
+        <div class="amino">
+          <h2>Objetivo</h2> 
+          <p class="spaceTop">O objetivo deste trabalho é propor um novo algoritmo para o <b>dobramento de proteínas</b> utilizando o <b>Modelo AB</b>.</p>
+        </div>
+      </div>       
+      
+      
       <div title="Bionformática" class="step" data-y="-2000" data-z="-1000">
         <div class="amino">
           <h2>Bionformática</h2> 
-          <p>Bioinformática tem como objetivos principais a coleta, organização, armazenamento, recuperação e análise de dados biológicos, propiciando a inferência ou descoberta de informações sobre a biologia e/ou evolução dos organismos. Nessa área, os computadores são usados para resolver problemas na área de ciências biológicas, envolvendo principalmente a manipulação de bancos de dados.</p>
-          <p>Um dos problemas mais importantes dentro da área de Bioinformática e Biologia computacional que continua em aberto é a predição do <b>dobramento de proteínas</b>.</p>
+          <p class="spaceTop">Bioinformática tem como <b>objetivo</b> principal a <b>análise de dados biológicos</b>. Nessa área, computadores são usados para resolver problemas na área de ciências biológicas, envolvendo a <b>manipulação de bancos de dados</b>.<br>Um dos problemas mais importantes dentro da área de Bioinformática e Biologia computacional que continua em aberto é a <b>predição do dobramento de proteínas</b>.</p>
         </div>
       </div>  
 
@@ -69,23 +77,32 @@
         <div class="amino">
           <h2>Proteínas</h2>
           <p>Uma proteína pode ser definida como um polímero linear composto por <b>aminoácidos</b>.</p>
-          <p>Os aminoácidos são moléculas constituídas por um átomo de carbono alpha central, um átomo de hidrogénio, um grupo carboxilo, um grupo amino e uma cadeia lateral ou grupo <b>R</b>.</p>
+          <p>Os aminoácidos são moléculas constituídas por um átomo de <b>carbono alpha central</b>, um átomo de <b>hidrogênio</b>, um <b>grupo carboxilo</b>, um <b>grupo amino </b> e uma cadeia lateral ou <b>grupo R</b>.</p>
           <img src="img/amino.png" width="400"/>
           <small>Moléculas que compõem um aminoácido.</small>
         </div>
       </div> 
       
+      <div class="step overview" data-y="-2850" data-z="-1500" data-scale="0.45">
+      </div>       
+      
       <div class="step slide" data-x="2000" data-y="-3000" data-z="-1500">
         <h2>Estrutura Primária</h2>
-        <p>A sequência de aminoácidos ao longo da cadeia polipeptídica é denominada estrutura primária.</p>
-        <p>Existe a hipótese de a estrutura primária específica de cada proteína conter a informação que indica a sua conformação final e o caminho para atingir esse estado.</p>
+        <p>A <b>sequência de aminoácidos</b> ao longo da cadeia polipeptídica é denominada estrutura primária.</p>
+        <p>Existe a <b>hipótese</b> de a <b>estrutura primária</b> específica de cada proteína conter a informação que <b>indica</b> a sua <b>conformação final</b> e o caminho para atingir esse estado.</p>
         <img src="img/seq.png" width="800"/>
         <small>Sequência primária da proteína PTB ID 1AHO.</small>
       </div>     
+
+      <div class="step overview"  data-x="1790" data-y="-2800" data-z="-1500" data-scale="0.45">
+      </div>     
+
+      <div class="step overview"  data-x="2200" data-y="-2800" data-z="-1500" data-scale="0.45">
+      </div> 
       
       <div class="step slide" data-x="4000" data-y="-3000" data-z="-1500">
         <h2>Estrutura Secundária</h2>
-        <p>A estrutura secundária é determinada pelo relacionamento estrutural de curta distância e se caracteriza por duas formações principais: as alfa-hélices e as folhas-beta, além de estruturas de ligação chamadas alças.</p>
+        <p>A estrutura secundária é determinada pelo relacionamento estrutural de curta distância e se caracteriza por duas formações principais: as <b>alfa-hélices</b> e as <b>folhas-beta</b>, além de estruturas de ligação chamadas <b>alças</b>.</p>
         <div class="float">
           <img src="img/helice.png" width="80"/>
           <small>Representação tridimencional de alfa-hélices</small>        
@@ -96,36 +113,49 @@
         </div>
       </div>
        
+      <div class="step overview"  data-x="3800" data-y="-2900" data-z="-1500" data-scale="0.45">
+      </div>       
+      <div class="step overview"  data-x="4100" data-y="-2870" data-z="-1500" data-scale="0.45">
+      </div> 
+      
       <div class="step slide" data-x="6000" data-y="-3000" data-z="-1500">
         <h2>Estrutura Terciária</h2>
-        <p>A estrutura terciária caracterizada pelas interações de longa distância entre aminoácidos, denominadas interações hidrofóbicas, pelas interações eletrostáticas, pontes de hidrogênio e de sulfeto. É nesta forma que a proteína exerce sua função. </p>
+        <p>A estrutura terciária caracterizada pelas interações de <b>longa distância</b> entre aminoácidos, denominadas <b>interações hidrofóbicas</b>, pelas interações eletrostáticas, pontes de hidrogênio e de sulfeto. É nesta forma que a proteína exerce sua <b>função</b>. </p>
         <img src="img/1aho.png" width="300"/>
         <small>Estrutura terciária da proteína PDB ID 1AHO.</small>
       </div>
-       
+ 
+      <div class="step overview"  data-x="5780" data-y="-2840" data-z="-1500" data-scale="0.45">
+      </div>
+      
       <div class="step slide" data-x="8000" data-y="-3000" data-z="-1500">
         <h2>Estrutura Quaternária</h2>
-        <p>As proteínas podem ter duas ou mais cadeias polipeptídicas, a conformação dessas cadeias em estruturas tridimensionais é a estrutura quaternária.</p>
+        <p>As proteínas podem ter <b>duas ou mais cadeias</b> polipeptídicas, a conformação dessas cadeias em estruturas tridimensionais é a estrutura quaternária.</p>
         <img src="img/1bvr.png" width="300"/>
         <small>Estrutura quaternária da proteína PDB ID 1BVR.</small>
       </div>
       
+       <div class="step overview"  data-x="7780" data-y="-2860" data-z="-1500" data-scale="0.5">
+      </div>     
+      
       <div title="Dobramento de Proteínas" class="step" data-y="-4000" data-z="-2000">
         <div class="amino">
           <h2>Dobramento de Proteínas</h2>
-          <p>A sequência de aminoácidos específica de uma proteína, também denominada estrutura primária, dobra-se para formar a sua configuração nativa. A dobra muda de acordo com as moléculas que as rodeiam, incluindo enzimas, concentração dos sais, a pressão, a temperatura, enfim de infinitos elementos.</p>
-          <p>De acordo com a  Anfinsen, a conformação nativa de uma proteína, é a configuração termodinamicamente mais estável. Assim, o problema de predição de dobramento pode ser visto como um problema de otimização.</p>
+          <p>A sequência de aminoácidos específica de uma proteína, também denominada estrutura primária, dobra-se para formar a sua configuração nativa. A <b>dobra</b> muda de acordo com as <b>moléculas que as rodeiam</b>, incluindo enzimas, concentração dos sais, a pressão, a temperatura, enfim de infinitos elementos.<br>De acordo com Anfinsen, a <b>conformação nativa</b> de uma proteína, é a configuração <b>termodinamicamente mais estável</b>. Assim, o problema de predição de dobramento pode ser visto como um <b>problema de otimização NP-completo</b>.</p>
         </div>
       </div>       
       
       <div title="Modelo AB" class="step" data-y="-5000" data-z="-2500">
         <div class="amino">
           <h2>Modelo AB</h2>
-          <p>No Modelo AB, a proteína é descrita como uma sequência de aminoácidos hidrofóbicos (<b>A</b>) e hidrófilos (<b>B</b>). Muitas propriedades como massa, volume e carga eletromagnética também não são consideradas.Nesse modelo, os ângulos são restritos entre -180º e + 180º.</p>
-          <img src="img/ab.png" width="400"/>
+          <p>No Modelo AB, a proteína é descrita como uma sequência de aminoácidos hidrofóbicos (<b>A</b>) e hidrófilos (<b>B</b>). Muitas propriedades como <b>massa, volume e carga eletromagnética</b> também <b>não são consideradas</b>.<br>Nesse modelo, os ângulos são restritos entre -180º e + 180º.</p>
+          <img src="img/ab.png" width="300"/>
         </div>
-      </div>      
-       
+      </div>  
+      
+      <div class="step overview"  data-y="-4840" data-z="-1500" data-scale="0.4">
+      </div>
+      
       <div class="step slide" data-x="2000" data-y="-5000"  data-z="-2500">
         <h2>Cálculo da Energia no Modelo AB</h2>
         <p>Onde <b>E</b> representa a energia, <b>N</b> corresponde ao comprimento da sequência de aminoácidos, <b>a</b> é o tipo do aminoácido (<b>A</b> ou <b>B</b>), <b>C</b> são as cargas dadas, <b>theta</b> é o ângulo entre os aminoácidos e <b>d</b> a distância entre os aminoácidos.</p>
@@ -134,7 +164,7 @@
       
       <div class="step slide" data-x="4000" data-y="-5000"  data-z="-2500">
         <h2>Cadeias Primárias inspiradas na série Fibonacci</h2>
-        <p>Foram geradas cadeias de acordo com a sequência de Fibonacci, onde o próximo elemento é resultado da concatenação dos últimos dois elementos de acordo com a função: <br>
+        <p>Foram geradas cadeias de acordo com a sequência de Fibonacci, onde o próximo elemento é resultado da <b>concatenação dos últimos dois elementos</b> de acordo com a função: <br>
         <i>f(0) = A; f(1) = B; f(n) = f(n-2) + f(n-1)</i>.</p>
         <ul>
           <li>FIBO6(13) <small>ABBABBABABBAB</small></li>
@@ -146,7 +176,7 @@
       
       <div class="step slide" data-x="6000" data-y="-5000"  data-z="-2500">
         <h2>Cadeias Primárias inspiradas na proteínas reais</h2>
-        <p>Foram utilizadas duas sequências inspiradas em proteínas reais. Para obter as cadeias, os aminoácidos tipo I, V, L, P, C, M, A e G são considerados hidrofóbicos e representados pela letra A e os resíduos D, E, F, H, K, N, Q, R, S, T, W e Y considerados hidrófilos e representados pela letra B.</p>
+        <p>Foram utilizadas duas sequências inspiradas em proteínas reais. Para obter as cadeias, os aminoácidos tipo <b>I, V, L, P, C, M, A</b> e <b>G</b> são considerados <b>hidrofóbicos</b> e representados pela letra <b>A</b> e os resíduos <b>D, E, F, H, K, N, Q, R, S, T, W e Y</b> considerados <b>hidrófilos</b> e representados pela letra </=b>B</b>.</p>
         <ul>
           <li>1AGT(34) <small>AAAABABABABABAABAABBAAABBABAABBBABABAB</small></li>
           <li>1AHO(64) <small>ABBABAABBABABBBAABBABABBBABBABABBABABBABABABAABABBAABBABBBAAABAB</small></li>
@@ -155,180 +185,213 @@
 
       <div title="Complexidade do problema no Modelo AB" class="step" data-y="-7000" data-z="-3500">
         <div class="amino">
-          <h2>Complexidade do problema <br>no Modelo AB</h2>
-          <p>O conjunto de problemas que são decidíveis em tempo polinomial por uma máquina de Turing não-determinística é denominado NP. Um subconjunto de NP denominado NP-completo é um conjunto cujos problemas precisam satisfazer a seguinte condição: todo problema em NP é redutível para este problema em tempo polinomial. </p>
-            <p>Portanto, se tivéssemos um algoritmo de tempo polinomial para resolver um problema NP-completo, poderíamos resolver todos os problemas NP em tempo polinomial.</p>
+          <h2>Mapeamento do espaço de busca</h2>
+          <p>Foi desenvolvida uma aplicação calcular a energia em todas as conformações possíveis de uma proteína simplificada de acordo com o Modelo AB. <br>Com o objetivo de gerar gráficos bidimensionais, foram utilizados <b>tetrâmeros</b>, ou seja, cadeias com quatro aminoácidos. O <b>primeiro e o último ângulo não mudam a conformação</b> do modelo de proteína, pois sua alteração não gera uma dobra. Mudar os ângulos das extremidades significa girar toda a proteína. Portanto, o conjunto de todas as possíveis soluções para os tetrâmeros pode ser repesentado como um <b>vetor bidimensional</b>. </p>
         </div>
-      </div>
-      
-      <div class="step slide" data-x="2000" data-y="-7000"  data-z="-3500">
-        <h2>Mapeamento do espaço de busca</h2>
-        <p>Para discutir a complexidade do problema de dobramento de proteínas, foi desenvolvida uma aplicação para mapear o espaço de busca, ou seja, calcular a energia em todas as conformações possíveis de uma proteína simplificada de acordo com o Modelo AB. </p>
-        <p>Com o objetivo de gerar gráficos bidimensionais, foram utilizados tetrâmeros, ou seja, cadeias com quatro aminoácidos. O primeiro e o último ângulo não mudam a conformação do modelo de proteína, pois sua alteração não gera uma dobra. Mudar os ângulos das extremidades significa girar toda a proteína. Portanto, o conjunto de todas as possíveis soluções para os tetrâmeros pode ser repesentado como um vetor bidimensional. </p>
       </div>   
       
+      <div class="step overview"  data-x="4080" data-y="-6780" data-z="-3500" data-scale="0.4">
+      </div>  
+  
+      <div class="step overview"  data-x="3980" data-y="-6980" data-z="-3500" data-scale="0.4">
+      </div>  
+  
       <div class="step slide" data-x="4000" data-y="-7000"  data-z="-3500">
         <img src="img/space.png" width="720"/>
       </div>   
       
       <div class="step slide" data-x="6000" data-y="-7000"  data-z="-3500">
         <h2>Resultado do Mapeamento</h2>        
-        <p>A geração de um único gráfico com a resolução da Figura, com 20 faixas de ângulos, ou seja, com uma discretização de (180º)/20 em cada eixo, para uma proteína de quatro aminoácidos, resulta na computação de 400 modelos de proteínas. É possível encontrar este valor através da equação abaixo, onde P é o número de modelos de proteínas possíveis, R é a quantidade de faixas de ângulos, ou seja, a resolução do gráfico e N é o comprimento da cadeia primária.</p>
+        <p>A geração de um único gráfico com a resolução da Figura, com 20 faixas de ângulos, ou seja, com uma <b>discretização</b> de (180º)/20 em cada eixo, para uma proteína de quatro aminoácidos, resulta na computação de 400 modelos de proteínas. É possível encontrar este valor através da equação abaixo, onde <b>P</b> é o número de modelos de proteínas possíveis, <b>R</b> é a quantidade de faixas de ângulos, ou seja, a resolução do gráfico e <b>N</b> é o comprimento da cadeia primária.</p>
         <center>P = R <sup>(N - 2)</sup></center>
-        <p>Supondo a geração de um gráfico multidimensional com a mesma resolução para uma proteína de somente 12 aminoácidos, seriam calculadas 20<sup>10</sup> modelos de proteínas. Mesmo se o cálculo de um único modelo demorasse apenas um milésimo de segundo, a suposta geração do gráfico demoraria mais de trezentos anos.</p>
+        <p>Supondo a geração de um gráfico multidimensional com a mesma resolução para uma proteína de <b>somente 12 aminoácidos</b>, seriam calculadas 20<sup>10</sup> modelos de proteínas. Mesmo se o cálculo de um único modelo demorasse apenas um milésimo de segundo, a suposta geração do gráfico <b>demoraria centenas de anos</b>.</p>
       </div>      
       
       <div title="Simulated Annealing " class="step" data-y="-8000" data-z="-4000">
         <div class="amino">
           <h2>Simulated Annealing</h2>
-          <p>Simulated Annealing (SA) é uma meta heurística genérica para problemas de otimização global que consiste em uma técnica de busca local probabilística. É usada normalmente em grandes espaços de busca e se fundamenta numa analogia com a segunda lei da termodinâmica. Seu nome é inspirado no processo de recozimento, utilizado em metalurgia para obtenção de estados de baixa energia num sólido. Neste processo, o metal é inicialmente aquecido à altas temperaturas e, em seguida, é resfriado lentamente e seu resfriamento é acompanhado e controlado de acordo com funções específicas.</p>
+          <p>Simulated Annealing (SA) é uma meta heurística genérica para problemas de otimização global que consiste em uma técnica de busca local probabilística. É usada normalmente em grandes espaços de busca e se fundamenta numa analogia com a segunda lei da termodinâmica. Seu nome é inspirado no processo de <b>recozimento</b>, utilizado em <b>metalurgia</b> para obtenção de <b>estados de baixa energia</b> num sólido. Neste processo, o metal é inicialmente aquecido à <b>altas temperaturas e, em seguida, é resfriado lentamente</b> e seu resfriamento é acompanhado e controlado de acordo com <b>funções específicas</b>.</p>
         </div>
       </div>      
       
       <div class="step slide" data-x="2000" data-y="-8000"  data-z="-4000">
         <img  class="float" src="img/fluxsa.png" width="300"/>
-        <p class="float w500 spaceTop">O método utiliza portanto um valor T que é corresponde à temperatura. Inicialmente é gerada uma solução aleatória, nesse momento, a temperatura T assume um valor elevado. Para cada nova solução gerada ocorre a comparação entre o resultado encontrado e a melhor solução encontrada. Se a solução encontrada for melhor que a anterior, esta é substituída pela nova solução. Caso contrário, ultiliza-se uma função onde pode ser aplicado o Fator de Boltzmann, para determinar se a solução será aceita.</p>
+        <p class="float w500 spaceTop">O método utiliza portanto um valor <b>T</b> que é corresponde à <b>temperatura</b>. Inicialmente é gerada uma solução aleatória, nesse momento, a temperatura T assume um valor elevado. Para cada nova solução gerada ocorre a comparação entre o resultado encontrado e a melhor solução encontrada. Se a solução encontrada for melhor que a anterior, esta é substituída pela nova solução. Caso contrário, ultiliza-se uma <b>função</b> onde pode ser aplicado o Fator de Boltzmann, para <b>determinar se a solução será aceita</b>.</p>
       </div>         
       
+      <div class="step overview"  data-x="1780" data-y="-8120" data-z="-4000" data-scale="0.5">
+      </div>
+  
+      <div class="step overview"  data-x="1780" data-y="-7820" data-z="-4000" data-scale="0.5">
+      </div>
+  
       <div title="EDAs" class="step" data-y="-9000" data-z="-4500">
         <div class="amino">
           <h2>EDAs</h2>
-          <p>Os Algoritmos de Distribuição Estimada (EDA) pertencem à classe de algoritmos evolutivos. A principal diferença entre EDAs e algoritmos evolutivos é que os algoritmos evolutivos geram novas soluções candidatas utilizando uma distribuição implícita definida por um ou mais operadores de variação, enquanto EDAs utilizam uma distribuição de probabilidade, que pode ser codificada por uma rede Bayesiana, uma distribuição normal multivariada, ou outra classe de modelo.</p>
+          <p class="spaceTop">EDAs utilizam uma <b>distribuição de probabilidade</b>, que pode ser codificada por uma rede Bayesiana, uma distribuição normal multivariada, ou outra classe de modelo e consideram as <b>relações entre as conexões</b>.</p>
         </div>
       </div>     
           
       <div class="step slide" data-x="2000" data-y="-9000"  data-z="-4500">
         <img  class="float" src="img/fluxeda.png" width="400"/>
-        <p class="float w400 spaceTop">EDAs iniciam a busca criando um conjunto de soluções. De forma análoga, este conjunto seria denominado população em um algoritmo evolutivo. Inicia-se então um ciclo de análise dos resultados, seleção de bons resultados e geração de novo conjunto de soluções. O critério de parada que interrompe o ciclo pode ser de acordo com o número de etapas, o tempo de execução, entre outros.</p>
+        <p class="float w400 spaceTop">EDAs iniciam a busca criando um <b>conjunto de soluções</b>. Inicia-se então um ciclo de análise dos resultados, seleção de bons resultados e geração de novo conjunto de soluções. O critério de parada que interrompe o ciclo pode ser de acordo com o número de etapas, o tempo de execução, entre outros.</p>
       </div>        
-      
+  
+      <div class="step overview"  data-x="1780" data-y="-9120" data-z="-4500" data-scale="0.5">
+      </div>
+  
+      <div class="step overview"  data-x="1780" data-y="-8820" data-z="-4500" data-scale="0.5">
+      </div>      
       
       <div title="Aprendizagem de Máquina" class="step" data-y="-10000" data-z="-5000">
         <div class="amino">
           <h2>Aprendizagem de Máquina</h2>
-          <p>O conceito de Aprendizagem de Máquina pode ser descrito como um processo cujo objetivo é melhorar a performance na solução de um problema através da experiência acumulada nas soluções anteriores.</p>
-          <p>Outra forma de analisar a aprendizagem é ver como seu objetivo determinar uma hipótese H, idêntica ao alvo conceito C, capaz de classificar um conjunto de instâncias X. O nível de correção das classsificações depende da qualidade do método e dos exemplos de treinamento.</p>
+          <p class="spaceTop">O conceito de Aprendizagem de Máquina pode ser descrito como um processo cujo objetivo é <b>melhorar</b> a performance na solução de um problema <b>através da experiência</b> acumulada nas soluções anteriores.</p>
         </div>
       </div>
       
       <div title="Trabalhos Relacionados" class="step" data-y="-11000" data-z="-5500">
         <div class="amino">
-          <h2>Trabalhos Relacionados <br> Anfisen</h2>
-          <p>De acordo com a hipótese de Anfisen, a estrutura terciária nativa de uma proteína pode ser determinada a partir da informação contida na sequência primária. Considerando que a configuração que possui menor energia livre é a conformação nativa da proteína-alvo, essa hipótese levanta dois principais problemas. O primeiro é desenvolver uma fórmula que defina a energia de uma proteína real. O segundo problema é desenvolver os métodos computacionais de otimização para busca da energia mínima através dessa fórmula.</p>
-        </div>
-      </div>
-
-      <div class="step slide" data-x="2000" data-y="-11000"  data-z="-5500">
-        <h2>Trabalhos Relacionados - Stillinger</h2>
-        <p>Em 1993, Stillinger, Head-Gordon e Hirshfeld publicaram um modelo de proteínas simplificado que considerava os efeitos não locais e iniciaram os estudos desse modelo denominado Modelo AB. Nesse artigo, são analisadas trímeros, tetrâmeros e pentâmeros, e é apresentada uma tabela com as conformações de menor energia para todas estas sequencias de aminoácidos.</p>
-        <p>Em um artigo posterior, Stillinger ressalta a importância das sequências de aminoácidos para o Modelo AB e são analisadas diferentes sequências para proteínas maiores, de até 55 aminoácidos. Dois tipos de sequências são analisadas, o primeiro tipo é denominado Center Doped e usa o padrão (An-B-An), enquanto o segundo se inspira na série de Fibonacci.</p>
+          <h2>Trabalhos Relacionados</h2>
+          <p>A <b>hipótese de Anfisen</b> levanta <b>dois principais problemas</b>. O primeiro é desenvolver uma <b>fórmula</b> que defina a energia de uma proteína real. O segundo problema é desenvolver os <b>métodos computacionais de otimização</b> para busca da energia mínima através dessa fórmula.<br>Em 1993, Stillinger, Head-Gordon e Hirshfeld publicam o <b>Modelo AB</b>.<br>Em um artigo posterior, Stillinger ressalta a importância das <b>sequências de aminoácidos</b> para o modelo e analisa proteínas de até 55 aminoácidos: <b>Center Doped</b> (An-B-An) e inspiradas na série de <b>Fibonacci</b>.</p>
+      </div>        
       </div>        
 
-      <div class="step slide" data-x="4000" data-y="-11000"  data-z="-5500">
+      <div class="step slide" data-x="2000" data-y="-11000"  data-z="-5500">
         <h2>Trabalhos Relacionados - Resultados</h2>
         <ul>
-          <li>ACMC (Annealing Contour Monte Carlo) é uma versão acelerada do algoritmo CMC. O CMC é uma generalização do algoritmo Wang-Landau e do algoritmo  1/k-ensemble.</li>
-          <li>STMD (Statistical Temperature Molecular Dynamics) utiliza dados estatísticos relacionados à temperatura no lugar das densidades dos estados em uma distribuição Wang-Landau.</li>
-          <li>HTS (Heuristic-based Tabu Search) integra mecanismos de conformação heurística e o método TS tradicional.</li>
-          <li>CSA (Conformational Space Annealing) estreita a busca para regiões menores de acordo com uma distância determinada.</li>
+          <li><b>ACMC</b> (Annealing Contour Monte Carlo) é uma versão acelerada do algoritmo CMC. O CMC é uma generalização do algoritmo Wang-Landau e do algoritmo  1/k-ensemble.</li>
+          <li><b>STMD</b> (Statistical Temperature Molecular Dynamics) utiliza dados estatísticos relacionados à temperatura no lugar das densidades dos estados em uma distribuição Wang-Landau.</li>
+          <li><b>HTS</b> (Heuristic-based Tabu Search) integra mecanismos de conformação heurística e o método TS tradicional.</li>
+          <li><b>CSA</b> (Conformational Space Annealing) estreita a busca para regiões menores de acordo com uma distância determinada.</li>
         </ul>
       </div> 
       
       <div title="Proposta de algortimos para o Modelo AB" class="step" data-y="-12000" data-z="-6000">
         <div class="amino">
           <h2>Proposta de algoritmo <br>para o Modelo AB</h2>
-          <p>Neste trabalho são propostos dois algoritmos para o Modelo AB. O primeiro algoritmo, chamado de algoritmo ANN é inspirado no Simulated Annealing. Devido à sua simplicidade, este algoritmo converge sempre para um ótimo local.</p>
-          <p>Por esse motivo foi desenvolvido um algoritmo mais complexo denominado ELA, capaz de explorar o espaço de busca de forma inteligente. O segundo algoritmo proposto é baseado nos algoritmos EDAs e nos conceitos de aprendizagem de máquina.</p>
+          <p>Neste trabalho são propostos <b>dois algoritmos</b> para o Modelo AB. O primeiro algoritmo, chamado de <b>algoritmo ANN</b> é inspirado no <b>Simulated Annealing</b>. Devido à sua simplicidade, este algoritmo converge sempre para um ótimo local.</p>
+          <p>Por esse motivo foi desenvolvido um algoritmo mais complexo denominado <b>ELA</b>, capaz de explorar o espaço de busca de forma inteligente. O segundo algoritmo proposto é baseado nos algoritmos <b>EDAs</b> e nos conceitos de <b>aprendizagem de máquina</b>.</p>
         </div>
       </div>
 
       <div title="Algoritmo ANN" class="step" data-y="-13000" data-z="-6500">
         <div class="amino">
           <h2>Algoritmo ANN</h2>
-          <p>De forma análoga ao método, porém de forma simplificada, foi desenvolvido o algoritmo ANN que substitui a solução atual por uma solução próxima, escolhida de acordo com uma função objetivo e com uma variável que representa a temperatura ou a quantidade de energia da busca.</p>
-          <p>Esse algoritmo não possui nenhuma função específica que torne possível a aceitação de soluções inferiores às encontradas anteriormente e não utiliza nenhum tipo de aleatoriedade.</p>
+          <p>De forma análoga ao método <b>Simulated Annealing</b>, porém de forma <b>simplificada</b>, foi desenvolvido o algoritmo ANN que substitui a solução atual por uma solução próxima, escolhida de acordo com uma <b>função objetivo</b> e com uma variável que representa a <b>temperatura</b>.</p>
+          <p>Esse algoritmo <b>não possui</b> nenhuma função específica que torne possível a aceitação de <b>soluções inferiores</b> às encontradas anteriormente e não utiliza nenhum tipo de <b>aleatoriedade</b>.</p>
         </div>
       </div>
       
       <div class="step slide" data-x="2000" data-y="-13000"  data-z="-6500">
         <img  class="float" src="img/fluxann.png" width="360"/>
-        <p class="float w400 spaceTop">O valor inicial <i>a</i> dos ângulos é determinado pelo usuário. A cada etapa, cada ângulo do modelo é alterado nas duas direções, positiva e negativa, calculando a energia de ambas conformações. É escolhida então a conformação mais estável entre as três conformações calculadas (direção positiva +<i>a</i>, direção negativa -<i>a</i> e não alterar o ângulo). Após o cálculo do último ângulo da cadeia é decrementado o valor de $a$ através do parâmetro <i>delta</i>.</p>
+        <p class="float w400 spaceTop">O valor inicial <i>a</i> dos ângulos é determinado pelo usuário. A cada etapa, cada ângulo do modelo é alterado nas <b>duas direções, positiva e negativa</b>, calculando a energia de ambas conformações. É escolhida então a <b>conformação mais estável</b> entre as três conformações calculadas (direção positiva +<i>a</i>, direção negativa -<i>a</i> e não alterar o ângulo). Após o cálculo do último ângulo da cadeia é <b>decrementado o valor de <i>a</i></b> através do parâmetro <i>delta</i>.</p>
       </div>
       
+      <div class="step overview"  data-x="1780" data-y="-13120" data-z="-6500" data-scale="0.5">
+      </div>
+  
+      <div class="step overview"  data-x="1780" data-y="-12820" data-z="-6500" data-scale="0.5">
+      </div> 
+  
       <div title="Algoritmo ELA" class="step" data-y="-14000" data-z="-7000">
         <div class="amino">
           <h2>Algoritmo ELA<br>Estimated Learning Algorithm</h2>
-          <p>De forma a contornar os problemas apresentados pelo algoritmo ANN, foi desenvolvida uma solução que utilizasse técnicas menos diretas, que tratassem o problema em um nível mais subjetivo. Buscou-se então, conceitos mais abrangentes, que pudessem ser aplicados à diversas classes de problemas. </p>
-          <p>Dentre esses conceitos, dois foram os que serviram de inspiração para esta proposta: o conceito de  Aprendizagem de Máquina (Machine Learning) e os algoritmos de Distribuição Estimada (EDAs).</p>
+          <p>De forma a contornar os problemas apresentados pelo algoritmo ANN, foi desenvolvida uma solução que utilizasse <b>técnicas menos diretas</b>, que tratassem o problema em um nível mais <b>subjetivo</b><br>Dentre esses conceitos, dois foram os que serviram de inspiração para esta proposta: o conceito de  <b>Aprendizagem de Máquina</b> e os algoritmos de Distribuição Estimada (<b>EDAs</b>).</p>
         </div>
       </div>
 
       <div class="step slide" data-x="2000" data-y="-14000"  data-z="-7000">
-        <p>O conceito de aprendizagem de máquina foi incorporado ao algoritmo ELA proposto neste trabalho para o dobramento de proteínas de forma que, a cada dobramento, um conjunto de dados ou parâmetros proveniente da busca pela solução fosse armazenado. Essa a memória onde ficam armazenados os valores dos parâmetros, guarda a experiência do algoritmo. Ao gerar novos dobramentos o algoritmo usa os parâmetros para obter melhores soluções. Através desta heurística, os parâmetros se adaptam na medida que a busca prossegue, de forma a direcionar a geração de novas soluções.</p>
-        <p>A inspiração proveniente dos EDAs para o algoritmo proposto foi a de utilizar fatores de aleatoriedade sempre guiados explicitamente por valores específicos. Esses valores são extraídos da própria solução do problema e por isso moldam probabilisticamente o caminho para a solução. A partir desses conceitos, foi desenvolvido o algoritmo, denominado ELA, onde esses valores são usados para selecionar e gerar ângulos.</p>
+        <p>O conceito de <b>aprendizagem de máquina</b> foi incorporado ao algoritmo ELA proposto neste trabalho para o dobramento de proteínas de forma que, a cada dobramento, um <b>conjunto de dados</b> ou parâmetros proveniente da busca pela solução fosse <b>armazenado</b>. Essa a memória onde ficam armazenados os valores dos parâmetros, guarda a <b>experiência</b> do algoritmo. Ao gerar novos dobramentos o algoritmo usa os parâmetros para obter melhores soluções. Através desta <b>heurística</b>, os parâmetros se adaptam na medida que a busca prossegue, de forma a direcionar a geração de novas soluções.</p>
+        <p>A inspiração proveniente dos <b>EDAs</b> para o algoritmo proposto foi a de utilizar fatores de <b>aleatoriedade</b> sempre <b>guiados</b> explicitamente por valores específicos. Estes valores tem relação com as <b>conexões entre os dados</b> do problema.</p>
       </div>     
-      
+  
       <div class="step slide" data-x="4000" data-y="-14000"  data-z="-7000">
         <img  class="float" src="img/fluxela.png" width="400"/>
-        <p class="float w400">Gera-se um conjunto inicial de soluções lineares e são inicializados os parâmetros de Rigidez e Eficiência. A partir daí, a cada etapa, são selecionados os resultados que servirão de referência para a geração de novas soluções, em seguida, é feita uma seleção multinomial através da Eficiência. É então realizada a alteração dos ângulos aleatoriamente através de uma função Gaussiana que considera a Rigidez. Por fim, o conjunto é ordenado por energia de forma crescente.</p>
+        <p class="float w400">Gera-se um <b>conjunto inicial</b> de soluções lineares e são inicializados os parâmetros de <b>Rigidez e Eficiência</b>. A partir daí, a cada etapa, são selecionados os resultados que servirão de referência para a <b>geração de novas soluções</b>, em seguida, é feita uma <b>seleção multinomial através da Eficiência</b>. É então realizada a alteração dos ângulos aleatoriamente através de uma função <b>Gaussiana</b> que considera o inverso da <b>Rigidez</b> como eficiência. Por fim, o conjunto é <b>ordenado</b> por energia de forma crescente.</p>
       </div>
-      
+ 
+      <div class="step overview"  data-x="3780" data-y="-14120" data-z="-7000" data-scale="0.5">
+      </div>
+  
+      <div class="step overview"  data-x="3780" data-y="-13920" data-z="-7000" data-scale="0.5">
+      </div>      
+  
       <div class="step slide" data-x="6000" data-y="-14000"  data-z="-7000">
         <img  class="float" src="img/eficiencia.png" width="760"/>
-        <p class="float">A Eficiência é inicializada com valor um para todos os aminoácidos sendo este o valor mínimo aceitável, isso significa que, no início da execução, todos aminoácidos têm a mesma chance de serem selecionados. O limite máximo para os valores de Eficiência é determinado pelo usuário. Existem dois parâmetros que determinam como serão alterados os valores de Eficiência. Um parâmetro para os casos de sucesso, quando a solução encontrada é mais estável que aquela utilizada como referência. E outro parâmetro para os casos onde a energia encontrada é superior, ou seja, os casos de falha.</p>
+        <p class="float">A <b>Eficiência</b> é inicializada com <b>valor um</b> para todos os aminoácidos sendo este o valor mínimo aceitável, isso significa que, no início da execução, todos aminoácidos têm a <b>mesma chance</b> de serem selecionados. Existem dois parâmetros que determinam como serão alterados os valores de Eficiência, um parâmetro para os casos de <b>sucesso</b> e outro para os de <b>falha</b>. O <b>número de ângulos</b> selecionados por vez é determinado pelo usuário.</p>
       </div>  
-      
+  
+      <div class="step overview"  data-x="5780" data-y="-14140" data-z="-7000" data-scale="0.5">
+      </div> 
+  
+      <div class="step overview"  data-x="6100" data-y="-14140" data-z="-7000" data-scale="0.5">
+      </div> 
+  
       <div class="step slide" data-x="8000" data-y="-14000"  data-z="-7000">
         <img  class="float" src="img/rigidez.png" width="700"/>
-        <p class="float">A Rigidez influencia diretamente no valor do incremento do ângulo gerado em cada novo dobramento, sendo que quanto mais rígido, ou seja quanto maior o valor do parâmetro do aminoácido que representa a Rigidez, menor provavelmente será o novo ângulo gerado. Dessa forma, no início da busca as mudanças são maiores e, na medida em que a proteína se dobra em estados mais estáveis, a Rigidez aumenta e também aumenta a probabilidade de gerar ângulos mais agudos, provocando assim um ajuste cada vez mais fino dos ângulos. </p>
+        <p class="float">A <b>Rigidez</b> influencia diretamente no valor do incremento do <b>ângulo</b> gerado em cada novo dobramento, sendo que quanto mais rígido menor <b>provavelmente</b> será o novo ângulo gerado. Dessa forma, no início da busca as mudanças são maiores e, na medida em que a proteína se dobra, aumenta a probabilidade de gerar ângulos mais agudos, provocando assim um <b>ajuste</b> cada vez <b>mais fino</b> dos ângulos. É possível alterar o valor da Rigidez dos <b>ângulos vizinhos</b> sempre que existe uma alteração dos parâmetros. Com isso é possível tornar uma determinada parcela da cadeia mais rígida, conservando assim <b>trechos onde a dobra foi bem sucedida</b>. </p>
       </div>  
-      
-      <div class="step slide" data-x="10000" data-y="-14000"  data-z="-7000">
-        <p>Os valores de Rigidez são alterados de forma similar aos valores de Eficiência. Existem dois parâmetros que ajustam os valores em caso de sucesso ou falha. Porém através de parâmetros específicos é possível alterar o valor da Rigidez dos ângulos vizinhos sempre que existe uma alteração dos parâmetros. Com isso é possível tornar uma determinada parcela da cadeia mais rígida, conservando assim trechos onde a dobra foi bem sucedida. Existem dois parâmetros que controlam este comportamento, um que determina o número de vizinhos afetados e outro que, através de uma expressão, altera o quanto os vizinhos especificados são afetados.</p>
-        <p>O algoritmo de ordenação utilizado pode variar de acordo com o comprimento da cadeia primária e é determinado pelo interpretador Javascript. O critério de parada do algoritmo é um parâmetro fixo informado pelo usuário. Esse parâmetro determina o número de etapas, sendo cada etapa definida como a geração, análise, ordenação e seleção de uma população ou conjunto de soluções.</p>
-      </div>        
+
+      <div class="step overview"  data-x="7780" data-y="-14140" data-z="-7000" data-scale="0.5">
+      </div> 
+  
+      <div class="step overview"  data-x="8100" data-y="-14140" data-z="-7000" data-scale="0.5">
+      </div>         
       
       <div title="Aplicação para execução de experimentos" class="step" data-y="-15000" data-z="-7500">
         <div class="amino">
           <h2>Aplicação para execução de experimentos</h2>
-          <p>Com o objetivo de serializar a execução dos algoritmos ANN e ELA, auxiliar a calibragem dos parâmetros e demonstrar os resultados obtidos, foi desenvolvida uma aplicação com interface de usuário amigável capaz de serializar os testes e armazenar os dados em disco para posterior análise. A aplicação recebe uma série de parâmetros inseridos pelo usuário e utiliza-os para realizar testes em série.</p>
+          <p class="spaceTop">Com o objetivo de executar os algoritmos ANN e ELA, auxiliar a calibragem dos parâmetros e demonstrar os resultados obtidos, foi desenvolvida uma aplicação com interface de usuário amigável capaz de <b>serializar os testes</b> e <b>armazenar os dados</b> em disco para posterior análise.</p>
         </div>
       </div>      
       
       <div class="step slide" data-x="2000" data-y="-15000"  data-z="-7500">
         <img src="img/testchart.png" width="620"/>
-        <p class="float">Cada conjunto de testes é realizado repetidamente com os mesmos parâmetros para a mesma cadeia por um número de vezes previamente determinado. Uma tabela é preenchida em tempo real com os ângulos e energias do melhor modelo encontrado em cada teste. Ao fim de cada conjunto de testes, um gráfico é gerado demonstrando a performance dos modelos gerados.</p>
+        <p class="float">Cada <b>conjunto de testes</b> é realizado repetidamente com os mesmos <b>parâmetros</b> para a mesma cadeia por um número de vezes previamente determinado. Uma tabela é preenchida em tempo real com os ângulos e energias do melhor modelo encontrado em cada teste. Ao fim de cada conjunto de testes, um <b>gráfico</b> é gerado demonstrando a performance dos modelos gerados.</p>
       </div>     
       
       <div class="step slide" data-x="4000" data-y="-15000"  data-z="-7500">
         <img src="img/printapp.png" width="750"/>
-        <p class="float">Após diversos conjuntos de testes, ao fim da execução, um novo gráfico interativo onde são exibidos os valores de enegia obtidos pelos melhores modelos de cada conjuntos teste e sua média.</p>
+        <p class="float">Após diversos conjuntos de testes, ao fim da execução, um novo gráfico interativo onde são exibidos os valores de enegia obtidos pelos melhores modelos de cada conjuntos teste e sua <b>média</b>.</p>
       </div> 
       
       <div title="Resultados" class="step" data-y="-16000" data-z="-8000">
         <div class="amino">
           <h2>Resultados</h2>
-          <p>Após uma calibragem inicial manual através da análise individual dos dados, partiu-se para a análise devida dos parâmetros que foram considerados mais relevantes para esta contribuição. Foram realizados 30 testes para cada conjunto de parâmetros analizados utilizando a cadeia Fibonacci(7) com 21 aminoácidos na cadeia.</p>
-          <p>Devido à quantidade significativa de parâmetros, foi necessário restringir o número de parâmetros analisados.</p>
+          <p class="spaceTop">Após uma <b>calibragem</b> inicial manual através da análise individual dos dados, partiu-se para a análise devida dos parâmetros que foram considerados mais relevantes para esta contribuição. Foram realizados <b>30 testes</b> para cada conjunto de parâmetros analizados utilizando a cadeia <b>Fibonacci(7) com 21 aminoácidos</b> na cadeia.</p>
         </div>
       </div>      
       
       <div class="step slide" data-x="2000" data-y="-16000"  data-z="-8000">
         <img src="img/analise.png" width="750"/>
-        <p class="float">Observa-se, pela média, que todos os conceitos contribuem para melhorar os resultados obtidos, porém nem sempre o mínimo encontrado em cada conjunto de testes acompanha a média dos resultados dos testes.</p>
+        <p class="float">Observa-se, pela <b>média</b>, que todos os conceitos contribuem para melhorar os resultados obtidos, porém nem sempre o mínimo encontrado em cada conjunto de testes acompanha a média dos resultados dos testes.</p>
       </div> 
       
       <div class="step slide" data-x="4000" data-y="-16000"  data-z="-8000">
         <img class="float" src="img/effheatavg.png" width="420"/>
-        <p class="float w400">Um valor positivo para a Eficiência em caso de sucesso, significa que, caso uma dobra naquele ângulo resulte em um modelo mais estável, a chance de selecionar novamente o mesmo ângulo será maior. No caso desse mesmo valor ser negativo, a chance de voltarmos à este aminoácido será menor.</p>
+        <p class="float w400">Um <b>valor positivo</b> para a Eficiência em caso de sucesso, significa que, caso uma dobra naquele ângulo resulte em um modelo mais estável, a <b>chance de selecionar novamente o mesmo ângulo será maior</b>. No caso desse mesmo valor ser negativo, a chance de voltarmos à este aminoácido será menor.</p>
         <p class="float w400">O valor ideal para essa sequência é de 1 para os casos de sucesso e de 0,0000005 para os casos de falha.</p>
       </div>       
+  
+        
+      <div class="step overview"  data-x="3780" data-y="-16120" data-z="-8000" data-scale="0.5">
+      </div>
+  
+      <div class="step overview"  data-x="3780" data-y="-15820" data-z="-8000" data-scale="0.5">
+      </div>
       
       <div class="step slide" data-x="6000" data-y="-16000"  data-z="-8000">
         <img src="img/rigv.png" width="840"/>
-        <p class="float">Quando é realizada uma alteração no valor da Rigidez de um ângulo, também são alterados um número determinado de vizinhos. Foi utilizada uma expressão linear para distribuir essa alteração. Para a sequência testada, de acordo com a média, o valor ideal de vizinhos é de três.</p>
+        <p class="float">Quando é realizada uma alteração no valor da <b>Rigidez</b> de um ângulo, também são alterados um número determinado de <b>vizinhos</b>. Foi utilizada uma <b>expressão linear</b> para distribuir essa alteração. Para a sequência testada, de acordo com a média, o valor ideal de vizinhos é de três.</p>
       </div> 
-       
+ 
+      <div class="step overview"  data-x="5780" data-y="-16140" data-z="-8000" data-scale="0.5">
+      </div>
+  
+      <div class="step overview"  data-x="6160" data-y="-16140" data-z="-8000" data-scale="0.5">
+      </div>
+  
       <div class="step slide" data-x="8000" data-y="-16000"  data-z="-8000">
         <img src="img/finalchart.png" width="840"/>
         <table>
@@ -339,23 +402,34 @@
 <tr><td>FIBO9(55) </td><td> -18.7407 </td><td> -18.9202 </td><td> -19.257 </td><td> -18.9296 </td><td> -13.441023912647</tr>
 <tr><td>1AGT(34) </td><td> - </td><td> - </td><td> -23.0575 </td><td> - </td><td> -23.2433303926769</tr>
 <tr><td>1AHO(64) </td><td> - </td><td> - </td><td> -22.7554 </td><td> - </td><td> -21.7818222352442</tr>        </table>
-      </div>     
+      </div>    
       
-      
-      <div title="Conclusão" class="step" data-y="-17000" data-z="-8500">
+      <div class="step overview"  data-x="7790" data-y="-15820" data-z="-8000" data-scale="0.5">
+      </div>
+  
+      <div class="step overview"  data-x="8160" data-y="-15820" data-z="-8000" data-scale="0.5">
+      </div>
+  
+       <div title="Conclusão" class="step" data-y="-17000" data-z="-8500">
         <div class="amino">
-          <h2>Conclusão</h2>
-          <p>O trabalho aponta diversas áreas para pesquisas futuras que podem tornar a proposta mais abrangente. É necessário analisar questões relacionadas à implementação, pois é provável que existam outras abordagens que otimizem a performance dos algoritmos.</p>
-          <p>Apesar dos resultados serem muito importantes para a proposta, o que se espera é validar as técnicas propostas e no futuro combiná-las com outras, gerando heurísticas de alto nível que possam ser utilizadas em outros problemas complexos.</p>
+          <h2>Resultados</h2>
+          <img src="img/finalrender.png" width="300"/>
         </div>
-      </div>
-      
-      <div id="overview2" class="step" data-y="-3000" data-scale="10" data-rotate-x="-10" >
-      </div>
+      </div>     
 
-      <div id="overview" class="step" data-y="-10000" data-scale="10" data-rotate-x="-10" >
+      <div class="step overview" data-y="-17080" data-z="-8500" data-scale="0.4">
+      </div>   
+
+      <div class="step overview" data-y="-16900" data-z="-8500" data-scale="0.4">
       </div>      
       
+      <div title="Conclusão" class="step" data-y="-19000" data-z="-9000">
+        <div class="amino">
+          <h2>Conclusão</h2>
+          <p class="spaceTop">O trabalho aponta diversas áreas para <b>pesquisas futuras</b> que podem tornar a proposta mais abrangente.<br>Apesar dos resultados serem muito importantes para a proposta, o que se espera é <b>validar as técnicas propostas</b> e no futuro <b>combiná-las com outras</b>, gerando heurísticas de alto nível que possam ser utilizadas em outros problemas complexos.</p>
+        </div>
+      </div>
+
     </div>    
     
     <script src="js/jquery.js"></script>

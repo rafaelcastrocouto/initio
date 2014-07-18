@@ -64,11 +64,13 @@ span {
   padding: 0 40px;
   font-size: 80%;
 }
-
+b {
+  font-size: 116%;
+}
 p {
   text-align: left;
   padding: 0 20px 40px;
-  font-size: 90%;
+  font-size: 80%;
 }
 
 ul {
@@ -129,11 +131,10 @@ td, th {
   padding-top: 90px;
 }
 
-#overview, #overview2 { display: none }
+.overview { display: none }
 
-.impress-on-overview .step,
-.impress-on-overview2 .step {
-  opacity: 0.5;
+.step.overview {
+  opacity: 1;
   cursor: pointer;
 }
 

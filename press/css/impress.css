@@ -96,14 +96,6 @@ a:focus {
     line-height: 1.5;
 }
 
-.impress-enabled .step {
-    margin: 0;
-    opacity: 0.3;
-    transition: opacity 1s;
-}
-
-.impress-enabled .step.active { opacity: 1 }
-
 .slide {
     display: block;
     width: 900px;
