@@ -150,10 +150,11 @@
           <h2>Modelo AB</h2>
           <p>No Modelo AB, a proteína é descrita como uma sequência de aminoácidos hidrofóbicos (<b>A</b>) e hidrófilos (<b>B</b>). Muitas propriedades como <b>massa, volume e carga eletromagnética</b> também <b>não são consideradas</b>.<br>Nesse modelo, os ângulos são restritos entre -180º e + 180º.</p>
           <img src="img/ab.png" width="300"/>
+          <small>Estrutura de proteína bidimensional no Modelo AB.</small>
         </div>
       </div>  
       
-      <div class="step overview"  data-y="-4840" data-z="-1500" data-scale="0.4">
+      <div class="step overview"  data-y="-4880" data-z="-1500" data-scale="0.35">
       </div>
       
       <div class="step slide" data-x="2000" data-y="-5000"  data-z="-2500">
@@ -164,8 +165,7 @@
       
       <div class="step slide" data-x="4000" data-y="-5000"  data-z="-2500">
         <h2>Cadeias Primárias inspiradas na série Fibonacci</h2>
-        <p>Foram geradas cadeias de acordo com a sequência de Fibonacci, onde o próximo elemento é resultado da <b>concatenação dos últimos dois elementos</b> de acordo com a função: <br>
-        <i>f(0) = A; f(1) = B; f(n) = f(n-2) + f(n-1)</i>.</p>
+        <p>Foram geradas cadeias de acordo com a sequência de Fibonacci, onde o próximo elemento é resultado da <b>concatenação dos últimos dois elementos</b> de acordo com a função: <i>f(0) = A; f(1) = B; f(n) = f(n-2) + f(n-1)</i>.</p>
         <ul>
           <li>FIBO6(13) <small>ABBABBABABBAB</small></li>
           <li>FIBO7(21) <small>BABABBABABBABBABABBAB</small></li>
@@ -202,7 +202,7 @@
       
       <div class="step slide" data-x="6000" data-y="-7000"  data-z="-3500">
         <h2>Resultado do Mapeamento</h2>        
-        <p>A geração de um único gráfico com a resolução da Figura, com 20 faixas de ângulos, ou seja, com uma <b>discretização</b> de (180º)/20 em cada eixo, para uma proteína de quatro aminoácidos, resulta na computação de 400 modelos de proteínas. É possível encontrar este valor através da equação abaixo, onde <b>P</b> é o número de modelos de proteínas possíveis, <b>R</b> é a quantidade de faixas de ângulos, ou seja, a resolução do gráfico e <b>N</b> é o comprimento da cadeia primária.</p>
+        <p>A geração de um único gráfico com a resolução da Figura, com 20 faixas de ângulos, ou seja, com uma <b>discretização</b> de (180º)/20 em cada eixo, resulta na computação de 400 modelos. É possível encontrar este valor através da equação abaixo, onde <b>P</b> é o número de modelos de proteínas possíveis, <b>R</b> é a quantidade de faixas de ângulos, ou seja, a resolução do gráfico e <b>N</b> é o comprimento da cadeia primária.</p>
         <center>P = R <sup>(N - 2)</sup></center>
         <p>Supondo a geração de um gráfico multidimensional com a mesma resolução para uma proteína de <b>somente 12 aminoácidos</b>, seriam calculadas 20<sup>10</sup> modelos de proteínas. Mesmo se o cálculo de um único modelo demorasse apenas um milésimo de segundo, a suposta geração do gráfico <b>demoraria centenas de anos</b>.</p>
       </div>      
@@ -297,14 +297,10 @@
       <div title="Algoritmo ELA" class="step" data-y="-14000" data-z="-7000">
         <div class="amino">
           <h2>Algoritmo ELA<br>Estimated Learning Algorithm</h2>
-          <p>De forma a contornar os problemas apresentados pelo algoritmo ANN, foi desenvolvida uma solução que utilizasse <b>técnicas menos diretas</b>, que tratassem o problema em um nível mais <b>subjetivo</b><br>Dentre esses conceitos, dois foram os que serviram de inspiração para esta proposta: o conceito de  <b>Aprendizagem de Máquina</b> e os algoritmos de Distribuição Estimada (<b>EDAs</b>).</p>
+          <p>O conceito de <b>aprendizagem de máquina</b> foi incorporado ao algoritmo de forma que, a cada dobramento, um <b>conjunto de dados</b> proveniente da busca pela solução fosse <b>armazenado</b>, guardando a <b>experiência</b> do algoritmo. Ao gerar novos dobramentos o algoritmo usa essa experiência para obter melhores soluções.</p>
+          <p>A inspiração proveniente dos <b>EDAs</b> para o algoritmo proposto foi a de utilizar fatores de <b>aleatoriedade</b> sempre <b>guiados</b> por valores específicos que estabelecem relação com as <b>conexões entre os dados</b> do problema.</p>
         </div>
-      </div>
-
-      <div class="step slide" data-x="2000" data-y="-14000"  data-z="-7000">
-        <p>O conceito de <b>aprendizagem de máquina</b> foi incorporado ao algoritmo ELA proposto neste trabalho para o dobramento de proteínas de forma que, a cada dobramento, um <b>conjunto de dados</b> ou parâmetros proveniente da busca pela solução fosse <b>armazenado</b>. Essa a memória onde ficam armazenados os valores dos parâmetros, guarda a <b>experiência</b> do algoritmo. Ao gerar novos dobramentos o algoritmo usa os parâmetros para obter melhores soluções. Através desta <b>heurística</b>, os parâmetros se adaptam na medida que a busca prossegue, de forma a direcionar a geração de novas soluções.</p>
-        <p>A inspiração proveniente dos <b>EDAs</b> para o algoritmo proposto foi a de utilizar fatores de <b>aleatoriedade</b> sempre <b>guiados</b> explicitamente por valores específicos. Estes valores tem relação com as <b>conexões entre os dados</b> do problema.</p>
-      </div>     
+      </div> 
   
       <div class="step slide" data-x="4000" data-y="-14000"  data-z="-7000">
         <img  class="float" src="img/fluxela.png" width="400"/>
@@ -355,6 +351,9 @@
         <img src="img/printapp.png" width="750"/>
         <p class="float">Após diversos conjuntos de testes, ao fim da execução, um novo gráfico interativo onde são exibidos os valores de enegia obtidos pelos melhores modelos de cada conjuntos teste e sua <b>média</b>.</p>
       </div> 
+  
+      <div class="step overview"  data-x="3820" data-y="-15120" data-z="-7500" data-scale="0.5">
+      </div>  
       
       <div title="Resultados" class="step" data-y="-16000" data-z="-8000">
         <div class="amino">
@@ -430,6 +429,13 @@
         </div>
       </div>
 
+      <div title="Obrigado" class="step" data-y="-19000" data-z="-9000">
+        <div class="amino">
+          <p class="spaceTop"></p>
+          <p class="spaceTop"><h2>Obrigado a todos!</h2></p>
+        </div>
+      </div>  
+  
     </div>    
     
     <script src="js/jquery.js"></script>
