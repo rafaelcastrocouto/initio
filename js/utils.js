@@ -33,7 +33,7 @@ var coordToAng = function(coord){
 
 var fibonacciCache = ['A', 'B'];
 /**
- * Fibonacci sequence with AB Model
+ * Fibonacci sequence with AB Model(str)
  * @param {Int} l - Length of the desired sequence.
  */
 var fibonacci = function(l){
@@ -50,6 +50,17 @@ var fibonacci = function(l){
   };
   return f[l];
 };
+
+var root5= Math.sqrt(5);
+var goldenRatio = (1+root5)/2;
+/**
+ * Optimized Fibonacci sequence (int)
+ * @param {Int} n - Length of the desired sequence.
+ */
+var quickFibonacci = function (n) {
+  return Math.floor(Math.pow(goldenRatio,n)/root5);
+}
+
 /**
  * Gaussian Random with polar method - Sheldon Ross (pp. 464, 6ed)
  * @param {String} e - Converts a Real Sequence to AB Model. A: [I, V, L, P, C, M, G] B: [D, E, F, H, K, N, Q, R, S, T, W, Y]
