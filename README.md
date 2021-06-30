@@ -3,7 +3,7 @@
 
 Toy model AB protein folding problem in javascript
 
-[Latest Version](http://rafaelcastrocouto.github.com/initio)
+[Latest Version](http://rafaelcastrocouto.github.io/initio)
 
 [Introdutory Presentation (pt-br)](http://rafaelcastrocouto.github.io/initio/intro_press/)
 
